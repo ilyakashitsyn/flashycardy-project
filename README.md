@@ -1,75 +1,75 @@
 # FlashyCardy
 
-Приложение для создания и изучения карточек с использованием умных алгоритмов повторения. Позволяет пользователям создавать колоды карточек, отслеживать прогресс изучения и эффективно запоминать информацию.
+Application for creating and studying flashcards using smart repetition algorithms. Allows users to create card decks, track learning progress, and effectively memorize information.
 
-## Функциональность
+## Features
 
-- 🔐 Аутентификация пользователей через Clerk
-- 📚 Создание и управление колодами карточек
-- 🎯 Система изучения с отслеживанием прогресса
-- 📊 Аналитика сессий изучения
-- 🌙 Поддержка темной и светлой темы
-- 📱 Адаптивный дизайн
+- 🔐 User authentication through Clerk
+- 📚 Create and manage card decks
+- 🎯 Learning system with progress tracking
+- 📊 Study session analytics
+- 🌙 Dark and light theme support
+- 📱 Responsive design
 
-## Технологии
+## Technologies
 
 ### Frontend
 
-- **Next.js 15** - React фреймворк с App Router
-- **React 19** - Библиотека для создания пользовательских интерфейсов
-- **TypeScript** - Типизированный JavaScript
-- **Tailwind CSS** - Utility-first CSS фреймворк
-- **Radix UI** - Доступные компоненты интерфейса
-- **Lucide React** - Иконки
+- **Next.js 15** - React framework with App Router
+- **React 19** - Library for building user interfaces
+- **TypeScript** - Typed JavaScript
+- **Tailwind CSS** - Utility-first CSS framework
+- **Radix UI** - Accessible UI components
+- **Lucide React** - Icons
 
 ### Backend & Database
 
-- **Drizzle ORM** - TypeScript ORM для работы с базой данных
-- **PostgreSQL** - Реляционная база данных
+- **Drizzle ORM** - TypeScript ORM for database operations
+- **PostgreSQL** - Relational database
 - **Neon Database** - Serverless PostgreSQL
 
-### Аутентификация
+### Authentication
 
-- **Clerk** - Готовая система аутентификации
+- **Clerk** - Ready-to-use authentication system
 
-### Стилизация
+### Styling
 
-- **Tailwind CSS** - CSS фреймворк
-- **Tailwind CSS Animate** - Анимации для Tailwind
-- **next-themes** - Переключение тем
-- **class-variance-authority** - Утилиты для CSS классов
+- **Tailwind CSS** - CSS framework
+- **Tailwind CSS Animate** - Animations for Tailwind
+- **next-themes** - Theme switching
+- **class-variance-authority** - CSS class utilities
 
-### Разработка
+### Development
 
-- **ESLint** - Линтер для JavaScript/TypeScript
-- **PostCSS** - Инструмент для обработки CSS
-- **Autoprefixer** - Автоматическое добавление CSS префиксов
+- **ESLint** - JavaScript/TypeScript linter
+- **PostCSS** - CSS processing tool
+- **Autoprefixer** - Automatic CSS prefixing
 
-## Запуск проекта
+## Getting Started
 
 ```bash
-# Установка зависимостей
+# Install dependencies
 npm install
 
-# Запуск в режиме разработки
+# Run in development mode
 npm run dev
 
-# Сборка проекта
+# Build project
 npm run build
 
-# Запуск продакшн версии
+# Run production version
 npm start
 ```
 
-## База данных
+## Database
 
 ```bash
-# Генерация миграций
+# Generate migrations
 npm run db:generate
 
-# Применение миграций
+# Apply migrations
 npm run db:migrate
 
-# Запуск Drizzle Studio
+# Run Drizzle Studio
 npm run db:studio
 ```
