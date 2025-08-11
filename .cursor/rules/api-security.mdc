@@ -1,0 +1,37 @@
+# Безопасность API Endpoints
+
+## Обязательные проверки
+
+- Все API endpoints должны использовать `auth()` из Clerk
+- Проверяйте `userId` перед любыми операциями с данными
+- Фильтруйте все запросы к БД по `user_id`
+
+## Пример структуры API endpoint:
+
+```typescript
+import { auth } from "@clerk/nextjs/server";
+
+export async function GET() {
+  const { userId } = await auth();
+
+  if (!userId) {
+    return new Response("Unauthorized", { status: 401 });
+  }
+
+  // Всегда фильтруйте по userId
+  const data = await db.query.table.findMany({
+    where: eq(table.userId, userId),
+  });
+}
+```
+
+## Запрещено
+
+- Возвращать данные без проверки userId
+- Использовать параметры из URL без валидации
+- Позволять доступ к данным других пользователей
+  description:
+  globs:
+  alwaysApply: false
+
+---

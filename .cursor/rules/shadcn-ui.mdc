@@ -1,0 +1,38 @@
+# shadcn/ui Guidelines
+
+Этот проект использует shadcn/ui для всех UI элементов.
+
+## Инициализация shadcn/ui
+
+Если shadcn/ui не инициализирован в проекте, используй команду:
+
+```bash
+npx shadcn@latest init
+```
+
+## Установка компонентов
+
+Если нужный компонент не установлен, используй команду:
+
+```bash
+npx shadcn@latest add [component-name]
+```
+
+Примеры:
+
+- Для кнопки: `npx shadcn@latest add button`
+- Для карточки: `npx shadcn@latest add card`
+- Для инпута: `npx shadcn@latest add input`
+
+## Важные файлы
+
+- [package.json](mdc:package.json) - содержит зависимости проекта
+- [src/app/layout.tsx](mdc:src/app/layout.tsx) - корневой layout с глобальными стилями
+- [src/app/globals.css](mdc:src/app/globals.css) - глобальные стили CSS
+
+Всегда используй компоненты shadcn/ui вместо создания собственных UI элементов.
+description:
+globs:
+alwaysApply: false
+
+---

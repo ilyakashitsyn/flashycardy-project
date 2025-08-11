@@ -1,0 +1,60 @@
+# Data Architecture Rules
+
+## Data Retrieval
+
+- **ВСЕ** операции получения данных должны выполняться через серверные компоненты
+- Никогда не используйте клиентские компоненты для прямого обращения к базе данных
+- Используйте серверные компоненты для загрузки данных на сервере
+
+## Database Operations
+
+- **ВСЕ** операции изменения данных (INSERT, UPDATE, DELETE) должны выполняться через серверные действия (Server Actions)
+- Никогда не выполняйте прямые операции с базой данных из клиентских компонентов
+- Серверные действия должны быть определены в файлах с расширением `.ts` или `.tsx`
+
+## Data Validation
+
+- **ВСЕ** данные должны валидироваться с помощью Zod
+- Каждый серверный экшен должен иметь схему валидации Zod
+- Никогда не используйте `FormData` как тип - всегда создавайте TypeScript интерфейсы/типы
+
+## Type Safety
+
+- Все данные, передаваемые в серверные действия, должны иметь строгую типизацию TypeScript
+- Используйте Zod схемы для генерации типов: `z.infer<typeof schema>`
+- Избегайте использования `any` или `unknown` без явной валидации
+
+## Примеры правильной реализации:
+
+```typescript
+// ✅ Правильно: Серверный экшен с Zod валидацией
+export async function createUser(data: CreateUserInput) {
+  const validatedData = createUserSchema.parse(data);
+  // ... логика создания пользователя
+}
+
+// ✅ Правильно: Zod схема
+const createUserSchema = z.object({
+  name: z.string().min(1),
+  email: z.string().email(),
+  age: z.number().min(18),
+});
+
+export type CreateUserInput = z.infer<typeof createUserSchema>;
+```
+
+```typescript
+// ❌ Неправильно: Использование FormData
+export async function createUser(formData: FormData) {
+  // ... код без валидации
+}
+
+// ❌ Неправильно: Клиентский компонент с прямым доступом к БД
+const user = await db.user.findFirst(); // В клиентском компоненте
+```
+
+description:
+globs:
+alwaysApply: false
+
+---

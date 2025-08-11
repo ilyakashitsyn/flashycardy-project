@@ -1,0 +1,53 @@
+# Drizzle Database Rule
+
+Все взаимодействия с базой данных должны использовать Drizzle ORM и схему из [src/db/schema.ts](mdc:src/db/schema.ts).
+
+## Обязательные требования:
+
+1. **Импорт схемы**: Всегда импортируйте таблицы из `src/db/schema.ts`
+2. **Использование Drizzle**: Используйте только Drizzle ORM для запросов к БД
+3. **Типизация**: Используйте типы из схемы для всех операций с данными
+4. **Подключение к БД**: Используйте экземпляр `db` из [src/db/index.ts](mdc:src/db/index.ts)
+
+## Примеры правильного использования:
+
+```typescript
+import { db } from "@/db";
+import { decksTable, cardsTable } from "@/db/schema";
+import { eq, desc } from "drizzle-orm";
+
+// Правильно - использование Drizzle
+const decks = await db
+  .select()
+  .from(decksTable)
+  .where(eq(decksTable.userId, userId));
+
+// Правильно - типизированные операции
+const newDeck = await db
+  .insert(decksTable)
+  .values({
+    name: "New Deck",
+    userId: userId,
+    description: "Description",
+  })
+  .returning();
+```
+
+## Запрещено:
+
+- Использование нативных SQL запросов
+- Прямое подключение к базе данных без Drizzle
+- Создание собственных схем таблиц
+- Использование других ORM или query builders
+
+## Структура базы данных:
+
+- **decksTable**: Колоды карточек
+- **cardsTable**: Карточки в колодах
+- **studySessionsTable**: Сессии изучения
+- **cardProgressTable**: Прогресс по карточкам
+  description:
+  globs:
+  alwaysApply: false
+
+---

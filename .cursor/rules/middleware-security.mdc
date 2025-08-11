@@ -1,0 +1,48 @@
+# Безопасность Middleware
+
+## Обязательная защита
+
+- Middleware должен защищать все защищенные маршруты
+- Используйте `authMiddleware()` из Clerk
+- Настройте правильные публичные и защищенные маршруты
+
+## Структура middleware:
+
+```typescript
+import { authMiddleware } from "@clerk/nextjs";
+
+export default authMiddleware({
+  // Публичные маршруты
+  publicRoutes: ["/", "/api/public"],
+
+  // Защищенные маршруты (по умолчанию все)
+  afterAuth(auth, req) {
+    // Дополнительная логика проверки
+    if (!auth.userId && req.nextUrl.pathname.startsWith("/dashboard")) {
+      return Response.redirect(new URL("/sign-in", req.url));
+    }
+  },
+});
+
+export const config = {
+  matcher: ["/((?!.+\\.[\\w]+$|_next).*)", "/", "/(api|trpc)(.*)"],
+};
+```
+
+## Ключевые требования
+
+1. Защищайте все маршруты по умолчанию
+2. Явно указывайте публичные маршруты
+3. Используйте правильные matcher паттерны
+4. Перенаправляйте неавторизованных пользователей
+
+## Запрещено
+
+- Оставлять защищенные маршруты без проверки
+- Использовать слабые matcher паттерны
+- Пропускать проверку аутентификации
+  description:
+  globs:
+  alwaysApply: false
+
+---

@@ -1,0 +1,38 @@
+# Безопасность базы данных
+
+## Схемы данных
+
+- Все таблицы должны содержать поле `userId` или `user_id`
+- Используйте внешние ключи для связи с пользователями
+- Индексы должны включать `userId` для быстрой фильтрации
+
+## Функции доступа к БД
+
+- Все функции должны принимать `userId` как параметр
+- Всегда используйте WHERE условия с `userId`
+- Никогда не возвращайте данные без фильтрации по пользователю
+
+## Пример безопасной функции:
+
+```typescript
+export async function getUserCards(userId: string) {
+  if (!userId) {
+    throw new Error("userId is required");
+  }
+
+  return await db.query.cards.findMany({
+    where: eq(cards.userId, userId),
+  });
+}
+```
+
+## Запрещено
+
+- Создавать функции без параметра userId
+- Выполнять запросы без WHERE условий
+- Возвращать все записи из таблицы
+  description:
+  globs:
+  alwaysApply: false
+
+---
