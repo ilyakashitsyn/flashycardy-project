@@ -1,20 +1,24 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
-import { SignedIn, SignedOut, useAuth } from "@clerk/nextjs";
-import { useRouter } from "next/navigation";
+import {
+  SignedIn,
+  SignedOut,
+  useAuth,
+  SignInButton,
+  SignUpButton,
+} from "@clerk/nextjs";
 import { useEffect } from "react";
 import { Loader2 } from "lucide-react";
 
 export default function Home() {
   const { isSignedIn, isLoaded } = useAuth();
-  const router = useRouter();
 
   useEffect(() => {
     if (isLoaded && isSignedIn) {
-      router.push("/dashboard");
+      window.location.href = "/dashboard";
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn]);
 
   if (!isLoaded) {
     return (
@@ -42,19 +46,14 @@ export default function Home() {
 
         <SignedOut>
           <div className="flex gap-4 justify-center">
-            <Button
-              className="px-6 py-3"
-              onClick={() => router.push("/sign-in")}
-            >
-              Войти
-            </Button>
-            <Button
-              variant="secondary"
-              className="px-6 py-3"
-              onClick={() => router.push("/sign-up")}
-            >
-              Регистрация
-            </Button>
+            <SignInButton mode="modal">
+              <Button className="px-6 py-3">Войти</Button>
+            </SignInButton>
+            <SignUpButton mode="modal">
+              <Button variant="secondary" className="px-6 py-3">
+                Регистрация
+              </Button>
+            </SignUpButton>
           </div>
         </SignedOut>
       </div>
