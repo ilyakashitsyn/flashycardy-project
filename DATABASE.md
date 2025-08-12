@@ -26,33 +26,54 @@ npm run db:migrate
 
 # Открытие Drizzle Studio
 npm run db:studio
+
+# Заполнение БД примерами колод
+npm run db:seed
 ```
 
 ## Структура базы данных
 
 ### Таблицы
 
-- `users` - пользователи
-- `decks` - колоды карточек
-- `cards` - карточки
+- `decks` - колоды карточек (с Clerk user ID)
+- `cards` - карточки для изучения
 - `study_sessions` - сессии изучения
 - `card_progress` - прогресс по карточкам
+
+### Примеры колод
+
+В базе данных созданы 2 примера колод для изучения португальского языка:
+
+1. **English to Portuguese (Brazil)** - 16 карточек
+2. **Portuguese (Brazil) to English** - 16 карточек
+
+Колоды автоматически создаются для пользователя: `user_317c3rTqJ1vaBpbHTWr2IrCJLTf`
 
 ### Использование в коде
 
 ```typescript
 import { db } from "@/db";
-import { usersTable, decksTable, cardsTable } from "@/db/schema";
+import { decksTable, cardsTable } from "@/db/schema";
 
-// Получение всех пользователей
-const users = await db.select().from(usersTable);
+// Получение всех колод пользователя
+const userDecks = await db
+  .select()
+  .from(decksTable)
+  .where(eq(decksTable.userId, "user_317c3rTqJ1vaBpbHTWr2IrCJLTf"));
 
-// Создание нового пользователя
-const newUser = await db
-  .insert(usersTable)
+// Создание новой колоды
+const newDeck = await db
+  .insert(decksTable)
   .values({
-    name: "John Doe",
-    email: "john@example.com",
+    name: "My New Deck",
+    description: "Description of the deck",
+    userId: "user_317c3rTqJ1vaBpbHTWr2IrCJLTf",
   })
   .returning();
+
+// Получение карточек колоды
+const deckCards = await db
+  .select()
+  .from(cardsTable)
+  .where(eq(cardsTable.deckId, deckId));
 ```

@@ -1,75 +1,61 @@
-# FlashyCardy
+# FlashyCardy - Умные карточки для изучения
 
-Application for creating and studying flashcards using smart repetition algorithms. Allows users to create card decks, track learning progress, and effectively memorize information.
+Приложение для создания и изучения карточек с использованием современных технологий.
 
-## Features
+## Возможности
 
-- 🔐 User authentication through Clerk
-- 📚 Create and manage card decks
-- 🎯 Learning system with progress tracking
-- 📊 Study session analytics
-- 🌙 Dark and light theme support
-- 📱 Responsive design
+- 🔐 Аутентификация пользователей через Clerk
+- 📚 Создание и управление колодами карточек
+- 🎯 Изучение карточек с системой прогресса
+- 🌙 Поддержка темной и светлой темы
+- 📱 Адаптивный дизайн
 
-## Technologies
+## Технологии
 
-### Frontend
+- **Frontend**: Next.js 15, React 19, TypeScript
+- **Стилизация**: Tailwind CSS
+- **Аутентификация**: Clerk
+- **База данных**: Neon (PostgreSQL) + Drizzle ORM
+- **UI компоненты**: Radix UI + Lucide React
 
-- **Next.js 15** - React framework with App Router
-- **React 19** - Library for building user interfaces
-- **TypeScript** - Typed JavaScript
-- **Tailwind CSS** - Utility-first CSS framework
-- **Radix UI** - Accessible UI components
-- **Lucide React** - Icons
+## Установка и запуск
 
-### Backend & Database
+1. Клонируйте репозиторий
+2. Установите зависимости: `npm install`
+3. Создайте `.env.local` файл с переменными окружения:
+   ```
+   DATABASE_URL=your_neon_database_url
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_key
+   CLERK_SECRET_KEY=your_clerk_secret
+   ```
+4. Запустите миграции: `npm run db:migrate`
+5. Запустите приложение: `npm run dev`
 
-- **Drizzle ORM** - TypeScript ORM for database operations
-- **PostgreSQL** - Relational database
-- **Neon Database** - Serverless PostgreSQL
+## Структура проекта
 
-### Authentication
+- `/src/app/dashboard` - Панель управления для залогиненных пользователей
+- `/src/components/ui` - UI компоненты
+- `/src/db` - Схема и конфигурация базы данных
+- `/src/app/api` - API endpoints
 
-- **Clerk** - Ready-to-use authentication system
+## Dashboard
 
-### Styling
+Dashboard доступен только для залогиненных пользователей по адресу `/dashboard`. Здесь пользователи могут:
 
-- **Tailwind CSS** - CSS framework
-- **Tailwind CSS Animate** - Animations for Tailwind
-- **next-themes** - Theme switching
-- **class-variance-authority** - CSS class utilities
+- Просматривать свои колоды карточек
+- Создавать новые колоды
+- Переходить к изучению карточек
+- Редактировать существующие колоды
 
-### Development
+## API Endpoints
 
-- **ESLint** - JavaScript/TypeScript linter
-- **PostCSS** - CSS processing tool
-- **Autoprefixer** - Automatic CSS prefixing
+- `GET /api/decks` - Получение колод пользователя
+- `POST /api/decks` - Создание новой колоды
 
-## Getting Started
+## Команды
 
-```bash
-# Install dependencies
-npm install
-
-# Run in development mode
-npm run dev
-
-# Build project
-npm run build
-
-# Run production version
-npm start
-```
-
-## Database
-
-```bash
-# Generate migrations
-npm run db:generate
-
-# Apply migrations
-npm run db:migrate
-
-# Run Drizzle Studio
-npm run db:studio
-```
+- `npm run dev` - Запуск в режиме разработки
+- `npm run build` - Сборка для продакшена
+- `npm run db:generate` - Генерация миграций
+- `npm run db:migrate` - Применение миграций
+- `npm run db:studio` - Запуск Drizzle Studio

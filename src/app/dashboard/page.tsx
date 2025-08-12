@@ -1,77 +1,107 @@
-import { currentUser } from "@clerk/nextjs/server";
-import { UserProfile } from "@clerk/nextjs";
+"use client";
 
-export default async function DashboardPage() {
-  const user = await currentUser();
+import { useEffect, useState } from "react";
+import { DeckCard } from "@/components/ui/deck-card";
+import { CreateDeckDialog } from "@/components/ui/create-deck-dialog";
+import { ProtectedRoute } from "@/components/ui/protected-route";
+import { Loader2, BookOpen } from "lucide-react";
+
+// Отключаем prerendering для этой страницы
+export const dynamic = "force-dynamic";
+
+interface Deck {
+  id: number;
+  name: string;
+  description?: string;
+  cardCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+function DashboardContent() {
+  const [decks, setDecks] = useState<Deck[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchDecks();
+  }, []);
+
+  const fetchDecks = async () => {
+    try {
+      const response = await fetch("/api/decks");
+      if (response.ok) {
+        const data = await response.json();
+        setDecks(data);
+      }
+    } catch (error) {
+      console.error("Error fetching decks:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  if (loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="flex items-center justify-center min-h-[400px]">
+          <Loader2 className="h-8 w-8 animate-spin text-primary" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <div className="max-w-4xl mx-auto">
-        <div className="bg-card rounded-lg shadow-sm border border-border p-6">
-          <h1 className="text-2xl font-bold text-foreground mb-6">
+      <div className="flex items-center justify-between mb-8">
+        <div>
+          <h1 className="text-3xl font-bold text-foreground">
             Панель управления
           </h1>
-
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Профиль пользователя
-              </h2>
-              <div className="bg-muted rounded-lg p-4">
-                <div className="flex items-center space-x-4">
-                  <div className="w-12 h-12 bg-primary/10 rounded-full flex items-center justify-center">
-                    <span className="text-primary font-semibold">
-                      {user?.firstName?.charAt(0) ||
-                        user?.emailAddresses[0]?.emailAddress
-                          .charAt(0)
-                          .toUpperCase()}
-                    </span>
-                  </div>
-                  <div>
-                    <p className="font-medium text-foreground">
-                      {user?.firstName} {user?.lastName}
-                    </p>
-                    <p className="text-sm text-muted-foreground">
-                      {user?.emailAddresses[0]?.emailAddress}
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="space-y-4">
-              <h2 className="text-lg font-semibold text-foreground">
-                Статистика
-              </h2>
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-blue-50 dark:bg-blue-950 rounded-lg p-4">
-                  <p className="text-sm text-blue-600 dark:text-blue-400 font-medium">
-                    Карточки
-                  </p>
-                  <p className="text-2xl font-bold text-blue-900 dark:text-blue-100">
-                    0
-                  </p>
-                </div>
-                <div className="bg-green-50 dark:bg-green-950 rounded-lg p-4">
-                  <p className="text-sm text-green-600 dark:text-green-400 font-medium">
-                    Сессии
-                  </p>
-                  <p className="text-2xl font-bold text-green-900 dark:text-green-100">
-                    0
-                  </p>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="mt-8">
-            <h2 className="text-lg font-semibold text-foreground mb-4">
-              Настройки профиля
-            </h2>
-            <UserProfile />
-          </div>
+          <p className="text-muted-foreground mt-2">
+            Управляйте своими колодами карточек
+          </p>
         </div>
+        <CreateDeckDialog
+          onDeckCreated={(deck) => setDecks([...decks, deck])}
+        />
       </div>
+
+      {decks.length === 0 ? (
+        <div className="text-center py-12">
+          <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
+            <BookOpen className="h-12 w-12 text-muted-foreground" />
+          </div>
+          <h3 className="text-lg font-medium text-foreground mb-2">
+            У вас пока нет колод
+          </h3>
+          <p className="text-muted-foreground mb-4">
+            Создайте свою первую колоду карточек для изучения
+          </p>
+          <CreateDeckDialog
+            onDeckCreated={(deck) => setDecks([...decks, deck])}
+          />
+        </div>
+      ) : (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {decks.map((deck) => (
+            <DeckCard
+              key={deck.id}
+              deck={{
+                ...deck,
+                createdAt: new Date(deck.createdAt),
+              }}
+            />
+          ))}
+        </div>
+      )}
     </div>
+  );
+}
+
+export default function DashboardPage() {
+  return (
+    <ProtectedRoute>
+      <DashboardContent />
+    </ProtectedRoute>
   );
 }
