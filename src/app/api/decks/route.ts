@@ -12,7 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Получаем колоды пользователя с количеством карточек
+    // Получаем колоды только для текущего пользователя
     const userDecks = await db
       .select({
         id: decksTable.id,
@@ -63,12 +63,13 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
+    // Создаем колоду для текущего пользователя
     const newDeck = await db
       .insert(decksTable)
       .values({
         name,
         description,
-        userId,
+        userId: userId,
       })
       .returning();
 

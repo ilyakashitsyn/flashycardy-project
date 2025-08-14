@@ -3,7 +3,6 @@
 import { useEffect, useState } from "react";
 import { DeckCard } from "@/components/ui/deck-card";
 import { CreateDeckDialog } from "@/components/ui/create-deck-dialog";
-import { ProtectedRoute } from "@/components/ui/protected-route";
 import { Loader2, BookOpen } from "lucide-react";
 
 // Отключаем prerendering для этой страницы
@@ -18,7 +17,7 @@ interface Deck {
   updatedAt: string;
 }
 
-function DashboardContent() {
+export default function DashboardPage() {
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -40,6 +39,18 @@ function DashboardContent() {
     }
   };
 
+  const formatDate = (dateString: string) => {
+    try {
+      const date = new Date(dateString);
+      if (isNaN(date.getTime())) {
+        return "Неизвестная дата";
+      }
+      return date.toLocaleDateString("ru-RU");
+    } catch {
+      return "Неизвестная дата";
+    }
+  };
+
   if (loading) {
     return (
       <div className="container mx-auto px-4 py-8">
@@ -54,9 +65,7 @@ function DashboardContent() {
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">
-            Панель управления
-          </h1>
+          <h1 className="text-3xl font-bold text-foreground">Мои колоды</h1>
           <p className="text-muted-foreground mt-2">
             Управляйте своими колодами карточек
           </p>
@@ -88,20 +97,13 @@ function DashboardContent() {
               key={deck.id}
               deck={{
                 ...deck,
-                createdAt: new Date(deck.createdAt),
+                cardCount: deck.cardCount || 0,
+                createdAt: new Date(deck.createdAt || Date.now()),
               }}
             />
           ))}
         </div>
       )}
     </div>
-  );
-}
-
-export default function DashboardPage() {
-  return (
-    <ProtectedRoute>
-      <DashboardContent />
-    </ProtectedRoute>
   );
 }

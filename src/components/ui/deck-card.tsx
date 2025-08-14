@@ -1,6 +1,10 @@
-import Link from "next/link";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { BookOpen, Play, Plus } from "lucide-react";
 
 interface DeckCardProps {
@@ -14,41 +18,59 @@ interface DeckCardProps {
 }
 
 export function DeckCard({ deck }: DeckCardProps) {
+  const formatDate = (date: Date) => {
+    try {
+      if (!date || isNaN(date.getTime())) {
+        return "Неизвестная дата";
+      }
+      return date.toLocaleDateString("ru-RU");
+    } catch {
+      return "Неизвестная дата";
+    }
+  };
+
   return (
-    <Card className="hover:shadow-lg transition-shadow">
+    <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group">
       <CardHeader>
-        <CardTitle className="flex items-center gap-2">
+        <div className="flex items-center gap-2 group-hover:text-primary transition-colors">
           <BookOpen className="h-5 w-5 text-primary" />
-          {deck.name}
-        </CardTitle>
+          <a
+            href={`/decks/${deck.id}`}
+            className="text-2xl font-semibold leading-none tracking-tight hover:underline"
+          >
+            {deck.name || "Без названия"}
+          </a>
+        </div>
         {deck.description && (
-          <CardDescription className="line-clamp-2">
+          <p className="text-sm text-muted-foreground line-clamp-2">
             {deck.description}
-          </CardDescription>
+          </p>
         )}
       </CardHeader>
       <CardContent>
         <div className="flex items-center justify-between mb-4">
           <span className="text-sm text-muted-foreground">
-            {deck.cardCount} карточек
+            {deck.cardCount || 0} карточек
           </span>
           <span className="text-xs text-muted-foreground">
-            {new Date(deck.createdAt).toLocaleDateString("ru-RU")}
+            {formatDate(deck.createdAt)}
           </span>
         </div>
         <div className="flex gap-2">
-          <Button asChild size="sm" className="flex-1">
-            <Link href={`/deck/${deck.id}/study`}>
-              <Play className="h-4 w-4 mr-2" />
-              Изучать
-            </Link>
-          </Button>
-          <Button asChild size="sm" variant="outline">
-            <Link href={`/deck/${deck.id}/edit`}>
-              <Plus className="h-4 w-4 mr-2" />
-              Редактировать
-            </Link>
-          </Button>
+          <a
+            href={`/decks/${deck.id}/study`}
+            className="flex-1 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3"
+          >
+            <Play className="h-4 w-4 mr-2" />
+            Изучать
+          </a>
+          <a
+            href={`/decks/${deck.id}/edit`}
+            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
+          >
+            <Plus className="h-4 w-4 mr-2" />
+            Редактировать
+          </a>
         </div>
       </CardContent>
     </Card>

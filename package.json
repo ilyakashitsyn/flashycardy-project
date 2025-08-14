@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev --turbopack -p 0",
+    "dev": "next dev -p 0",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -12,6 +12,7 @@
     "db:migrate": "drizzle-kit migrate",
     "db:studio": "drizzle-kit studio",
     "db:seed": "tsx scripts/seed-database.ts",
+    "db:clear": "tsx scripts/clear-test-data.ts",
     "use-node20": "./scripts/use-node20.sh"
   },
   "dependencies": {

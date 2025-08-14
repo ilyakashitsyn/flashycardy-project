@@ -67,3 +67,415 @@
     overflow: hidden;
   }
 }
+
+/* Простые стили для кнопок */
+@layer components {
+  .user-menu-button {
+    transition: all 0.2s ease-in-out;
+  }
+
+  .user-menu-button:hover {
+    background-color: hsl(var(--accent)) !important;
+    color: rgb(0 0 0) !important;
+  }
+
+  .dark .user-menu-button:hover {
+    background-color: rgb(31 41 55) !important;
+    color: rgb(255 255 255) !important;
+  }
+}
+
+/* Максимально специфичные стили для перебития Clerk */
+@layer utilities {
+  /* Светлая тема */
+  .user-menu-button {
+    color: rgb(0 0 0) !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .user-menu-button:hover {
+    color: rgb(0 0 0) !important;
+    background-color: hsl(var(--accent)) !important;
+  }
+
+  /* Темная тема */
+  .dark .user-menu-button {
+    color: rgb(255 255 255) !important;
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .dark .user-menu-button:hover {
+    color: rgb(255 255 255) !important;
+    background-color: rgb(31 41 55) !important;
+  }
+
+  /* Перебитие всех возможных стилей Clerk */
+  .user-menu-button * {
+    color: inherit !important;
+  }
+
+  .user-menu-button svg {
+    color: inherit !important;
+  }
+}
+
+/* Максимально агрессивные стили для перебития Clerk */
+:where(.user-menu-button) {
+  color: rgb(0 0 0) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.user-menu-button:hover) {
+  color: rgb(0 0 0) !important;
+  background-color: hsl(var(--accent)) !important;
+}
+
+:where(.dark .user-menu-button) {
+  color: rgb(255 255 255) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+:where(.dark .user-menu-button:hover) {
+  color: rgb(255 255 255) !important;
+  background-color: rgb(31 41 55) !important;
+}
+
+:where(.user-menu-button *) {
+  color: inherit !important;
+}
+
+:where(.user-menu-button svg) {
+  color: inherit !important;
+}
+
+/* Переопределение CSS переменных Clerk */
+:root {
+  --clerk-button-color: rgb(0 0 0) !important;
+  --clerk-button-background: transparent !important;
+  --clerk-button-border: none !important;
+  --clerk-button-shadow: none !important;
+  --clerk-text-color: rgb(0 0 0) !important;
+  --clerk-icon-color: rgb(0 0 0) !important;
+}
+
+.dark {
+  --clerk-button-color: rgb(255 255 255) !important;
+  --clerk-button-background: transparent !important;
+  --clerk-button-border: none !important;
+  --clerk-button-shadow: none !important;
+  --clerk-text-color: rgb(255 255 255) !important;
+  --clerk-icon-color: rgb(255 255 255) !important;
+}
+
+/* Максимально специфичные селекторы для Clerk */
+button.user-menu-button,
+button.user-menu-button *,
+button.user-menu-button svg,
+button.user-menu-button span,
+button.user-menu-button div {
+  color: rgb(0 0 0) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+.dark button.user-menu-button,
+.dark button.user-menu-button *,
+.dark button.user-menu-button svg,
+.dark button.user-menu-button span,
+.dark button.user-menu-button div {
+  color: rgb(255 255 255) !important;
+  background-color: transparent !important;
+  border: none !important;
+  box-shadow: none !important;
+}
+
+/* Hover эффекты */
+button.user-menu-button:hover,
+button.user-menu-button:hover *,
+button.user-menu-button:hover svg,
+button.user-menu-button:hover span,
+button.user-menu-button:hover div {
+  color: rgb(0 0 0) !important;
+  background-color: hsl(var(--accent)) !important;
+}
+
+.dark button.user-menu-button:hover,
+.dark button.user-menu-button:hover *,
+.dark button.user-menu-button:hover svg,
+.dark button.user-menu-button:hover span,
+.dark button.user-menu-button:hover div {
+  color: rgb(255 255 255) !important;
+  background-color: rgb(31 41 55) !important;
+}
+
+/* Максимально агрессивные стили для перебития Clerk */
+@layer base {
+  /* Перебитие всех возможных стилей Clerk */
+  [data-clerk-component],
+  [data-clerk-component] *,
+  [data-clerk-component] button,
+  [data-clerk-component] span,
+  [data-clerk-component] div,
+  [data-clerk-component] svg {
+    color: var(--clerk-text-color) !important;
+    background-color: var(--clerk-button-background) !important;
+    border: var(--clerk-button-border) !important;
+    box-shadow: var(--clerk-button-shadow) !important;
+  }
+
+  /* Специально для кнопок в user menu */
+  .user-menu-container button,
+  .user-menu-container button *,
+  .user-menu-container button svg,
+  .user-menu-container button span,
+  .user-menu-container button div {
+    color: var(--clerk-text-color) !important;
+    background-color: var(--clerk-button-background) !important;
+    border: var(--clerk-button-border) !important;
+    box-shadow: var(--clerk-button-shadow) !important;
+  }
+
+  /* Hover эффекты */
+  .user-menu-container button:hover,
+  .user-menu-container button:hover *,
+  .user-menu-container button:hover svg {
+    background-color: hsl(var(--accent)) !important;
+    color: var(--clerk-text-color) !important;
+  }
+
+  .dark .user-menu-container button:hover,
+  .dark .user-menu-container button:hover *,
+  .dark .user-menu-container button:hover svg {
+    background-color: rgb(31 41 55) !important;
+    color: var(--clerk-text-color) !important;
+  }
+}
+
+/* Стили для аватара Clerk */
+@layer components {
+  /* Аватар в светлой теме */
+  [data-clerk-component="user-button"] {
+    border-radius: 50% !important;
+    transition: all 0.2s ease-in-out !important;
+    background-color: transparent !important;
+  }
+
+  [data-clerk-component="user-button"]:hover {
+    background-color: transparent !important;
+    transform: scale(1.05) !important;
+  }
+
+  /* Аватар в темной теме */
+  .dark [data-clerk-component="user-button"] {
+    background-color: transparent !important;
+  }
+
+  .dark [data-clerk-component="user-button"]:hover {
+    background-color: transparent !important;
+    transform: scale(1.05) !important;
+  }
+
+  /* Перебитие всех возможных background цветов Clerk */
+  [data-clerk-component="user-button"]:hover,
+  [data-clerk-component="user-button"]:hover *,
+  [data-clerk-component="user-button"]:hover > div,
+  [data-clerk-component="user-button"]:hover > span,
+  [data-clerk-component="user-button"]:hover > button {
+    background-color: transparent !important;
+  }
+
+  /* Специально для темной темы - перебитие #1f2937 */
+  .dark [data-clerk-component="user-button"]:hover,
+  .dark [data-clerk-component="user-button"]:hover *,
+  .dark [data-clerk-component="user-button"]:hover > div,
+  .dark [data-clerk-component="user-button"]:hover > span,
+  .dark [data-clerk-component="user-button"]:hover > button {
+    background-color: transparent !important;
+  }
+
+  /* Аватар изображение */
+  [data-clerk-component="user-button"] img,
+  [data-clerk-component="user-button"] svg {
+    border-radius: 50% !important;
+    transition: all 0.2s ease-in-out !important;
+  }
+
+  /* Hover эффект для аватара */
+  [data-clerk-component="user-button"]:hover img,
+  [data-clerk-component="user-button"]:hover svg {
+    filter: brightness(1.1) !important;
+  }
+
+  /* Контейнер аватара */
+  [data-clerk-component="user-button"] > div {
+    border-radius: 50% !important;
+    overflow: hidden !important;
+    transition: all 0.2s ease-in-out !important;
+    background-color: transparent !important;
+  }
+
+  /* Hover эффект для контейнера */
+  [data-clerk-component="user-button"]:hover > div {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15) !important;
+    background-color: transparent !important;
+  }
+
+  .dark [data-clerk-component="user-button"]:hover > div {
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.1) !important;
+    background-color: transparent !important;
+  }
+}
+
+/* Максимально агрессивные стили для перебития Clerk */
+@layer utilities {
+  /* Перебитие всех возможных стилей Clerk для аватара */
+  :where([data-clerk-component="user-button"]),
+  :where([data-clerk-component="user-button"] *),
+  :where([data-clerk-component="user-button"] > div),
+  :where([data-clerk-component="user-button"] > span),
+  :where([data-clerk-component="user-button"] > button) {
+    background-color: transparent !important;
+  }
+
+  :where([data-clerk-component="user-button"]:hover),
+  :where([data-clerk-component="user-button"]:hover *),
+  :where([data-clerk-component="user-button"]:hover > div),
+  :where([data-clerk-component="user-button"]:hover > span),
+  :where([data-clerk-component="user-button"]:hover > button) {
+    background-color: transparent !important;
+  }
+
+  /* Специально для темной темы */
+  :where(.dark [data-clerk-component="user-button"]),
+  :where(.dark [data-clerk-component="user-button"] *),
+  :where(.dark [data-clerk-component="user-button"] > div),
+  :where(.dark [data-clerk-component="user-button"] > span),
+  :where(.dark [data-clerk-component="user-button"] > button) {
+    background-color: transparent !important;
+  }
+
+  :where(.dark [data-clerk-component="user-button"]:hover),
+  :where(.dark [data-clerk-component="user-button"]:hover *),
+  :where(.dark [data-clerk-component="user-button"]:hover > div),
+  :where(.dark [data-clerk-component="user-button"]:hover > span),
+  :where(.dark [data-clerk-component="user-button"]:hover > button) {
+    background-color: transparent !important;
+  }
+}
+
+/* Максимально агрессивные стили вне слоев */
+/* Перебитие всех возможных стилей Clerk для аватара */
+[data-clerk-component="user-button"],
+[data-clerk-component="user-button"] *,
+[data-clerk-component="user-button"] > div,
+[data-clerk-component="user-button"] > span,
+[data-clerk-component="user-button"] > button {
+  background-color: transparent !important;
+}
+
+[data-clerk-component="user-button"]:hover,
+[data-clerk-component="user-button"]:hover *,
+[data-clerk-component="user-button"]:hover > div,
+[data-clerk-component="user-button"]:hover > span,
+[data-clerk-component="user-button"]:hover > button {
+  background-color: transparent !important;
+}
+
+/* Специально для темной темы */
+.dark [data-clerk-component="user-button"],
+.dark [data-clerk-component="user-button"] *,
+.dark [data-clerk-component="user-button"] > div,
+.dark [data-clerk-component="user-button"] > span,
+.dark [data-clerk-component="user-button"] > button {
+  background-color: transparent !important;
+}
+
+.dark [data-clerk-component="user-button"]:hover,
+.dark [data-clerk-component="user-button"]:hover *,
+.dark [data-clerk-component="user-button"]:hover > div,
+.dark [data-clerk-component="user-button"]:hover > span,
+.dark [data-clerk-component="user-button"]:hover > button {
+  background-color: transparent !important;
+}
+
+/* Перебитие точного селектора Clerk */
+body[data-clerk-theme="dark"] div[data-clerk-component="user-button"]:hover,
+body[data-clerk-theme="dark"] div[data-clerk-component="user-button"]:hover *,
+body[data-clerk-theme="dark"]
+  div[data-clerk-component="user-button"]:hover
+  > div,
+body[data-clerk-theme="dark"]
+  div[data-clerk-component="user-button"]:hover
+  > span,
+body[data-clerk-component="user-button"]:hover > button {
+  background-color: transparent !important;
+}
+
+/* Дополнительные селекторы для максимального перебития */
+body[data-clerk-theme="dark"] [data-clerk-component="user-button"]:hover,
+body[data-clerk-theme="dark"] [data-clerk-component="user-button"]:hover *,
+body[data-clerk-theme="dark"] [data-clerk-component="user-button"]:hover > div,
+body[data-clerk-theme="dark"] [data-clerk-component="user-button"]:hover > span,
+body[data-clerk-theme="dark"]
+  [data-clerk-component="user-button"]:hover
+  > button {
+  background-color: transparent !important;
+}
+
+/* Стили для Clerk модальных окон */
+@layer components {
+  /* Модальные окна Clerk */
+  [data-clerk-component="modal"] {
+    z-index: 9999 !important;
+  }
+
+  /* Формы Clerk */
+  [data-clerk-component="sign-in"],
+  [data-clerk-component="sign-up"] {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Кнопки в формах Clerk */
+  [data-clerk-component="sign-in"] button,
+  [data-clerk-component="sign-up"] button {
+    background-color: hsl(var(--primary)) !important;
+    color: hsl(var(--primary-foreground)) !important;
+    border-radius: var(--radius) !important;
+  }
+
+  [data-clerk-component="sign-in"] button:hover,
+  [data-clerk-component="sign-up"] button:hover {
+    background-color: hsl(var(--primary) / 0.9) !important;
+  }
+
+  /* Поля ввода */
+  [data-clerk-component="sign-in"] input,
+  [data-clerk-component="sign-up"] input {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+    border: 1px solid hsl(var(--border)) !important;
+    border-radius: var(--radius) !important;
+  }
+
+  /* Заголовки форм */
+  [data-clerk-component="sign-in"] h1,
+  [data-clerk-component="sign-up"] h1 {
+    color: hsl(var(--foreground)) !important;
+  }
+
+  /* Ссылки в формах */
+  [data-clerk-component="sign-in"] a,
+  [data-clerk-component="sign-up"] a {
+    color: hsl(var(--primary)) !important;
+  }
+}

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { Plus, Loader2 } from "lucide-react";
+import { Plus, Loader2, X } from "lucide-react";
 
 interface Deck {
   id: number;
@@ -57,6 +57,14 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
     }
   };
 
+  const handleClose = () => {
+    if (!creating) {
+      setIsOpen(false);
+      setName("");
+      setDescription("");
+    }
+  };
+
   if (!isOpen) {
     return (
       <Button onClick={() => setIsOpen(true)}>
@@ -69,7 +77,16 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-background border border-border rounded-lg p-6 w-full max-w-md mx-4">
-        <h2 className="text-lg font-semibold mb-4">Создать новую колоду</h2>
+        <div className="flex items-center justify-between mb-4">
+          <h2 className="text-lg font-semibold">Создать новую колоду</h2>
+          <button
+            onClick={handleClose}
+            className="text-muted-foreground hover:text-foreground"
+            disabled={creating}
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
@@ -80,6 +97,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               onChange={(e) => setName(e.target.value)}
               placeholder="Введите название колоды"
               required
+              disabled={creating}
             />
           </div>
 
@@ -91,14 +109,15 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               onChange={(e) => setDescription(e.target.value)}
               placeholder="Введите описание колоды"
               rows={3}
+              disabled={creating}
             />
           </div>
 
-          <div className="flex gap-2 justify-end">
+          <div className="flex gap-2 justify-end pt-2">
             <Button
               type="button"
               variant="outline"
-              onClick={() => setIsOpen(false)}
+              onClick={handleClose}
               disabled={creating}
             >
               Отмена

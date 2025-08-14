@@ -6,11 +6,20 @@ import "dotenv/config";
 const sql = neon(process.env.DATABASE_URL!);
 const db = drizzle(sql, { schema });
 
-const userId = "user_317c3rTqJ1vaBpbHTWr2IrCJLTf";
+// Пример userId - замените на реальный Clerk userId
+const userId = process.env.CLERK_USER_ID || "your_clerk_user_id_here";
 
 async function seedDatabase() {
   try {
     console.log("🌱 Начинаю заполнение базы данных...");
+
+    if (userId === "your_clerk_user_id_here") {
+      console.log("⚠️  Установите переменную окружения CLERK_USER_ID");
+      console.log("Пример: CLERK_USER_ID=user_abc123");
+      process.exit(1);
+    }
+
+    console.log(`👤 Используется userId: ${userId}`);
 
     // Создаем первую колоду: English to Portuguese (Brazil)
     const deck1 = await db
@@ -106,6 +115,7 @@ async function seedDatabase() {
     console.log(
       `📊 Создано 2 колоды с ${cards1.length + cards2.length} карточками`
     );
+    console.log("💡 Теперь вы можете войти в приложение и увидеть свои колоды");
   } catch (error) {
     console.error("❌ Ошибка при заполнении базы данных:", error);
     process.exit(1);
