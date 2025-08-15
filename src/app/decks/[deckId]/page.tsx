@@ -11,17 +11,42 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BookOpen, Play, Plus, ArrowLeft } from "lucide-react";
+import {
+  BookOpen,
+  Play,
+  Plus,
+  ArrowLeft,
+  CheckCircle,
+  Circle,
+} from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
+
+interface Card {
+  id: number;
+  front: string;
+  back: string;
+  progress: {
+    isKnown: boolean;
+    lastReviewed: string;
+    reviewCount: number;
+  } | null;
+}
 
 interface Deck {
   id: number;
   name: string;
   description?: string;
+  cards: Card[];
   cardCount: number;
   createdAt: string;
   updatedAt: string;
+  progress: {
+    studied: number;
+    total: number;
+    percentage: number;
+  };
 }
 
 function DeckPageContent() {
@@ -109,7 +134,7 @@ function DeckPageContent() {
         </Link>
       </div>
 
-      <Card className="max-w-2xl mx-auto">
+      <Card className="max-w-4xl mx-auto mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             <BookOpen className="h-6 w-6 text-primary" />
@@ -132,6 +157,21 @@ function DeckPageContent() {
               </span>
             </div>
 
+            {/* Прогресс изучения */}
+            <div className="space-y-3">
+              <div className="flex items-center justify-between">
+                <span className="text-sm font-medium">Прогресс изучения</span>
+                <span className="text-lg font-bold text-primary">
+                  {deck.progress.percentage}%
+                </span>
+              </div>
+              <Progress value={deck.progress.percentage} className="h-3" />
+              <div className="text-sm text-muted-foreground text-center">
+                {deck.progress.studied} из {deck.progress.total} карточек
+                изучено
+              </div>
+            </div>
+
             <div className="flex gap-4 pt-4">
               <Button asChild size="lg" className="flex-1">
                 <Link href={`/decks/${deck.id}/study`}>
@@ -149,6 +189,52 @@ function DeckPageContent() {
           </div>
         </CardContent>
       </Card>
+
+      {/* Список всех карточек */}
+      <div className="max-w-4xl mx-auto">
+        <h2 className="text-xl font-semibold mb-4">Все карточки в колоде</h2>
+        <div className="space-y-4">
+          {deck.cards.map((card, index) => (
+            <Card key={card.id} className="hover:shadow-md transition-shadow">
+              <CardContent className="p-4">
+                <div className="flex items-start gap-3">
+                  <div className="flex-shrink-0 mt-1">
+                    {card.progress?.isKnown ? (
+                      <CheckCircle className="h-5 w-5 text-green-500" />
+                    ) : (
+                      <Circle className="h-5 w-5 text-muted-foreground" />
+                    )}
+                  </div>
+                  <div className="flex-1 space-y-2">
+                    <div>
+                      <p className="font-medium text-foreground">
+                        {card.front}
+                      </p>
+                      <p className="text-sm text-muted-foreground mt-1">
+                        {card.back}
+                      </p>
+                    </div>
+                    {card.progress && (
+                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
+                        <span>Просмотров: {card.progress.reviewCount}</span>
+                        {card.progress.lastReviewed && (
+                          <span>
+                            Последний раз:{" "}
+                            {formatDate(card.progress.lastReviewed)}
+                          </span>
+                        )}
+                      </div>
+                    )}
+                  </div>
+                  <div className="text-sm text-muted-foreground">
+                    #{index + 1}
+                  </div>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      </div>
     </div>
   );
 }

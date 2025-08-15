@@ -15,6 +15,11 @@ interface Deck {
   cardCount: number;
   createdAt: string;
   updatedAt: string;
+  progress: {
+    studied: number;
+    total: number;
+    percentage: number;
+  };
 }
 
 export default function DashboardPage() {
@@ -99,6 +104,7 @@ export default function DashboardPage() {
                 ...deck,
                 cardCount: deck.cardCount || 0,
                 createdAt: new Date(deck.createdAt || Date.now()),
+                progress: deck.progress || { studied: 0, total: 0, percentage: 0 },
               }}
             />
           ))}

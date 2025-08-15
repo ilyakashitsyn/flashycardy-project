@@ -6,6 +6,7 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { BookOpen, Play, Plus } from "lucide-react";
+import { Progress } from "@/components/ui/progress";
 
 interface DeckCardProps {
   deck: {
@@ -14,6 +15,11 @@ interface DeckCardProps {
     description?: string;
     cardCount: number;
     createdAt: Date;
+    progress: {
+      studied: number;
+      total: number;
+      percentage: number;
+    };
   };
 }
 
@@ -48,29 +54,44 @@ export function DeckCard({ deck }: DeckCardProps) {
         )}
       </CardHeader>
       <CardContent>
-        <div className="flex items-center justify-between mb-4">
-          <span className="text-sm text-muted-foreground">
-            {deck.cardCount || 0} карточек
-          </span>
-          <span className="text-xs text-muted-foreground">
-            {formatDate(deck.createdAt)}
-          </span>
-        </div>
-        <div className="flex gap-2">
-          <a
-            href={`/decks/${deck.id}/study`}
-            className="flex-1 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3"
-          >
-            <Play className="h-4 w-4 mr-2" />
-            Изучать
-          </a>
-          <a
-            href={`/decks/${deck.id}/edit`}
-            className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
-          >
-            <Plus className="h-4 w-4 mr-2" />
-            Редактировать
-          </a>
+        <div className="space-y-3">
+          <div className="flex items-center justify-between">
+            <span className="text-sm text-muted-foreground">
+              {deck.cardCount || 0} карточек
+            </span>
+            <span className="text-xs text-muted-foreground">
+              {formatDate(deck.createdAt)}
+            </span>
+          </div>
+
+          {/* Прогресс-бар */}
+          <div className="space-y-2">
+            <div className="flex items-center justify-between text-xs">
+              <span className="text-muted-foreground">Прогресс изучения</span>
+              <span className="font-medium">{deck.progress.percentage}%</span>
+            </div>
+            <Progress value={deck.progress.percentage} className="h-2" />
+            <div className="text-xs text-muted-foreground text-center">
+              {deck.progress.studied} из {deck.progress.total} изучено
+            </div>
+          </div>
+
+          <div className="flex gap-2 pt-2">
+            <a
+              href={`/decks/${deck.id}/study`}
+              className="flex-1 inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 bg-primary text-primary-foreground hover:bg-primary/90 h-9 px-3"
+            >
+              <Play className="h-4 w-4 mr-2" />
+              Изучать
+            </a>
+            <a
+              href={`/decks/${deck.id}/edit`}
+              className="inline-flex items-center justify-center rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 border border-input bg-background hover:bg-accent hover:text-accent-foreground h-9 px-3"
+            >
+              <Plus className="h-4 w-4 mr-2" />
+              Редактировать
+            </a>
+          </div>
         </div>
       </CardContent>
     </Card>

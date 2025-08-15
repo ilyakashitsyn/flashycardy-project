@@ -1,8 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { decksTable, cardsTable } from "@/db/schema";
-import { eq, count } from "drizzle-orm";
+import { decksTable, cardsTable, cardProgressTable } from "@/db/schema";
+import { eq, count, and } from "drizzle-orm";
 
 export async function GET() {
   try {
@@ -24,22 +24,47 @@ export async function GET() {
       .from(decksTable)
       .where(eq(decksTable.userId, userId));
 
-    // Получаем количество карточек для каждой колоды
-    const decksWithCardCount = await Promise.all(
+    // Получаем количество карточек и прогресс для каждой колоды
+    const decksWithProgress = await Promise.all(
       userDecks.map(async (deck) => {
         const cardCountResult = await db
           .select({ count: count() })
           .from(cardsTable)
           .where(eq(cardsTable.deckId, deck.id));
 
+        const totalCards = cardCountResult[0]?.count || 0;
+
+        // Получаем количество изученных карточек
+        let studiedCards = 0;
+        if (totalCards > 0) {
+          const studiedResult = await db
+            .select({ count: count() })
+            .from(cardProgressTable)
+            .innerJoin(cardsTable, eq(cardsTable.id, cardProgressTable.cardId))
+            .where(and(
+              eq(cardsTable.deckId, deck.id),
+              eq(cardProgressTable.userId, userId),
+              eq(cardProgressTable.isKnown, true)
+            ));
+          
+          studiedCards = studiedResult[0]?.count || 0;
+        }
+
+        const progressPercentage = totalCards > 0 ? Math.round((studiedCards / totalCards) * 100) : 0;
+
         return {
           ...deck,
-          cardCount: cardCountResult[0]?.count || 0,
+          cardCount: totalCards,
+          progress: {
+            studied: studiedCards,
+            total: totalCards,
+            percentage: progressPercentage,
+          },
         };
       })
     );
 
-    return NextResponse.json(decksWithCardCount);
+    return NextResponse.json(decksWithProgress);
   } catch (error) {
     console.error("Error fetching decks:", error);
     return NextResponse.json(
