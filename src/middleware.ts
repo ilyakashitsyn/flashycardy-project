@@ -15,6 +15,11 @@ export default clerkMiddleware(async (auth, req) => {
       return NextResponse.redirect(new URL("/", req.url));
     }
   }
+
+  // Если пользователь залогинен и находится на главной странице, перенаправляем на dashboard
+  if (pathname === "/" && userId) {
+    return NextResponse.redirect(new URL("/dashboard", req.url));
+  }
 });
 
 export const config = {
