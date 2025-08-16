@@ -55,6 +55,18 @@ const CardDescription = React.forwardRef<
 ));
 CardDescription.displayName = "CardDescription";
 
+const CardAction = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => (
+  <div
+    ref={ref}
+    className={cn("flex items-center justify-end", className)}
+    {...props}
+  />
+));
+CardAction.displayName = "CardAction";
+
 const CardContent = React.forwardRef<
   HTMLDivElement,
   React.HTMLAttributes<HTMLDivElement>
@@ -81,5 +93,6 @@ export {
   CardFooter,
   CardTitle,
   CardDescription,
+  CardAction,
   CardContent,
 };

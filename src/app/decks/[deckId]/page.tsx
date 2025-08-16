@@ -11,17 +11,11 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  BookOpen,
-  Play,
-  Plus,
-  ArrowLeft,
-  CheckCircle,
-  Circle,
-} from "lucide-react";
+import { BookOpen, Play, Plus, ArrowLeft, Grid3X3, List } from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
+import { FlashcardItem } from "@/components/ui/flashcard-item";
 
 interface Card {
   id: number;
@@ -55,6 +49,7 @@ function DeckPageContent() {
   const [deck, setDeck] = useState<Deck | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [isGridView, setIsGridView] = useState(true);
 
   useEffect(() => {
     if (deckId && !isNaN(Number(deckId))) {
@@ -80,6 +75,71 @@ function DeckPageContent() {
       setError("Произошла ошибка при загрузке");
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleEditCard = async (
+    cardId: number,
+    front: string,
+    back: string
+  ) => {
+    try {
+      const response = await fetch(`/api/cards/${cardId}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ front, back }),
+      });
+
+      if (response.ok) {
+        // Обновляем локальное состояние
+        if (deck) {
+          setDeck({
+            ...deck,
+            cards: deck.cards.map((card) =>
+              card.id === cardId ? { ...card, front, back } : card
+            ),
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error updating card:", error);
+    }
+  };
+
+  const handleDeleteCard = async (cardId: number) => {
+    if (!confirm("Вы уверены, что хотите удалить эту карточку?")) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/cards/${cardId}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        // Обновляем локальное состояние
+        if (deck) {
+          setDeck({
+            ...deck,
+            cards: deck.cards.filter((card) => card.id !== cardId),
+            cardCount: deck.cardCount - 1,
+            progress: {
+              ...deck.progress,
+              total: deck.progress.total - 1,
+              percentage:
+                deck.progress.total > 1
+                  ? Math.round(
+                      (deck.progress.studied / (deck.progress.total - 1)) * 100
+                    )
+                  : 0,
+            },
+          });
+        }
+      }
+    } catch (error) {
+      console.error("Error deleting card:", error);
     }
   };
 
@@ -192,46 +252,43 @@ function DeckPageContent() {
 
       {/* Список всех карточек */}
       <div className="max-w-4xl mx-auto">
-        <h2 className="text-xl font-semibold mb-4">Все карточки в колоде</h2>
-        <div className="space-y-4">
-          {deck.cards.map((card, index) => (
-            <Card key={card.id} className="hover:shadow-md transition-shadow">
-              <CardContent className="p-4">
-                <div className="flex items-start gap-3">
-                  <div className="flex-shrink-0 mt-1">
-                    {card.progress?.isKnown ? (
-                      <CheckCircle className="h-5 w-5 text-green-500" />
-                    ) : (
-                      <Circle className="h-5 w-5 text-muted-foreground" />
-                    )}
-                  </div>
-                  <div className="flex-1 space-y-2">
-                    <div>
-                      <p className="font-medium text-foreground">
-                        {card.front}
-                      </p>
-                      <p className="text-sm text-muted-foreground mt-1">
-                        {card.back}
-                      </p>
-                    </div>
-                    {card.progress && (
-                      <div className="flex items-center gap-4 text-xs text-muted-foreground">
-                        <span>Просмотров: {card.progress.reviewCount}</span>
-                        {card.progress.lastReviewed && (
-                          <span>
-                            Последний раз:{" "}
-                            {formatDate(card.progress.lastReviewed)}
-                          </span>
-                        )}
-                      </div>
-                    )}
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    #{index + 1}
-                  </div>
-                </div>
-              </CardContent>
-            </Card>
+        <div className="flex items-center justify-between mb-6">
+          <h2 className="text-xl font-semibold text-foreground">
+            Все карточки в колоде
+          </h2>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => setIsGridView(!isGridView)}
+            className="flex items-center gap-2"
+          >
+            {isGridView ? (
+              <>
+                <List className="h-4 w-4" />
+                Список
+              </>
+            ) : (
+              <>
+                <Grid3X3 className="h-4 w-4" />
+                Сетка
+              </>
+            )}
+          </Button>
+        </div>
+        <div
+          className={
+            isGridView
+              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+              : "space-y-6"
+          }
+        >
+          {deck.cards.map((card) => (
+            <FlashcardItem
+              key={card.id}
+              card={card}
+              onEdit={handleEditCard}
+              onDelete={handleDeleteCard}
+            />
           ))}
         </div>
       </div>

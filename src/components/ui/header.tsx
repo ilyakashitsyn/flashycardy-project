@@ -14,7 +14,7 @@ export function Header() {
         >
           FlashyCardy
         </Link>
-        
+
         <div className="flex items-center gap-4">
           <AuthButtons />
           <ThemeToggle />

@@ -6,7 +6,7 @@ import { eq, and, count } from "drizzle-orm";
 
 export async function GET(
   request: NextRequest,
-  { params }: { params: { deckId: string } }
+  { params }: { params: Promise<{ deckId: string }> }
 ) {
   try {
     const { userId } = await auth();
@@ -14,7 +14,8 @@ export async function GET(
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const deckId = parseInt(params.deckId);
+    const resolvedParams = await params;
+    const deckId = parseInt(resolvedParams.deckId);
     if (isNaN(deckId)) {
       return NextResponse.json({ error: "Invalid deck ID" }, { status: 400 });
     }

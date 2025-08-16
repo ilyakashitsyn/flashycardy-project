@@ -14,6 +14,11 @@ interface Deck {
   cardCount: number;
   createdAt: string;
   updatedAt: string;
+  progress: {
+    studied: number;
+    total: number;
+    percentage: number;
+  };
 }
 
 interface CreateDeckDialogProps {
@@ -45,7 +50,11 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
 
       if (response.ok) {
         const newDeck = await response.json();
-        onDeckCreated({ ...newDeck, cardCount: 0 });
+        onDeckCreated({ 
+          ...newDeck, 
+          cardCount: 0,
+          progress: { studied: 0, total: 0, percentage: 0 }
+        });
         setName("");
         setDescription("");
         setIsOpen(false);
