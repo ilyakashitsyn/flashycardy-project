@@ -83,6 +83,14 @@
     background-color: rgb(31 41 55) !important;
     color: rgb(255 255 255) !important;
   }
+
+  /* Стили для кнопок в карточках */
+  .flashcard-button {
+    font-family: var(--font-poppins), system-ui, sans-serif;
+    font-weight: 500;
+    font-size: 14px;
+    line-height: 20px;
+  }
 }
 
 /* Максимально специфичные стили для перебития Clerk */
