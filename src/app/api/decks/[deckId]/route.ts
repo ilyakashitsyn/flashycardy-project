@@ -84,3 +84,97 @@ export async function GET(
     );
   }
 }
+
+export async function PUT(
+  request: NextRequest,
+  { params }: { params: Promise<{ deckId: string }> }
+) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const resolvedParams = await params;
+    const deckId = parseInt(resolvedParams.deckId);
+    if (isNaN(deckId)) {
+      return NextResponse.json({ error: "Invalid deck ID" }, { status: 400 });
+    }
+
+    const { name, description } = await request.json();
+
+    if (!name) {
+      return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    // Проверяем, что колода принадлежит пользователю
+    const existingDeck = await db
+      .select()
+      .from(decksTable)
+      .where(and(eq(decksTable.id, deckId), eq(decksTable.userId, userId)))
+      .limit(1);
+
+    if (existingDeck.length === 0) {
+      return NextResponse.json({ error: "Deck not found" }, { status: 404 });
+    }
+
+    // Обновляем колоду
+    const updatedDeck = await db
+      .update(decksTable)
+      .set({
+        name,
+        description,
+        updatedAt: new Date(),
+      })
+      .where(eq(decksTable.id, deckId))
+      .returning();
+
+    return NextResponse.json(updatedDeck[0]);
+  } catch (error) {
+    console.error("Error updating deck:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
+
+export async function DELETE(
+  request: NextRequest,
+  { params }: { params: Promise<{ deckId: string }> }
+) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const resolvedParams = await params;
+    const deckId = parseInt(resolvedParams.deckId);
+    if (isNaN(deckId)) {
+      return NextResponse.json({ error: "Invalid deck ID" }, { status: 400 });
+    }
+
+    // Проверяем, что колода принадлежит пользователю
+    const existingDeck = await db
+      .select()
+      .from(decksTable)
+      .where(and(eq(decksTable.id, deckId), eq(decksTable.userId, userId)))
+      .limit(1);
+
+    if (existingDeck.length === 0) {
+      return NextResponse.json({ error: "Deck not found" }, { status: 404 });
+    }
+
+    // Удаляем колоду (каскадное удаление карточек и прогресса настроено в схеме)
+    await db.delete(decksTable).where(eq(decksTable.id, deckId));
+
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    console.error("Error deleting deck:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}
