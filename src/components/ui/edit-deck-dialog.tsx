@@ -21,6 +21,7 @@ interface EditDeckDialogProps {
     id: number;
     name: string;
     description?: string;
+    emoji?: string;
   };
   onDeckUpdated: (updatedDeck: any) => void;
   trigger?: React.ReactNode;
@@ -34,7 +35,27 @@ export function EditDeckDialog({
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(deck.name);
   const [description, setDescription] = useState(deck.description || "");
+  const [emoji, setEmoji] = useState(deck.emoji || "📚");
   const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const emojiOptions = [
+    "📚",
+    "🧠",
+    "💡",
+    "🎯",
+    "📖",
+    "🌟",
+    "🔥",
+    "💎",
+    "🚀",
+    "🌈",
+    "😄",
+    "🤮",
+    "💩",
+    "⚽",
+    "🇧🇷",
+    "🇬🇧",
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +75,7 @@ export function EditDeckDialog({
         body: JSON.stringify({
           name: name.trim(),
           description: description.trim() || undefined,
+          emoji: emoji,
         }),
       });
 
@@ -74,6 +96,7 @@ export function EditDeckDialog({
   const handleCancel = () => {
     setName(deck.name);
     setDescription(deck.description || "");
+    setEmoji(deck.emoji || "📚");
     setOpen(false);
   };
 
@@ -97,6 +120,28 @@ export function EditDeckDialog({
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div className="space-y-2">
+            <Label className="text-sm font-medium text-foreground">
+              Иконка
+            </Label>
+            <div className="grid grid-cols-8 gap-2 p-2 border rounded-md">
+              {emojiOptions.map((emojiOption) => (
+                <button
+                  key={emojiOption}
+                  type="button"
+                  onClick={() => setEmoji(emojiOption)}
+                  className={`text-2xl p-2 rounded hover:bg-muted transition-colors ${
+                    emoji === emojiOption
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  disabled={isSubmitting}
+                >
+                  {emojiOption}
+                </button>
+              ))}
+            </div>
+          </div>
           <div className="space-y-2">
             <Label
               htmlFor="deck-name"

@@ -101,7 +101,7 @@ export async function PUT(
       return NextResponse.json({ error: "Invalid deck ID" }, { status: 400 });
     }
 
-    const { name, description } = await request.json();
+    const { name, description, emoji } = await request.json();
 
     if (!name) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -124,6 +124,7 @@ export async function PUT(
       .set({
         name,
         description,
+        emoji: emoji || "📚",
         updatedAt: new Date(),
       })
       .where(eq(decksTable.id, deckId))

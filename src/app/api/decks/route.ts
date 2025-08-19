@@ -18,6 +18,7 @@ export async function GET() {
         id: decksTable.id,
         name: decksTable.name,
         description: decksTable.description,
+        emoji: decksTable.emoji,
         createdAt: decksTable.createdAt,
         updatedAt: decksTable.updatedAt,
       })
@@ -82,7 +83,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { name, description } = await request.json();
+    const { name, description, emoji } = await request.json();
 
     if (!name) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
@@ -94,6 +95,7 @@ export async function POST(request: NextRequest) {
       .values({
         name,
         description,
+        emoji: emoji || "📚",
         userId: userId,
       })
       .returning();

@@ -1,0 +1,1 @@
+ALTER TABLE "decks" ADD COLUMN "emoji" varchar(10) DEFAULT '📚';
