@@ -11,11 +11,22 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BookOpen, Play, Plus, ArrowLeft, Grid3X3, List } from "lucide-react";
+import {
+  BookOpen,
+  Play,
+  Plus,
+  ArrowLeft,
+  Grid3X3,
+  List,
+  Trash2,
+} from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
+import { useRouter } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
 import { FlashcardItem } from "@/components/ui/flashcard-item";
+import { AddCardDialog } from "@/components/ui/add-card-dialog";
+import { EditDeckDialog } from "@/components/ui/edit-deck-dialog";
 
 interface Card {
   id: number;
@@ -45,6 +56,7 @@ interface Deck {
 
 function DeckPageContent() {
   const params = useParams();
+  const router = useRouter();
   const deckId = params.deckId as string;
   const [deck, setDeck] = useState<Deck | null>(null);
   const [loading, setLoading] = useState(true);
@@ -140,6 +152,60 @@ function DeckPageContent() {
       }
     } catch (error) {
       console.error("Error deleting card:", error);
+    }
+  };
+
+  const handleCardAdded = (newCard: any) => {
+    if (deck) {
+      setDeck({
+        ...deck,
+        cards: [...deck.cards, newCard],
+        cardCount: deck.cardCount + 1,
+        progress: {
+          ...deck.progress,
+          total: deck.progress.total + 1,
+          percentage: Math.round(
+            (deck.progress.studied / (deck.progress.total + 1)) * 100
+          ),
+        },
+      });
+    }
+  };
+
+  const handleDeckUpdated = (updatedDeck: any) => {
+    if (deck) {
+      setDeck({
+        ...deck,
+        name: updatedDeck.name,
+        description: updatedDeck.description,
+        updatedAt: updatedDeck.updatedAt,
+      });
+    }
+  };
+
+  const handleDeleteDeck = async () => {
+    if (!deck) return;
+
+    if (
+      !confirm(
+        `Вы уверены, что хотите удалить колоду "${deck.name}"? Это действие нельзя отменить.`
+      )
+    ) {
+      return;
+    }
+
+    try {
+      const response = await fetch(`/api/decks/${deck.id}`, {
+        method: "DELETE",
+      });
+
+      if (response.ok) {
+        router.push("/dashboard");
+      } else {
+        console.error("Failed to delete deck");
+      }
+    } catch (error) {
+      console.error("Error deleting deck:", error);
     }
   };
 
@@ -239,12 +305,26 @@ function DeckPageContent() {
                   Изучать
                 </Link>
               </Button>
-              <Button asChild size="lg" variant="outline" className="flex-1">
-                <Link href={`/decks/${deck.id}/edit`}>
-                  <Plus className="h-5 w-5 mr-2" />
-                  Редактировать
-                </Link>
-              </Button>
+              <div className="flex gap-2 flex-1">
+                <EditDeckDialog
+                  deck={deck}
+                  onDeckUpdated={handleDeckUpdated}
+                  trigger={
+                    <Button size="lg" variant="outline" className="flex-1">
+                      <Plus className="h-5 w-5 mr-2" />
+                      Редактировать
+                    </Button>
+                  }
+                />
+                <Button
+                  size="lg"
+                  variant="destructive"
+                  onClick={handleDeleteDeck}
+                  className="px-4"
+                >
+                  <Trash2 className="h-5 w-5" />
+                </Button>
+              </div>
             </div>
           </div>
         </CardContent>
@@ -253,44 +333,81 @@ function DeckPageContent() {
       {/* Список всех карточек */}
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
-          <h2 className="text-xl font-semibold text-foreground">
-            Все карточки в колоде
-          </h2>
-          <Button
-            variant="outline"
-            size="sm"
-            onClick={() => setIsGridView(!isGridView)}
-            className="flex items-center gap-2"
-          >
-            {isGridView ? (
-              <>
-                <List className="h-4 w-4" />
-                Список
-              </>
-            ) : (
-              <>
-                <Grid3X3 className="h-4 w-4" />
-                Сетка
-              </>
-            )}
-          </Button>
-        </div>
-        <div
-          className={
-            isGridView
-              ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-              : "space-y-6"
-          }
-        >
-          {deck.cards.map((card) => (
-            <FlashcardItem
-              key={card.id}
-              card={card}
-              onEdit={handleEditCard}
-              onDelete={handleDeleteCard}
+          <h2 className="text-xl font-semibold text-foreground">Cards</h2>
+          <div className="flex items-center gap-2">
+            <AddCardDialog
+              deckId={deck.id}
+              onCardAdded={handleCardAdded}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Card
+                </Button>
+              }
             />
-          ))}
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={() => setIsGridView(!isGridView)}
+              className="flex items-center gap-2"
+            >
+              {isGridView ? (
+                <>
+                  <List className="h-4 w-4" />
+                  Список
+                </>
+              ) : (
+                <>
+                  <Grid3X3 className="h-4 w-4" />
+                  Сетка
+                </>
+              )}
+            </Button>
+          </div>
         </div>
+
+        {deck.cards.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-16 space-y-4">
+            <AddCardDialog
+              deckId={deck.id}
+              onCardAdded={handleCardAdded}
+              trigger={
+                <div className="w-16 h-16 bg-muted rounded-full flex items-center justify-center cursor-pointer hover:bg-muted/80 transition-colors">
+                  <Plus className="h-8 w-8 text-muted-foreground" />
+                </div>
+              }
+            />
+            <div className="text-center">
+              <h3 className="text-xl font-medium text-foreground mb-2">
+                No cards yet
+              </h3>
+              <p className="text-muted-foreground">
+                Add your first flashcard to start studying
+              </p>
+            </div>
+          </div>
+        ) : (
+          <div
+            className={
+              isGridView
+                ? "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
+                : "space-y-6"
+            }
+          >
+            {deck.cards.map((card) => (
+              <FlashcardItem
+                key={card.id}
+                card={card}
+                onEdit={handleEditCard}
+                onDelete={handleDeleteCard}
+              />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
