@@ -11,6 +11,7 @@ export const decksTable = pgTable("decks", {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   name: varchar({ length: 255 }).notNull(),
   description: text(),
+  emoji: varchar({ length: 10 }).default("📚"), // Emoji для колоды
   userId: varchar({ length: 255 }).notNull(), // Clerk user ID
   createdAt: timestamp().defaultNow().notNull(),
   updatedAt: timestamp().defaultNow().notNull(),

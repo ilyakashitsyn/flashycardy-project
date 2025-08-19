@@ -11,6 +11,7 @@ interface Deck {
   id: number;
   name: string;
   description?: string;
+  emoji?: string;
   cardCount: number;
   createdAt: string;
   updatedAt: string;
@@ -29,7 +30,27 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [emoji, setEmoji] = useState("📚");
   const [creating, setCreating] = useState(false);
+
+  const emojiOptions = [
+    "📚",
+    "🧠",
+    "💡",
+    "🎯",
+    "📖",
+    "🌟",
+    "🔥",
+    "💎",
+    "🚀",
+    "🌈",
+    "😄",
+    "🤮",
+    "💩",
+    "⚽",
+    "🇧🇷",
+    "🇬🇧",
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,18 +66,20 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
         body: JSON.stringify({
           name: name.trim(),
           description: description.trim(),
+          emoji: emoji,
         }),
       });
 
       if (response.ok) {
         const newDeck = await response.json();
-        onDeckCreated({ 
-          ...newDeck, 
+        onDeckCreated({
+          ...newDeck,
           cardCount: 0,
-          progress: { studied: 0, total: 0, percentage: 0 }
+          progress: { studied: 0, total: 0, percentage: 0 },
         });
         setName("");
         setDescription("");
+        setEmoji("📚");
         setIsOpen(false);
       }
     } catch (error) {
@@ -71,6 +94,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
       setIsOpen(false);
       setName("");
       setDescription("");
+      setEmoji("📚");
     }
   };
 
@@ -98,6 +122,27 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
         </div>
 
         <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <Label htmlFor="emoji">Иконка</Label>
+            <div className="grid grid-cols-8 gap-2 p-2 border rounded-md">
+              {emojiOptions.map((emojiOption) => (
+                <button
+                  key={emojiOption}
+                  type="button"
+                  onClick={() => setEmoji(emojiOption)}
+                  className={`text-2xl p-2 rounded hover:bg-muted transition-colors ${
+                    emoji === emojiOption
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  disabled={creating}
+                >
+                  {emojiOption}
+                </button>
+              ))}
+            </div>
+          </div>
+
           <div>
             <Label htmlFor="name">Название</Label>
             <Input

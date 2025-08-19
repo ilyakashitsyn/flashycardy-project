@@ -5,7 +5,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { BookOpen, Play, Plus } from "lucide-react";
+import { Play, Plus } from "lucide-react";
 import { Progress } from "@/components/ui/progress";
 
 interface DeckCardProps {
@@ -13,6 +13,7 @@ interface DeckCardProps {
     id: number;
     name: string;
     description?: string;
+    emoji?: string;
     cardCount: number;
     createdAt: Date;
     progress: {
@@ -39,7 +40,9 @@ export function DeckCard({ deck }: DeckCardProps) {
     <Card className="hover:shadow-lg transition-all duration-200 hover:scale-[1.02] cursor-pointer group">
       <CardHeader>
         <div className="flex items-center gap-2 group-hover:text-primary transition-colors">
-          <BookOpen className="h-5 w-5 text-primary" />
+          {deck.emoji && (
+            <span className="text-2xl">{deck.emoji}</span>
+          )}
           <a
             href={`/decks/${deck.id}`}
             className="text-2xl font-semibold leading-none tracking-tight hover:underline"

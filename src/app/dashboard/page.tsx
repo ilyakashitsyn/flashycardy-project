@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { DeckCard } from "@/components/ui/deck-card";
 import { CreateDeckDialog } from "@/components/ui/create-deck-dialog";
-import { Loader2, BookOpen } from "lucide-react";
+import { Loader2 } from "lucide-react";
 
 // Отключаем prerendering для этой страницы
 export const dynamic = "force-dynamic";
@@ -12,6 +12,7 @@ interface Deck {
   id: number;
   name: string;
   description?: string;
+  emoji?: string;
   cardCount: number;
   createdAt: string;
   updatedAt: string;
@@ -83,7 +84,7 @@ export default function DashboardPage() {
       {decks.length === 0 ? (
         <div className="text-center py-12">
           <div className="mx-auto w-24 h-24 bg-muted rounded-full flex items-center justify-center mb-4">
-            <BookOpen className="h-12 w-12 text-muted-foreground" />
+            <div className="text-4xl">📚</div>
           </div>
           <h3 className="text-lg font-medium text-foreground mb-2">
             У вас пока нет колод
@@ -103,6 +104,7 @@ export default function DashboardPage() {
               deck={{
                 ...deck,
                 cardCount: deck.cardCount || 0,
+                emoji: deck.emoji || "📚",
                 createdAt: new Date(deck.createdAt || Date.now()),
                 progress: deck.progress || { studied: 0, total: 0, percentage: 0 },
               }}

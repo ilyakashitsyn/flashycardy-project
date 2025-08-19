@@ -11,15 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  BookOpen,
-  Play,
-  Plus,
-  ArrowLeft,
-  Grid3X3,
-  List,
-  Trash2,
-} from "lucide-react";
+import { Play, Plus, ArrowLeft, Grid3X3, List, Trash2 } from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -43,6 +35,7 @@ interface Deck {
   id: number;
   name: string;
   description?: string;
+  emoji?: string;
   cards: Card[];
   cardCount: number;
   createdAt: string;
@@ -263,7 +256,7 @@ function DeckPageContent() {
       <Card className="max-w-4xl mx-auto mb-8">
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
-            <BookOpen className="h-6 w-6 text-primary" />
+            {deck.emoji && <span className="text-3xl">{deck.emoji}</span>}
             {deck.name || "Без названия"}
           </CardTitle>
           {deck.description && (
