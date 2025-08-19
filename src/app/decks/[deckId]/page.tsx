@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { useParams } from "next/navigation";
 import { ProtectedRoute } from "@/components/ui/protected-route";
 import { Button } from "@/components/ui/button";
@@ -51,16 +51,7 @@ function DeckPageContent() {
   const [error, setError] = useState<string | null>(null);
   const [isGridView, setIsGridView] = useState(true);
 
-  useEffect(() => {
-    if (deckId && !isNaN(Number(deckId))) {
-      fetchDeck();
-    } else {
-      setError("Неверный ID колоды");
-      setLoading(false);
-    }
-  }, [deckId]);
-
-  const fetchDeck = async () => {
+  const fetchDeck = useCallback(async () => {
     try {
       setError(null);
       const response = await fetch(`/api/decks/${deckId}`);
@@ -76,7 +67,16 @@ function DeckPageContent() {
     } finally {
       setLoading(false);
     }
-  };
+  }, [deckId]);
+
+  useEffect(() => {
+    if (deckId && !isNaN(Number(deckId))) {
+      fetchDeck();
+    } else {
+      setError("Неверный ID колоды");
+      setLoading(false);
+    }
+  }, [deckId, fetchDeck]);
 
   const handleEditCard = async (
     cardId: number,

@@ -5,6 +5,7 @@ import { useUser, useClerk } from "@clerk/nextjs";
 import { Button } from "./button";
 import { LogOut, Settings, User } from "lucide-react";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 
 export function UserMenu() {
   const { user, isLoaded } = useUser();
@@ -60,10 +61,12 @@ export function UserMenu() {
         className="h-10 w-10 rounded-full bg-primary flex items-center justify-center text-primary-foreground hover:bg-primary/90 transition-colors"
       >
         {user.imageUrl ? (
-          <img
+          <Image
             src={user.imageUrl}
             alt={user.fullName || "User"}
-            className="h-10 w-10 rounded-full object-cover"
+            width={40}
+            height={40}
+            className="rounded-full object-cover"
           />
         ) : (
           <User className="h-5 w-5" />

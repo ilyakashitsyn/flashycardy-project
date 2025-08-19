@@ -5,6 +5,8 @@ export { Form, FormControl, FormDescription, FormField, FormItem, FormLabel, For
 export { Input } from "./input"
 export { Label } from "./label"
 export { Progress } from "./progress"
+export { StudyCard } from "./study-card"
+export { StudyResults } from "./study-results"
 export { Textarea } from "./textarea"
 export { ThemeToggle } from "./theme-toggle"
 export { ThemeProvider } from "./theme-provider"
