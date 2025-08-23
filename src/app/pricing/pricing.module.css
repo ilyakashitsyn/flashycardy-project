@@ -358,94 +358,6 @@
   z-index: -1 !important;
 }
 
-/* Стили для позиционированного billing switch над "Unlimited decks" */
-.pricingContainer :global(.positioned-billing-switch) {
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  gap: 12px !important;
-  margin: 16px 0 !important;
-  padding: 12px 16px !important;
-  background: var(--pricing-card-bg) !important;
-  border: 1px solid var(--pricing-border) !important;
-  border-radius: 8px !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05) !important;
-  transition: all 0.3s ease !important;
-  position: relative !important;
-  z-index: 10 !important;
-  width: fit-content !important;
-  max-width: 100% !important;
-}
-
-.pricingContainer :global(.positioned-billing-switch:hover) {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1) !important;
-  transform: translateY(-1px) !important;
-}
-
-/* Стили для лейблов в positioned billing switch */
-.pricingContainer :global(.positioned-billing-switch label) {
-  color: var(--pricing-text) !important;
-  font-size: 14px !important;
-  font-weight: 500 !important;
-  cursor: pointer !important;
-  transition: color 0.2s ease !important;
-  user-select: none !important;
-  white-space: nowrap !important;
-}
-
-/* Стили для switch кнопки в positioned контейнере */
-.pricingContainer :global(.positioned-billing-switch button[role="switch"]) {
-  background: var(--pricing-secondary) !important;
-  border: 2px solid var(--pricing-border) !important;
-  transition: all 0.3s ease !important;
-  cursor: pointer !important;
-}
-
-.pricingContainer
-  :global(
-    .positioned-billing-switch button[role="switch"][data-state="checked"]
-  ) {
-  background: var(--pricing-primary) !important;
-  border-color: var(--pricing-primary) !important;
-}
-
-.pricingContainer
-  :global(
-    .positioned-billing-switch button[role="switch"][data-state="unchecked"]
-  ) {
-  background: var(--pricing-secondary) !important;
-  border-color: var(--pricing-border) !important;
-}
-
-/* Стили для span переключателя */
-.pricingContainer
-  :global(.positioned-billing-switch button[role="switch"] span) {
-  background: var(--pricing-card-bg) !important;
-  transition: transform 0.3s ease !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2) !important;
-}
-
-/* Стили для темной темы */
-:global(.dark) .pricingContainer :global(.positioned-billing-switch) {
-  background: var(--pricing-card-bg) !important;
-  border-color: var(--pricing-border) !important;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2) !important;
-}
-
-:global(.dark) .pricingContainer :global(.positioned-billing-switch:hover) {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3) !important;
-}
-
-:global(.dark) .pricingContainer :global(.positioned-billing-switch label) {
-  color: var(--pricing-text) !important;
-}
-
-:global(.dark)
-  .pricingContainer
-  :global(.positioned-billing-switch button[role="switch"] span) {
-  background: #ffffff !important;
-}
-
 /* Адаптивность */
 @media (max-width: 768px) {
   .pricingContainer {
@@ -462,14 +374,5 @@
 
   .pricingContainer :global(.billing-toggle-wrapper) {
     padding: 8px 12px !important;
-  }
-
-  .pricingContainer :global(.positioned-billing-switch) {
-    padding: 10px 14px !important;
-    gap: 10px !important;
-  }
-
-  .pricingContainer :global(.positioned-billing-switch label) {
-    font-size: 13px !important;
   }
 }
