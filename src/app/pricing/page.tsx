@@ -1,60 +1,70 @@
 "use client";
 
 import { PricingTable } from "@clerk/nextjs";
-import { useState, useEffect, useCallback } from "react";
-import { BillingSwitch } from "@/components/ui/billing-switch";
-import { ClerkBillingIntegration } from "@/lib/clerk-billing-utils";
+import { useEffect } from "react";
 import styles from "./pricing.module.css";
 
 export default function PricingPage() {
-  const [isAnnual, setIsAnnual] = useState(false);
-
-  // Интеграция с Clerk для управления тарифными планами
-  const handleBillingToggle = useCallback((isAnnualBilling: boolean) => {
-    setIsAnnual(isAnnualBilling);
-
-    // Синхронизируем с Clerk через утилиту
-    setTimeout(() => {
-      ClerkBillingIntegration.syncWithClerk(isAnnualBilling);
-    }, 100);
-  }, []);
-
-  // Инициализируем интеграцию с Clerk
+  // Принудительно показываем переключатель Clerk, если он скрыт
   useEffect(() => {
-    const cleanup = ClerkBillingIntegration.initialize((clerkState) => {
-      // Синхронизируем наше состояние с Clerk, если оно изменилось извне
-      if (clerkState !== isAnnual) {
-        setIsAnnual(clerkState);
-      }
-    });
+    const showClerkToggle = () => {
+      // Ищем все возможные переключатели Clerk
+      const selectors = [
+        ".cl-pricingTableCardPeriodToggle",
+        '[class*="pricingTableCardPeriodToggle"]',
+        '[class*="periodToggle"]',
+        '[class*="billingToggle"]',
+        '[class*="intervalToggle"]',
+        ".cl-switchRoot",
+        '[class*="switchRoot"]',
+      ];
 
-    return cleanup;
-  }, [isAnnual]);
+      selectors.forEach((selector) => {
+        const elements = document.querySelectorAll(selector);
+        elements.forEach((element) => {
+          const el = element as HTMLElement;
+          el.style.display = "flex";
+          el.style.visibility = "visible";
+          el.style.opacity = "1";
+          el.style.position = "static";
+          el.style.left = "auto";
+          el.style.top = "auto";
+          el.style.pointerEvents = "auto";
+          el.style.zIndex = "auto";
+          el.style.clip = "auto";
+          el.style.clipPath = "none";
+          el.style.overflow = "visible";
+        });
+      });
 
-  // Скрываем нативный переключатель Clerk
-  useEffect(() => {
-    const hideClerkToggle = () => {
-      // Ищем и скрываем нативный переключатель Clerk
-      const clerkToggles = document.querySelectorAll(
-        '.cl-pricingTableCardPeriodToggle, [class*="pricingTableCardPeriodToggle"], [class*="billingToggle"], [class*="periodToggle"]'
-      );
-
-      clerkToggles.forEach((toggle) => {
-        const element = toggle as HTMLElement;
-        element.style.display = "none";
-        element.style.visibility = "hidden";
-        element.style.opacity = "0";
+      // Скрываем checkbox input
+      const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+      checkboxes.forEach((checkbox) => {
+        const el = checkbox as HTMLElement;
+        el.style.display = "none";
+        el.style.visibility = "hidden";
+        el.style.opacity = "0";
+        el.style.position = "absolute";
+        el.style.left = "-9999px";
+        el.style.top = "-9999px";
+        el.style.pointerEvents = "none";
+        el.style.zIndex = "-1";
       });
     };
 
     // Запускаем с задержками для надежности
-    const timers = [100, 500, 1000, 1500].map((delay) =>
-      setTimeout(hideClerkToggle, delay)
+    const timers = [100, 500, 1000, 2000].map((delay) =>
+      setTimeout(showClerkToggle, delay)
     );
 
     // Наблюдатель за изменениями DOM
-    const observer = new MutationObserver(hideClerkToggle);
-    observer.observe(document.body, { childList: true, subtree: true });
+    const observer = new MutationObserver(showClerkToggle);
+    observer.observe(document.body, {
+      childList: true,
+      subtree: true,
+      attributes: true,
+      attributeFilter: ["style", "class"],
+    });
 
     return () => {
       timers.forEach((timer) => clearTimeout(timer));
@@ -74,18 +84,6 @@ export default function PricingPage() {
             Unlock the full potential of your flashcard learning experience with
             our flexible pricing options
           </p>
-        </div>
-
-        {/* Custom Billing Toggle - размещаем перед PricingTable */}
-        <div className="flex justify-center mb-8">
-          <div className="billing-switch-container flex items-center gap-3 billing-toggle-wrapper">
-            <BillingSwitch
-              onToggle={handleBillingToggle}
-              defaultChecked={isAnnual}
-              className="custom-clerk-replacement"
-              integrationMode="clerk"
-            />
-          </div>
         </div>
 
         {/* Pricing Table */}
