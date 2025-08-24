@@ -1,33 +1,48 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
+import { useTheme } from "next-themes";
 
 interface BillingSwitchProps {
   onToggle?: (isAnnual: boolean) => void;
   defaultChecked?: boolean;
   className?: string;
-  integrationMode?: "clerk" | "standalone";
 }
 
 export const BillingSwitch: React.FC<BillingSwitchProps> = ({
   onToggle,
   defaultChecked = false,
   className = "",
-  integrationMode = "standalone",
 }) => {
   const [isAnnual, setIsAnnual] = useState(defaultChecked);
+  const { theme } = useTheme();
 
   const handleToggle = (checked: boolean) => {
     setIsAnnual(checked);
     onToggle?.(checked);
   };
 
+  // Синхронизируем с Clerk переключателем
+  useEffect(() => {
+    const syncWithClerk = () => {
+      const clerkToggle = document.querySelector(
+        '.cl-pricingTableCardPeriodToggle input[type="checkbox"], [class*="pricingTableCardPeriodToggle"] input[type="checkbox"]'
+      ) as HTMLInputElement;
+
+      if (clerkToggle && clerkToggle.checked !== isAnnual) {
+        clerkToggle.click();
+      }
+    };
+
+    // Запускаем с задержкой для надежности
+    const timer = setTimeout(syncWithClerk, 100);
+    return () => clearTimeout(timer);
+  }, [isAnnual]);
+
   return (
-    <div
-      className={`billing-switch-container flex items-center gap-3 ${className}`}
-    >
+    <div className={`flex items-center gap-3 ${className}`}>
       <Label
         htmlFor="billing-switch"
         className={`text-sm font-medium transition-colors cursor-pointer select-none ${
@@ -37,6 +52,7 @@ export const BillingSwitch: React.FC<BillingSwitchProps> = ({
       >
         Monthly
       </Label>
+
       <Switch
         id="billing-switch"
         checked={isAnnual}
@@ -44,6 +60,7 @@ export const BillingSwitch: React.FC<BillingSwitchProps> = ({
         className="billing-switch"
         aria-label="Toggle between monthly and annual billing"
       />
+
       <Label
         htmlFor="billing-switch"
         className={`text-sm font-medium transition-colors cursor-pointer select-none ${
