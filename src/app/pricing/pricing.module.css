@@ -7,7 +7,7 @@
 /* CSS переменные для темной темы */
 :global(.dark) .pricingContainer {
   --pricing-bg: #0a0a0a;
-  --pricing-card-bg: #1a1a1a;
+  --pricing-card-bg: #222126;
   --pricing-border: #333333;
   --pricing-text: #ffffff;
   --pricing-muted: #9ca3af;
@@ -50,6 +50,20 @@
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
   transition: all 0.3s ease !important;
   padding: 24px !important;
+}
+
+/* Универсальные стили для темной темы карточки */
+:global(.dark) .pricingContainer :global([class*="clerk"]) {
+  background: var(--pricing-card-bg) !important;
+}
+
+:global(.dark) .pricingContainer :global(.cl-internal-12tprcu) {
+  background: var(--pricing-card-bg) !important;
+}
+
+/* Стили для темной темы карточки background */
+:global(.dark) .pricingContainer :global(> div > div) {
+  background: var(--pricing-bg) !important;
 }
 
 /* Hover эффекты для карточек */
@@ -219,6 +233,12 @@
   left: 22px !important;
 }
 
+/* Упрощенные стили для switch thumb Clerk */
+.pricingContainer :global(.cl-switchThumb),
+.pricingContainer :global([class*="switchThumb"]) {
+  position: relative !important;
+}
+
 /* Дополнительные стили для переключателя Clerk - гарантируем видимость */
 .pricingContainer :global(.cl-pricingTableCardPeriodToggle),
 .pricingContainer :global(.cl-pricingTableCardPeriodToggle *),
@@ -301,7 +321,7 @@
   z-index: -1 !important;
 }
 
-/* Стили для switch root - убираем лишние стили */
+/* Стили для switch root */
 .pricingContainer :global(.cl-switchRoot),
 .pricingContainer :global([class*="switchRoot"]) {
   display: flex !important;
@@ -309,18 +329,6 @@
   gap: 8px !important;
   padding: 0 !important;
   margin: 0 !important;
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-}
-
-/* Убираем hover эффекты для switch root */
-.pricingContainer :global(.cl-switchRoot:hover),
-.pricingContainer :global([class*="switchRoot"]:hover) {
-  background: none !important;
-  border: none !important;
-  box-shadow: none !important;
-  transform: none !important;
 }
 
 /* Универсальное переопределение цветов для темной темы */
@@ -338,11 +346,6 @@
 :global(.dark) .pricingContainer :global(div:has(> button)),
 :global(.dark) .pricingContainer > :global(div > div) {
   box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
-}
-
-:global(.dark) .pricingContainer :global(div:has(> button):hover),
-:global(.dark) .pricingContainer :global(div > div:hover) {
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.4) !important;
 }
 
 /* Дополнительные стили для улучшения читаемости */
