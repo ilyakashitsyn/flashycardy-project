@@ -102,3 +102,42 @@ export async function DELETE(
     );
   }
 }
+
+// Добавляем GET метод для совместимости с Next.js 15
+export async function GET(
+  request: NextRequest,
+  { params }: { params: Promise<{ cardId: string }> }
+) {
+  try {
+    const { userId } = await auth();
+    if (!userId) {
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    }
+
+    const resolvedParams = await params;
+    const cardId = parseInt(resolvedParams.cardId);
+    if (isNaN(cardId)) {
+      return NextResponse.json({ error: "Invalid card ID" }, { status: 400 });
+    }
+
+    // Получаем карточку
+    const card = await db
+      .select()
+      .from(cardsTable)
+      .innerJoin(decksTable, eq(cardsTable.deckId, decksTable.id))
+      .where(and(eq(cardsTable.id, cardId), eq(decksTable.userId, userId)))
+      .limit(1);
+
+    if (card.length === 0) {
+      return NextResponse.json({ error: "Card not found" }, { status: 404 });
+    }
+
+    return NextResponse.json(card[0]);
+  } catch (error) {
+    console.error("Error fetching card:", error);
+    return NextResponse.json(
+      { error: "Internal server error" },
+      { status: 500 }
+    );
+  }
+}

@@ -6,6 +6,8 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
+import Script from "next/script";
+import Head from "next/head";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -26,6 +28,15 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ru" suppressHydrationWarning>
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
+          integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA=="
+          crossOrigin="anonymous"
+          referrerPolicy="no-referrer"
+        />
+      </head>
       <body
         className={`${poppins.variable} font-sans antialiased`}
         suppressHydrationWarning
@@ -52,6 +63,10 @@ export default function RootLayout({
             {children}
           </ThemeProvider>
         </ClerkProvider>
+        <Script
+          src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
+          crossOrigin="anonymous"
+        />
       </body>
     </html>
   );

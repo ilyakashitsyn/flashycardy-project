@@ -85,9 +85,17 @@ export function DashboardClient({
             )}
           </p>
         </div>
-        {canCreateDeck && (
-          <CreateDeckDialog onDeckCreated={handleDeckCreated} />
-        )}
+        <div className="flex items-center gap-3">
+          {hasProPlan && (
+            <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg shadow-lg">
+              <i className="fa-solid fa-crown text-sm"></i>
+              <span className="text-sm font-medium">Pro Plan</span>
+            </div>
+          )}
+          {canCreateDeck && (
+            <CreateDeckDialog onDeckCreated={handleDeckCreated} />
+          )}
+        </div>
       </div>
 
       {showUpgradePrompt && (
@@ -122,9 +130,17 @@ export function DashboardClient({
           <p className="text-muted-foreground mb-4">
             Создайте свою первую колоду карточек для изучения
           </p>
-          {canCreateDeck && (
-            <CreateDeckDialog onDeckCreated={handleDeckCreated} />
-          )}
+          <div className="flex items-center justify-center gap-3">
+            {hasProPlan && (
+              <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-amber-500 to-yellow-500 text-white rounded-lg shadow-lg">
+                <i className="fa-solid fa-crown text-sm"></i>
+                <span className="text-sm font-medium">Pro Plan</span>
+              </div>
+            )}
+            {canCreateDeck && (
+              <CreateDeckDialog onDeckCreated={handleDeckCreated} />
+            )}
+          </div>
         </div>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
