@@ -1,5 +1,3 @@
-import { ProtectedHeader } from "@/components/ui/protected-header";
-
 export default function DashboardLayout({
   children,
 }: {
