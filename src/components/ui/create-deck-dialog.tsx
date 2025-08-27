@@ -32,6 +32,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
   const [description, setDescription] = useState("");
   const [emoji, setEmoji] = useState("📚");
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const emojiOptions = [
     "📚",
@@ -57,6 +58,8 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
     if (!name.trim()) return;
 
     setCreating(true);
+    setError(null);
+
     try {
       const response = await fetch("/api/decks", {
         method: "POST",
@@ -81,9 +84,17 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
         setDescription("");
         setEmoji("📚");
         setIsOpen(false);
+      } else if (response.status === 403) {
+        const errorData = await response.json();
+        setError(
+          errorData.error || "Достигнут лимит колод для бесплатного плана"
+        );
+      } else {
+        setError("Ошибка при создании колоды");
       }
     } catch (error) {
       console.error("Error creating deck:", error);
+      setError("Ошибка при создании колоды");
     } finally {
       setCreating(false);
     }
@@ -95,6 +106,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
       setName("");
       setDescription("");
       setEmoji("📚");
+      setError(null);
     }
   };
 
@@ -166,6 +178,12 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               disabled={creating}
             />
           </div>
+
+          {error && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
+          )}
 
           <div className="flex gap-2 justify-end pt-2">
             <Button

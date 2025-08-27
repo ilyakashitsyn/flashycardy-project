@@ -42,16 +42,19 @@ export async function GET() {
             .select({ count: count() })
             .from(cardProgressTable)
             .innerJoin(cardsTable, eq(cardsTable.id, cardProgressTable.cardId))
-            .where(and(
-              eq(cardsTable.deckId, deck.id),
-              eq(cardProgressTable.userId, userId),
-              eq(cardProgressTable.isKnown, true)
-            ));
-          
+            .where(
+              and(
+                eq(cardsTable.deckId, deck.id),
+                eq(cardProgressTable.userId, userId),
+                eq(cardProgressTable.isKnown, true)
+              )
+            );
+
           studiedCards = studiedResult[0]?.count || 0;
         }
 
-        const progressPercentage = totalCards > 0 ? Math.round((studiedCards / totalCards) * 100) : 0;
+        const progressPercentage =
+          totalCards > 0 ? Math.round((studiedCards / totalCards) * 100) : 0;
 
         return {
           ...deck,
@@ -77,7 +80,7 @@ export async function GET() {
 
 export async function POST(request: NextRequest) {
   try {
-    const { userId } = await auth();
+    const { userId, has } = await auth();
 
     if (!userId) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
@@ -87,6 +90,30 @@ export async function POST(request: NextRequest) {
 
     if (!name) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
+    }
+
+    // Проверяем лимит колод для бесплатных пользователей
+    const hasUnlimitedDecks = has({ feature: "unlimited_decks" });
+    const hasDeckLimit = has({ feature: "3_deck_limit" });
+
+    if (!hasUnlimitedDecks && hasDeckLimit) {
+      // Подсчитываем текущее количество колод пользователя
+      const userDeckCount = await db
+        .select({ count: count() })
+        .from(decksTable)
+        .where(eq(decksTable.userId, userId));
+
+      const currentDeckCount = userDeckCount[0]?.count || 0;
+
+      if (currentDeckCount >= 3) {
+        return NextResponse.json(
+          {
+            error:
+              "Достигнут лимит колод для бесплатного плана. Обновитесь до Pro для неограниченного количества.",
+          },
+          { status: 403 }
+        );
+      }
     }
 
     // Создаем колоду для текущего пользователя
