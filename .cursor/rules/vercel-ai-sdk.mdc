@@ -1,0 +1,116 @@
+# Vercel AI SDK - Правила использования
+
+## Обзор
+
+Проект использует библиотеку `@vercel/ai` для интеграции с OpenAI API, особенно для функции генерации карточек с помощью ИИ.
+
+## Основные компоненты
+
+### 1. Генерация структурированных данных
+
+Для генерации массива карточек используйте `generateObject` с Zod схемой:
+
+```typescript
+import { generateObject } from 'ai';
+import { z } from 'zod';
+
+const { object } = await generateObject({
+  model: 'openai/gpt-4',
+  schema: z.object({
+    cards: z.array(z.object({
+      front: z.string().describe('Вопрос или понятие для изучения'),
+      back: z.string().describe('Ответ или объяснение')
+    }))
+  }),
+  prompt: 'Создай 5 карточек для изучения [тема]. Каждая карточка должна иметь четкий вопрос и понятный ответ.',
+});
+```
+
+### 2. Генерация массива карточек
+
+Для генерации конкретного количества карточек:
+
+```typescript
+const { object } = await generateObject({
+  model: 'openai/gpt-4',
+  schema: z.object({
+    cards: z.array(z.object({
+      front: z.string(),
+      back: z.string()
+    })).length(5) // Фиксированное количество карточек
+  }),
+  prompt: `Создай 5 карточек для изучения "${topic}". 
+  Front: должен содержать вопрос или понятие
+  Back: должен содержать четкий и понятный ответ`,
+});
+```
+
+### 3. Обработка ошибок
+
+Всегда обрабатывайте ошибки при работе с AI API:
+
+```typescript
+try {
+  const { object } = await generateObject({
+    // ... конфигурация
+  });
+  return object.cards;
+} catch (error) {
+  console.error('Ошибка генерации карточек:', error);
+  throw new Error('Не удалось сгенерировать карточки');
+}
+```
+
+## Структура проекта
+
+AI функции должны быть размещены в:
+- `src/app/api/` - для API маршрутов
+- `src/components/` - для UI компонентов с AI функциональностью
+
+## Ограничения планов
+
+- Функция `ai_flashcard_generation` доступна только для `pro_plan`
+- Используйте `<Protect feature="ai_flashcard_generation">` для защиты UI
+- Проверяйте доступ в API маршрутах через `auth().has()`
+
+## Примеры использования
+
+### API маршрут для генерации карточек
+
+```typescript
+// src/app/api/ai/generate-cards/route.ts
+import { generateObject } from 'ai';
+import { z } from 'zod';
+import { auth } from '@clerk/nextjs/server';
+
+export async function POST(request: Request) {
+  const { has } = await auth();
+  
+  if (!has({ feature: "ai_flashcard_generation" })) {
+    return Response.json({ error: "Функция недоступна" }, { status: 403 });
+  }
+
+  const { topic, count } = await request.json();
+  
+  const { object } = await generateObject({
+    model: 'openai/gpt-4',
+    schema: z.object({
+      cards: z.array(z.object({
+        front: z.string(),
+        back: z.string()
+      })).length(count || 5)
+    }),
+    prompt: `Создай ${count || 5} карточек для изучения "${topic}"`,
+  });
+
+  return Response.json({ cards: object.cards });
+}
+```
+
+## Важные принципы
+
+1. Всегда используйте Zod для валидации структуры данных
+2. Обрабатывайте ошибки AI API
+3. Проверяйте доступ пользователя к функциям ИИ
+4. Используйте четкие и конкретные промпты для лучших результатов
+5. Ограничивайте количество генерируемых карточек для контроля затрат
