@@ -11,7 +11,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Play, Plus, ArrowLeft, Grid3X3, List, Trash2 } from "lucide-react";
+import {
+  Play,
+  Plus,
+  ArrowLeft,
+  Grid3X3,
+  List,
+  Trash2,
+  Sparkles,
+} from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
@@ -19,6 +27,13 @@ import { Progress } from "@/components/ui/progress";
 import { FlashcardItem } from "@/components/ui/flashcard-item";
 import { AddCardDialog } from "@/components/ui/add-card-dialog";
 import { EditDeckDialog } from "@/components/ui/edit-deck-dialog";
+import { useAuth } from "@clerk/nextjs";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface Card {
   id: number;
@@ -50,11 +65,13 @@ interface Deck {
 function DeckPageContent() {
   const params = useParams();
   const router = useRouter();
+  const { has } = useAuth();
   const deckId = params.deckId as string;
   const [deck, setDeck] = useState<Deck | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isGridView, setIsGridView] = useState(true);
+  const [isGenerating, setIsGenerating] = useState(false);
 
   const fetchDeck = useCallback(async () => {
     try {
@@ -202,6 +219,73 @@ function DeckPageContent() {
     }
   };
 
+  const handleGenerateWithAI = async () => {
+    if (!deck) return;
+
+    setIsGenerating(true);
+    try {
+      const response = await fetch(`/api/decks/${deck.id}/generate-ai`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: deck.name,
+          description: deck.description || "",
+        }),
+      });
+
+      if (response.ok) {
+        const { cards, message } = await response.json();
+
+        // Проверяем, использовались ли fallback карточки
+        const isFallback = cards.__fallback;
+        const errorMessage = cards.__error;
+
+        // Убираем метаданные из карточек
+        const cleanCards = cards.filter((card: any) => !card.__fallback);
+
+        // Обновляем локальное состояние
+        setDeck({
+          ...deck,
+          cards: [...deck.cards, ...cleanCards],
+          cardCount: deck.cardCount + cleanCards.length,
+          progress: {
+            ...deck.progress,
+            total: deck.progress.total + cleanCards.length,
+            percentage: Math.round(
+              (deck.progress.studied /
+                (deck.progress.total + cleanCards.length)) *
+                100
+            ),
+          },
+        });
+
+        // Показываем уведомление пользователю
+        if (isFallback) {
+          alert(
+            `Generated ${cleanCards.length} basic cards. AI generation failed: ${errorMessage}. You can try again later.`
+          );
+        } else {
+          alert(
+            `Successfully generated ${cleanCards.length} AI-powered cards!`
+          );
+        }
+      } else {
+        console.error("Failed to generate AI cards");
+        alert("Failed to generate cards. Please try again.");
+      }
+    } catch (error) {
+      console.error("Error generating AI cards:", error);
+    } finally {
+      setIsGenerating(false);
+    }
+  };
+
+  const handleUpgradeClick = () => {
+    router.push("/pricing");
+  };
+
   const formatDate = (dateString: string) => {
     try {
       const date = new Date(dateString);
@@ -342,6 +426,68 @@ function DeckPageContent() {
                 </Button>
               }
             />
+
+            {has?.({ feature: "ai_flashcard_generation" }) ? (
+              deck.name && deck.description ? (
+                <Button
+                  variant="outline"
+                  size="sm"
+                  onClick={handleGenerateWithAI}
+                  disabled={isGenerating}
+                  className="flex items-center gap-2"
+                >
+                  {isGenerating ? (
+                    <Loader2 className="h-4 w-4 animate-spin" />
+                  ) : (
+                    <Sparkles className="h-4 w-4" />
+                  )}
+                  {isGenerating ? "Generating..." : "Generate with AI"}
+                </Button>
+              ) : (
+                <TooltipProvider>
+                  <Tooltip>
+                    <TooltipTrigger asChild>
+                      <div className="inline-block">
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          className="flex items-center gap-2 opacity-50 cursor-not-allowed"
+                        >
+                          <Sparkles className="h-4 w-4" />
+                          Generate with AI
+                        </Button>
+                      </div>
+                    </TooltipTrigger>
+                    <TooltipContent>
+                      <p>
+                        Add a description to your deck first to enable AI
+                        generation
+                      </p>
+                    </TooltipContent>
+                  </Tooltip>
+                </TooltipProvider>
+              )
+            ) : (
+              <TooltipProvider>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <Button
+                      variant="outline"
+                      size="sm"
+                      onClick={handleUpgradeClick}
+                      className="flex items-center gap-2"
+                    >
+                      <Sparkles className="h-4 w-4" />
+                      Generate with AI
+                    </Button>
+                  </TooltipTrigger>
+                  <TooltipContent>
+                    <p>AI generation is available in Pro plan</p>
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+
             <Button
               variant="outline"
               size="sm"
