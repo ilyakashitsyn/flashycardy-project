@@ -11,6 +11,7 @@ interface Deck {
   id: number;
   name: string;
   description?: string;
+  emoji?: string;
   cardCount: number;
   createdAt: string;
   updatedAt: string;
@@ -29,13 +30,36 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
+  const [emoji, setEmoji] = useState("📚");
   const [creating, setCreating] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
+  const emojiOptions = [
+    "📚",
+    "🧠",
+    "💡",
+    "🎯",
+    "📖",
+    "🌟",
+    "🔥",
+    "💎",
+    "🚀",
+    "🌈",
+    "😄",
+    "🤮",
+    "💩",
+    "⚽",
+    "🇧🇷",
+    "🇬🇧",
+  ];
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!name.trim()) return;
 
     setCreating(true);
+    setError(null);
+
     try {
       const response = await fetch("/api/decks", {
         method: "POST",
@@ -45,22 +69,32 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
         body: JSON.stringify({
           name: name.trim(),
           description: description.trim(),
+          emoji: emoji,
         }),
       });
 
       if (response.ok) {
         const newDeck = await response.json();
-        onDeckCreated({ 
-          ...newDeck, 
+        onDeckCreated({
+          ...newDeck,
           cardCount: 0,
-          progress: { studied: 0, total: 0, percentage: 0 }
+          progress: { studied: 0, total: 0, percentage: 0 },
         });
         setName("");
         setDescription("");
+        setEmoji("📚");
         setIsOpen(false);
+      } else if (response.status === 403) {
+        const errorData = await response.json();
+        setError(
+          errorData.error || "Достигнут лимит колод для бесплатного плана"
+        );
+      } else {
+        setError("Ошибка при создании колоды");
       }
     } catch (error) {
       console.error("Error creating deck:", error);
+      setError("Ошибка при создании колоды");
     } finally {
       setCreating(false);
     }
@@ -71,6 +105,8 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
       setIsOpen(false);
       setName("");
       setDescription("");
+      setEmoji("📚");
+      setError(null);
     }
   };
 
@@ -99,6 +135,27 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
+            <Label htmlFor="emoji">Иконка</Label>
+            <div className="grid grid-cols-8 gap-2 p-2 border rounded-md">
+              {emojiOptions.map((emojiOption) => (
+                <button
+                  key={emojiOption}
+                  type="button"
+                  onClick={() => setEmoji(emojiOption)}
+                  className={`text-2xl p-2 rounded hover:bg-muted transition-colors ${
+                    emoji === emojiOption
+                      ? "bg-primary text-primary-foreground"
+                      : ""
+                  }`}
+                  disabled={creating}
+                >
+                  {emojiOption}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <div>
             <Label htmlFor="name">Название</Label>
             <Input
               id="name"
@@ -121,6 +178,12 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               disabled={creating}
             />
           </div>
+
+          {error && (
+            <div className="bg-destructive/10 border border-destructive/20 rounded-md p-3">
+              <p className="text-sm text-destructive">{error}</p>
+            </div>
+          )}
 
           <div className="flex gap-2 justify-end pt-2">
             <Button

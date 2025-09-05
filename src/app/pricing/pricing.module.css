@@ -1,0 +1,452 @@
+/* Стили для страницы ценообразования */
+
+.pricingContainer {
+  position: relative;
+}
+
+/* CSS переменные для темной темы */
+:global(.dark) .pricingContainer {
+  --pricing-bg: #0a0a0a;
+  --pricing-card-bg: #222126;
+  --pricing-border: #333333;
+  --pricing-text: #ffffff;
+  --pricing-muted: #9ca3af;
+  --pricing-primary: #3b82f6;
+  --pricing-primary-foreground: #ffffff;
+  --pricing-secondary: #374151;
+  --pricing-active-bg: #1e40af;
+  --pricing-active-border: #3b82f6;
+}
+
+/* CSS переменные для светлой темы */
+:global(.light) .pricingContainer,
+.pricingContainer {
+  --pricing-bg: #ffffff;
+  --pricing-card-bg: #ffffff;
+  --pricing-border: #e5e7eb;
+  --pricing-text: #111827;
+  --pricing-muted: #6b7280;
+  --pricing-primary: #3b82f6;
+  --pricing-primary-foreground: #ffffff;
+  --pricing-secondary: #f9fafb;
+  --pricing-active-bg: #eff6ff;
+  --pricing-active-border: #3b82f6;
+}
+
+/* Форсированные стили для всех элементов в PricingTable */
+.pricingContainer :global(*) {
+  font-family: inherit !important;
+}
+
+/* Универсальные стили для карточек */
+.pricingContainer :global(div:has(> button)),
+.pricingContainer :global([class*="card"]),
+.pricingContainer :global([data-testid*="card"]),
+.pricingContainer > :global(div > div) {
+  background: var(--pricing-card-bg) !important;
+  border: 1px solid var(--pricing-border) !important;
+  border-radius: 12px !important;
+  color: var(--pricing-text) !important;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1) !important;
+  transition: all 0.3s ease !important;
+  padding: 24px !important;
+}
+
+/* Универсальные стили для темной темы карточки */
+:global(.dark) .pricingContainer :global([class*="clerk"]) {
+  background: var(--pricing-card-bg) !important;
+}
+
+:global(.dark) .pricingContainer :global(.cl-internal-12tprcu) {
+  background: var(--pricing-card-bg) !important;
+}
+
+/* Стили для темной темы карточки background */
+:global(.dark) .pricingContainer :global(> div > div) {
+  background: var(--pricing-bg) !important;
+}
+
+/* Hover эффекты для карточек */
+.pricingContainer :global(div:has(> button):hover),
+.pricingContainer :global([class*="card"]:hover),
+.pricingContainer :global([data-testid*="card"]:hover),
+.pricingContainer > :global(div > div:hover) {
+  transform: translateY(-2px) !important;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1) !important;
+}
+
+/* Стили для активного плана */
+.pricingContainer :global([data-active="true"]),
+.pricingContainer :global(.active),
+.pricingContainer :global([class*="active"]) {
+  border-color: var(--pricing-active-border) !important;
+  background: var(--pricing-active-bg) !important;
+}
+
+/* Все кнопки в контейнере */
+.pricingContainer :global(button) {
+  background: var(--pricing-primary) !important;
+  color: var(--pricing-primary-foreground) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  font-size: 16px !important;
+}
+
+.pricingContainer :global(button:hover) {
+  background: color-mix(in srgb, var(--pricing-primary) 90%, black) !important;
+  transform: translateY(-1px) !important;
+}
+
+/* Все заголовки */
+.pricingContainer :global(h1),
+.pricingContainer :global(h2),
+.pricingContainer :global(h3),
+.pricingContainer :global(h4),
+.pricingContainer :global(h5),
+.pricingContainer :global(h6) {
+  color: var(--pricing-text) !important;
+  font-weight: 700 !important;
+}
+
+/* Все параграфы и тексты */
+.pricingContainer :global(p),
+.pricingContainer :global(span),
+.pricingContainer :global(div) {
+  color: var(--pricing-text) !important;
+}
+
+/* Серый текст для описаний */
+.pricingContainer :global([class*="description"]),
+.pricingContainer :global([class*="subtitle"]),
+.pricingContainer :global(small) {
+  color: var(--pricing-muted) !important;
+}
+
+/* Цены - делаем их выделенными */
+.pricingContainer :global([class*="price"]),
+.pricingContainer :global([class*="cost"]),
+.pricingContainer :global([class*="amount"]) {
+  color: var(--pricing-text) !important;
+  font-weight: 700 !important;
+  font-size: 2rem !important;
+}
+
+/* Списки функций */
+.pricingContainer :global(ul),
+.pricingContainer :global(li) {
+  color: var(--pricing-text) !important;
+}
+
+/* Переключатели и чекбоксы */
+.pricingContainer :global(input),
+.pricingContainer :global([role="switch"]),
+.pricingContainer :global([type="checkbox"]) {
+  background: var(--pricing-secondary) !important;
+  border: 1px solid var(--pricing-border) !important;
+  color: var(--pricing-text) !important;
+}
+
+/* Стили для переключателя биллинга Clerk - делаем видимым */
+.pricingContainer :global([class*="toggle"]),
+.pricingContainer :global([class*="billing"]),
+.pricingContainer :global([class*="interval"]),
+.pricingContainer :global([class*="periodToggle"]),
+.pricingContainer :global([class*="pricingTableCardPeriodToggle"]) {
+  color: var(--pricing-text) !important;
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  pointer-events: auto !important;
+  z-index: auto !important;
+}
+
+/* Специальные стили для переключателя Clerk - убираем лишние стили */
+.pricingContainer :global(.cl-pricingTableCardPeriodToggle),
+.pricingContainer :global([class*="pricingTableCardPeriodToggle"]) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 8px 16px 0px 0px !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  pointer-events: auto !important;
+  z-index: auto !important;
+}
+
+/* Стили для текста переключателя */
+.pricingContainer :global([class*="periodToggle"]) :global(span),
+.pricingContainer
+  :global([class*="pricingTableCardPeriodToggle"])
+  :global(span),
+.pricingContainer :global([class*="billing"]) :global(span) {
+  color: var(--pricing-text) !important;
+  font-size: 14px !important;
+  font-weight: 500 !important;
+}
+
+/* Стили для switch индикатора Clerk */
+.pricingContainer :global([class*="switch"]),
+.pricingContainer :global([role="switch"]) {
+  background: var(--pricing-secondary) !important;
+  border: 1px solid var(--pricing-border) !important;
+  border-radius: 20px !important;
+  width: 44px !important;
+  height: 24px !important;
+  position: relative !important;
+  transition: all 0.2s ease !important;
+}
+
+.pricingContainer :global([class*="switch"][data-state="checked"]),
+.pricingContainer :global([role="switch"][aria-checked="true"]) {
+  background: var(--pricing-primary) !important;
+  border-color: var(--pricing-primary) !important;
+}
+
+/* Стили для switch thumb Clerk */
+.pricingContainer :global([class*="switch"]::before),
+.pricingContainer :global([role="switch"]::before) {
+  content: "" !important;
+  position: absolute !important;
+  top: 2px !important;
+  left: 2px !important;
+  width: 20px !important;
+  height: 20px !important;
+  background: white !important;
+  border-radius: 50% !important;
+  transition: all 0.2s ease !important;
+}
+
+.pricingContainer :global([class*="switch"][data-state="checked"]::before),
+.pricingContainer :global([role="switch"][aria-checked="true"]::before) {
+  left: 22px !important;
+}
+
+/* Упрощенные стили для switch thumb Clerk */
+.pricingContainer :global(.cl-switchThumb),
+.pricingContainer :global([class*="switchThumb"]) {
+  position: relative !important;
+}
+
+/* Дополнительные стили для переключателя Clerk - гарантируем видимость */
+.pricingContainer :global(.cl-pricingTableCardPeriodToggle),
+.pricingContainer :global(.cl-pricingTableCardPeriodToggle *),
+.pricingContainer :global([class*="pricingTableCardPeriodToggle"]),
+.pricingContainer :global([class*="pricingTableCardPeriodToggle"] *) {
+  display: block !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  pointer-events: auto !important;
+  z-index: auto !important;
+  clip: auto !important;
+  clip-path: none !important;
+  overflow: visible !important;
+}
+
+/* Стили для контейнера переключателя */
+.pricingContainer :global(.cl-pricingTableCardPeriodToggleContainer),
+.pricingContainer :global([class*="pricingTableCardPeriodToggleContainer"]) {
+  display: flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 12px !important;
+  padding: 20px !important;
+  margin: 20px 0 !important;
+  transition: all 0.3s ease !important;
+}
+
+/* Стили для текста "Monthly" и "Annually" */
+.pricingContainer :global([class*="monthly"]),
+.pricingContainer :global([class*="annually"]),
+.pricingContainer :global([class*="periodText"]) {
+  color: var(--pricing-text) !important;
+  font-size: 16px !important;
+  font-weight: 500 !important;
+  cursor: pointer !important;
+  transition: color 0.2s ease !important;
+}
+
+.pricingContainer :global([class*="monthly"]:hover),
+.pricingContainer :global([class*="annually"]:hover),
+.pricingContainer :global([class*="periodText"]:hover) {
+  color: var(--pricing-primary) !important;
+}
+
+/* Дополнительные стили для всех возможных переключателей Clerk */
+.pricingContainer :global([class*="billingToggle"]),
+.pricingContainer :global([class*="intervalToggle"]),
+.pricingContainer :global([class*="periodToggle"]),
+.pricingContainer :global([class*="toggle"]) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 12px !important;
+  padding: 20px !important;
+  margin: 20px 0 !important;
+  transition: all 0.3s ease !important;
+  visibility: visible !important;
+  opacity: 1 !important;
+  position: static !important;
+  left: auto !important;
+  top: auto !important;
+  pointer-events: auto !important;
+  z-index: auto !important;
+  clip: auto !important;
+  clip-path: none !important;
+  overflow: visible !important;
+}
+
+/* Убираем checkbox input */
+.pricingContainer :global(input[type="checkbox"]) {
+  display: none !important;
+  visibility: hidden !important;
+  opacity: 0 !important;
+  position: absolute !important;
+  left: -9999px !important;
+  top: -9999px !important;
+  pointer-events: none !important;
+  z-index: -1 !important;
+}
+
+/* Стили для switch root */
+.pricingContainer :global(.cl-switchRoot),
+.pricingContainer :global([class*="switchRoot"]) {
+  display: flex !important;
+  align-items: center !important;
+  gap: 8px !important;
+  padding: 0 !important;
+  margin: 0 !important;
+}
+
+/* Универсальное переопределение цветов для темной темы */
+:global(.dark) .pricingContainer :global(*) {
+  color: #ffffff !important;
+}
+
+:global(.dark) .pricingContainer :global([class*="description"]),
+:global(.dark) .pricingContainer :global([class*="subtitle"]),
+:global(.dark) .pricingContainer :global(small) {
+  color: #9ca3af !important;
+}
+
+/* Тени для темной темы */
+:global(.dark) .pricingContainer :global(div:has(> button)),
+:global(.dark) .pricingContainer > :global(div > div) {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.4) !important;
+}
+
+/* Дополнительные стили для улучшения читаемости */
+.pricingContainer :global(label) {
+  color: var(--pricing-text) !important;
+}
+
+/* Специальные стили для AI flashcard generation */
+.pricingContainer
+  :global(.cl-pricingTableCardFeaturesListItem__ai_flashcard_generation),
+.pricingContainer :global([class*="ai_flashcard_generation"]) {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transition: none !important;
+  padding: 0 !important;
+}
+
+.pricingContainer
+  :global(.cl-pricingTableCardFeaturesListItem__ai_flashcard_generation:hover),
+.pricingContainer :global([class*="ai_flashcard_generation"]:hover) {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  transform: none !important;
+  transition: none !important;
+  padding: 0 !important;
+}
+
+/* Стили для footer карточки с кнопкой */
+.pricingContainer :global(.cl-pricingTableCardFooter),
+.pricingContainer :global([class*="pricingTableCardFooter"]) {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  transition: none !important;
+}
+
+.pricingContainer :global(.cl-pricingTableCardFooter:hover),
+.pricingContainer :global([class*="pricingTableCardFooter"]:hover) {
+  background: none !important;
+  border: none !important;
+  border-radius: 0 !important;
+  transition: none !important;
+  transform: none !important;
+}
+
+/* Возвращаем стили для кнопки Subscribe внутри footer */
+.pricingContainer :global(.cl-pricingTableCardFooter) :global(button),
+.pricingContainer :global([class*="pricingTableCardFooter"]) :global(button) {
+  background: var(--pricing-primary) !important;
+  color: var(--pricing-primary-foreground) !important;
+  border: none !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 12px 24px !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  font-size: 16px !important;
+}
+
+.pricingContainer :global(.cl-pricingTableCardFooter) :global(button:hover),
+.pricingContainer
+  :global([class*="pricingTableCardFooter"])
+  :global(button:hover) {
+  background: color-mix(in srgb, var(--pricing-primary) 90%, black) !important;
+  transform: translateY(-1px) !important;
+  border-radius: 8px !important;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+  .pricingContainer {
+    padding: 0 16px;
+  }
+
+  .pricingContainer :global([class*="pricingTableCardPeriodToggle"]) {
+    padding: 12px 16px !important;
+    margin: 12px 0 !important;
+  }
+
+  .pricingContainer :global([class*="periodToggle"]) :global(span),
+  .pricingContainer
+    :global([class*="pricingTableCardPeriodToggle"])
+    :global(span) {
+    font-size: 13px !important;
+  }
+
+  .pricingContainer :global(.cl-pricingTableCardPeriodToggleContainer),
+  .pricingContainer :global([class*="pricingTableCardPeriodToggleContainer"]) {
+    padding: 16px !important;
+    margin: 16px 0 !important;
+  }
+
+  .pricingContainer :global([class*="billingToggle"]),
+  .pricingContainer :global([class*="intervalToggle"]),
+  .pricingContainer :global([class*="periodToggle"]),
+  .pricingContainer :global([class*="toggle"]) {
+    padding: 16px !important;
+    margin: 16px 0 !important;
+  }
+}

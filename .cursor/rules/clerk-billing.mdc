@@ -1,0 +1,154 @@
+---
+alwaysApply: true
+description: "Правила биллинга Clerk для flashcard-приложения"
+---
+
+# Биллинг Clerk для Flashcard-приложения
+
+## Планы подписки
+
+В приложении доступны следующие планы:
+
+- `free_user` - бесплатный план
+- `pro_plan` - премиум план
+
+## Функциональные возможности
+
+Приложение имеет следующие функции:
+
+- `3_deck_limit` - ограничение на 3 колоды (бесплатный план)
+- `unlimited_decks` - неограниченные колоды (премиум план)
+- `ai_flashcard_generation` - генерация карточек с помощью ИИ (премиум план)
+
+## Контроль доступа
+
+### Использование метода `has()`
+
+Для проверки доступа к планам и функциям используй метод `has()`:
+
+```tsx
+import { auth } from "@clerk/nextjs/server";
+
+// Проверка плана
+const { has } = await auth();
+const hasProPlan = has({ plan: "pro_plan" });
+const isFreeUser = has({ plan: "free_user" });
+
+// Проверка функций
+const hasUnlimitedDecks = has({ feature: "unlimited_decks" });
+const hasAIGeneration = has({ feature: "ai_flashcard_generation" });
+const hasDeckLimit = has({ feature: "3_deck_limit" });
+```
+
+### Использование компонента `<Protect>`
+
+Для защиты UI элементов используй компонент `<Protect>`:
+
+```tsx
+import { Protect } from '@clerk/nextjs'
+
+// Защита по плану
+<Protect
+  plan="pro_plan"
+  fallback={<p>Обновите до Pro плана для доступа к этой функции</p>}
+>
+  <ProFeatureComponent />
+</Protect>
+
+// Защита по функции
+<Protect
+  feature="ai_flashcard_generation"
+  fallback={<p>ИИ генерация доступна только в Pro плане</p>}
+>
+  <AIGenerationButton />
+</Protect>
+
+<Protect
+  feature="unlimited_decks"
+  fallback={<p>Создайте не более 3 колод в бесплатном плане</p>}
+>
+  <CreateDeckButton />
+</Protect>
+```
+
+## Примеры использования в приложении
+
+### Ограничение создания колод
+
+```tsx
+// В компоненте создания колоды
+const { has } = await auth();
+const hasUnlimitedDecks = has({ feature: "unlimited_decks" });
+const deckCount = await getUserDeckCount();
+
+if (!hasUnlimitedDecks && deckCount >= 3) {
+  return (
+    <UpgradePrompt message="Достигнут лимит колод. Обновитесь до Pro плана." />
+  );
+}
+```
+
+### Условный показ функций ИИ
+
+```tsx
+<Protect
+  feature="ai_flashcard_generation"
+  fallback={
+    <div className="text-muted-foreground">
+      <p>ИИ генерация карточек доступна в Pro плане</p>
+      <Button>Обновить план</Button>
+    </div>
+  }
+>
+  <Button onClick={generateWithAI}>Создать карточки с ИИ</Button>
+</Protect>
+```
+
+### Проверка лимитов в API маршрутах
+
+```tsx
+// В API маршруте создания колоды
+export async function POST() {
+  const { has } = await auth();
+
+  if (!has({ feature: "unlimited_decks" })) {
+    const deckCount = await getUserDeckCount();
+    if (deckCount >= 3) {
+      return NextResponse.json(
+        { error: "Достигнут лимит колод для бесплатного плана" },
+        { status: 403 }
+      );
+    }
+  }
+
+  // Создание колоды...
+}
+```
+
+## Компонент таблицы цен
+
+Создай страницу с ценами используя компонент `<PricingTable />`:
+
+```tsx
+// app/pricing/page.tsx
+import { PricingTable } from "@clerk/nextjs";
+
+export default function PricingPage() {
+  return (
+    <div className="max-w-4xl mx-auto p-6">
+      <h1 className="text-3xl font-bold text-center mb-8">
+        Выберите свой план
+      </h1>
+      <PricingTable />
+    </div>
+  );
+}
+```
+
+## Важные принципы
+
+1. Всегда проверяй доступ как на клиенте (UI), так и на сервере (API)
+2. Используй fallback компоненты для плавного UX
+3. Четко объясняй пользователю ограничения бесплатного плана
+4. Предоставляй простой путь для обновления до Pro плана
+5. Тестируй функциональность с разными планами пользователей
