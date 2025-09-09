@@ -25,7 +25,7 @@ export function StudyCard({ front, back, className, onFlip }: StudyCardProps) {
         className={cn("study-card", isFlipped && "flipped")}
         onClick={handleFlip}
       >
-        {/* Лицевая сторона */}
+        {/* Front side */}
         <div className="study-card-face study-card-front">
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
             <div className="text-sm text-muted-foreground mb-4 font-medium">
@@ -37,7 +37,7 @@ export function StudyCard({ front, back, className, onFlip }: StudyCardProps) {
           </div>
         </div>
 
-        {/* Обратная сторона */}
+        {/* Back side */}
         <div className="study-card-face study-card-back">
           <div className="flex flex-col items-center justify-center h-full p-8 text-center">
             <div className="text-sm text-muted-foreground mb-4 font-medium">
@@ -50,7 +50,7 @@ export function StudyCard({ front, back, className, onFlip }: StudyCardProps) {
         </div>
       </div>
 
-      {/* Стили для анимации переворота */}
+      {/* Styles for flip animation */}
       <style jsx>{`
         .study-card-container {
           perspective: 1000px;

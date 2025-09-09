@@ -79,7 +79,7 @@ export function UserMenu() {
             <div className="flex items-center gap-3">
               <div className="flex-1 min-w-0">
                 <p className="text-sm font-medium text-foreground truncate">
-                  {user.emailAddresses[0]?.emailAddress || "Пользователь"}
+                  {user.emailAddresses[0]?.emailAddress || "User"}
                 </p>
               </div>
             </div>
@@ -99,7 +99,7 @@ export function UserMenu() {
               disabled
             >
               <Settings className="h-4 w-4" style={{ color: "inherit" }} />
-              Управление аккаунтом
+              Account Management
             </button>
 
             <button
@@ -122,17 +122,17 @@ export function UserMenu() {
               onClick={handleSignOut}
             >
               <LogOut className="h-4 w-4" style={{ color: "inherit" }} />
-              Выйти
+              Sign Out
             </button>
           </div>
 
           <div className="p-3 bg-muted/50 border-t border-border">
             <div className="flex items-center gap-2 text-xs text-muted-foreground">
-              <span>Защищено</span>
+              <span>Secured by</span>
               <span>clerk</span>
             </div>
             <div className="text-xs text-destructive font-medium mt-1">
-              Режим разработки
+              Development Mode
             </div>
           </div>
         </div>

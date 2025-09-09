@@ -7,14 +7,14 @@ import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
 import { StudyCard } from "@/components/ui/study-card";
 import { StudyResults } from "@/components/ui/study-results";
-import { 
-  ArrowLeft, 
-  Shuffle, 
-  SkipBack, 
-  RefreshCw, 
-  XCircle, 
+import {
+  ArrowLeft,
+  Shuffle,
+  SkipBack,
+  RefreshCw,
+  XCircle,
   CheckCircle,
-  Loader2 
+  Loader2,
 } from "lucide-react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -40,7 +40,7 @@ export default function StudyPage() {
   const params = useParams();
   const router = useRouter();
   const deckId = params.deckId as string;
-  
+
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [session, setSession] = useState<StudySession | null>(null);
@@ -71,11 +71,11 @@ export default function StudyPage() {
         setSession(sessionData);
       } else {
         const errorData = await response.json();
-        setError(errorData.error || "Не удалось начать сессию изучения");
+        setError(errorData.error || "Failed to start study session");
       }
     } catch (error) {
       console.error("Error starting study session:", error);
-      setError("Произошла ошибка при загрузке");
+      setError("An error occurred while loading");
     } finally {
       setLoading(false);
     }
@@ -85,7 +85,7 @@ export default function StudyPage() {
     if (deckId && !isNaN(Number(deckId))) {
       startStudySession();
     } else {
-      setError("Неверный ID колоды");
+      setError("Invalid deck ID");
       setLoading(false);
     }
   }, [deckId, startStudySession]);
@@ -99,17 +99,17 @@ export default function StudyPage() {
       isCorrect,
     };
 
-    setResults(prev => [...prev, newResult]);
-    
+    setResults((prev) => [...prev, newResult]);
+
     if (isCorrect) {
-      setCorrect(prev => prev + 1);
+      setCorrect((prev) => prev + 1);
     } else {
-      setIncorrect(prev => prev + 1);
+      setIncorrect((prev) => prev + 1);
     }
 
-    // Переходим к следующей карточке или показываем результаты
+    // Move to next card or show results
     if (currentCardIndex < session.cards.length - 1) {
-      setCurrentCardIndex(prev => prev + 1);
+      setCurrentCardIndex((prev) => prev + 1);
       setIsFlipped(false);
     } else {
       finishStudySession([...results, newResult]);
@@ -130,29 +130,29 @@ export default function StudyPage() {
           results: finalResults,
         }),
       });
-      
+
       setShowResults(true);
     } catch (error) {
       console.error("Error finishing study session:", error);
-      setShowResults(true); // Показываем результаты даже если сохранение не удалось
+      setShowResults(true); // Show results even if saving failed
     }
   };
 
   const handlePrevious = () => {
     if (currentCardIndex > 0) {
-      setCurrentCardIndex(prev => prev - 1);
+      setCurrentCardIndex((prev) => prev - 1);
       setIsFlipped(false);
-      
-      // Убираем последний результат
+
+      // Remove last result
       const newResults = results.slice(0, -1);
       setResults(newResults);
-      
-      // Пересчитываем счетчики
+
+      // Recalculate counters
       const lastResult = results[results.length - 1];
       if (lastResult?.isCorrect) {
-        setCorrect(prev => prev - 1);
+        setCorrect((prev) => prev - 1);
       } else {
-        setIncorrect(prev => prev - 1);
+        setIncorrect((prev) => prev - 1);
       }
     }
   };
@@ -166,12 +166,12 @@ export default function StudyPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
           <h3 className="text-lg font-medium text-foreground mb-2">
-            Неверный ID колоды
+            Invalid deck ID
           </h3>
           <Link href="/dashboard">
             <Button variant="outline">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Вернуться к панели
+              Back to Dashboard
             </Button>
           </Link>
         </div>
@@ -194,17 +194,17 @@ export default function StudyPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
           <h3 className="text-lg font-medium text-foreground mb-2">
-            {error || "Не удалось загрузить сессию изучения"}
+            {error || "Failed to load study session"}
           </h3>
           <div className="space-x-4">
             <Button onClick={startStudySession}>
               <RefreshCw className="h-4 w-4 mr-2" />
-              Попробовать снова
+              Try Again
             </Button>
             <Link href={`/decks/${deckId}`}>
               <Button variant="outline">
                 <ArrowLeft className="h-4 w-4 mr-2" />
-                Назад к колоде
+                Back to Deck
               </Button>
             </Link>
           </div>
@@ -236,7 +236,7 @@ export default function StudyPage() {
   return (
     <ProtectedRoute>
       <div className="min-h-screen bg-background">
-        {/* Заголовок */}
+        {/* Header */}
         <div className="border-b border-border/50 bg-card/30 backdrop-blur-sm">
           <div className="container mx-auto px-4 py-4">
             <div className="flex items-center justify-between">
@@ -248,7 +248,7 @@ export default function StudyPage() {
                   </Button>
                 </Link>
               </div>
-              
+
               <div className="flex items-center gap-4">
                 <span className="text-lg font-semibold text-foreground">
                   {session.deckName}
@@ -262,10 +262,10 @@ export default function StudyPage() {
           </div>
         </div>
 
-        {/* Прогресс и счетчики */}
+        {/* Progress and counters */}
         <div className="container mx-auto px-4 py-6">
           <div className="max-w-4xl mx-auto">
-            {/* Прогресс */}
+            {/* Progress */}
             <div className="mb-6">
               <div className="flex items-center justify-between mb-2">
                 <span className="text-sm font-medium text-muted-foreground">
@@ -278,7 +278,7 @@ export default function StudyPage() {
               <Progress value={progress} className="h-2" />
             </div>
 
-            {/* Карточка */}
+            {/* Card */}
             <div className="mb-8">
               <StudyCard
                 front={currentCard.front}
@@ -287,9 +287,9 @@ export default function StudyPage() {
               />
             </div>
 
-            {/* Кнопки управления */}
+            {/* Control buttons */}
             <div className="flex items-center justify-center gap-4">
-              {/* Кнопка Previous */}
+              {/* Previous button */}
               <Button
                 onClick={handlePrevious}
                 disabled={currentCardIndex === 0}
@@ -301,7 +301,7 @@ export default function StudyPage() {
                 Previous
               </Button>
 
-              {/* Кнопка Flip Card */}
+              {/* Flip Card button */}
               {!isFlipped && (
                 <Button
                   onClick={handleFlipCard}
@@ -314,7 +314,7 @@ export default function StudyPage() {
                 </Button>
               )}
 
-              {/* Кнопка Next */}
+              {/* Next button */}
               <Button
                 onClick={() => router.push(`/decks/${deckId}`)}
                 variant="ghost"
@@ -326,7 +326,7 @@ export default function StudyPage() {
               </Button>
             </div>
 
-            {/* Кнопки ответов */}
+            {/* Answer buttons */}
             {isFlipped && (
               <div className="grid grid-cols-2 gap-4 mt-8">
                 <Button
@@ -341,7 +341,7 @@ export default function StudyPage() {
                   <XCircle className="h-6 w-6 mr-3" />
                   Incorrect
                 </Button>
-                
+
                 <Button
                   onClick={() => handleCardAnswer(true)}
                   size="lg"

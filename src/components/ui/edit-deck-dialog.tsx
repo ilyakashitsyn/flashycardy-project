@@ -106,24 +106,22 @@ export function EditDeckDialog({
         {trigger || (
           <Button variant="outline" className="flex items-center gap-2">
             <Edit className="h-4 w-4" />
-            Редактировать
+            Edit
           </Button>
         )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[500px] bg-background border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-foreground">
-            Редактировать колоду
+            Edit Deck
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Измените название и описание вашей колоды.
+            Change the name and description of your deck.
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
           <div className="space-y-2">
-            <Label className="text-sm font-medium text-foreground">
-              Иконка
-            </Label>
+            <Label className="text-sm font-medium text-foreground">Icon</Label>
             <div className="grid grid-cols-8 gap-2 p-2 border rounded-md">
               {emojiOptions.map((emojiOption) => (
                 <button
@@ -147,11 +145,11 @@ export function EditDeckDialog({
               htmlFor="deck-name"
               className="text-sm font-medium text-foreground"
             >
-              Название колоды
+              Deck Name
             </Label>
             <Input
               id="deck-name"
-              placeholder="Введите название колоды..."
+              placeholder="Enter deck name..."
               value={name}
               onChange={(e) => setName(e.target.value)}
               required
@@ -162,11 +160,11 @@ export function EditDeckDialog({
               htmlFor="deck-description"
               className="text-sm font-medium text-foreground"
             >
-              Описание (необязательно)
+              Description (optional)
             </Label>
             <Textarea
               id="deck-description"
-              placeholder="Введите описание колоды..."
+              placeholder="Enter deck description..."
               value={description}
               onChange={(e) => setDescription(e.target.value)}
               className="min-h-[80px] resize-none"
@@ -179,10 +177,10 @@ export function EditDeckDialog({
               onClick={handleCancel}
               disabled={isSubmitting}
             >
-              Отмена
+              Cancel
             </Button>
             <Button type="submit" disabled={isSubmitting || !name.trim()}>
-              {isSubmitting ? "Сохраняем..." : "Сохранить"}
+              {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
         </form>

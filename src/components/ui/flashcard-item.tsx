@@ -90,7 +90,7 @@ export function FlashcardItem({ card, onEdit, onDelete }: FlashcardItemProps) {
                 className="h-8 px-3 bg-green-600 hover:bg-green-700 flashcard-button"
               >
                 <Check className="h-4 w-4 mr-1" />
-                Сохранить
+                Save
               </Button>
               <Button
                 size="sm"
@@ -99,7 +99,7 @@ export function FlashcardItem({ card, onEdit, onDelete }: FlashcardItemProps) {
                 className="h-8 px-3 flashcard-button"
               >
                 <X className="h-4 w-4 mr-1" />
-                Отмена
+                Cancel
               </Button>
             </>
           ) : (
@@ -129,12 +129,12 @@ export function FlashcardItem({ card, onEdit, onDelete }: FlashcardItemProps) {
         {card.progress && (
           <div className="pt-2 border-t border-slate-600">
             <div className="flex items-center gap-4 text-xs text-slate-400">
-              <span>Просмотров: {card.progress.reviewCount}</span>
+              <span>Views: {card.progress.reviewCount}</span>
               {card.progress.lastReviewed && (
                 <span>
-                  Последний раз:{" "}
+                  Last reviewed:{" "}
                   {new Date(card.progress.lastReviewed).toLocaleDateString(
-                    "ru-RU"
+                    "en-US"
                   )}
                 </span>
               )}

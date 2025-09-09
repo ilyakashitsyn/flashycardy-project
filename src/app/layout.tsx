@@ -16,9 +16,9 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "FlashyCardy - Умные карточки для изучения",
+  title: "FlashyCardy - Smart flashcards for learning",
   description:
-    "Приложение для создания и изучения карточек с использованием современных технологий",
+    "Application for creating and studying flashcards using modern technologies",
 };
 
 export default function RootLayout({
@@ -27,7 +27,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ru" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <head>
         <link
           rel="stylesheet"

@@ -81,11 +81,11 @@ function DeckPageContent() {
         const data = await response.json();
         setDeck(data);
       } else {
-        setError("Не удалось загрузить колоду");
+        setError("Failed to load deck");
       }
     } catch (error) {
       console.error("Error fetching deck:", error);
-      setError("Произошла ошибка при загрузке");
+      setError("An error occurred while loading");
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ function DeckPageContent() {
     if (deckId && !isNaN(Number(deckId))) {
       fetchDeck();
     } else {
-      setError("Неверный ID колоды");
+      setError("Invalid deck ID");
       setLoading(false);
     }
   }, [deckId, fetchDeck]);
@@ -131,7 +131,7 @@ function DeckPageContent() {
   };
 
   const handleDeleteCard = async (cardId: number) => {
-    if (!confirm("Вы уверены, что хотите удалить эту карточку?")) {
+    if (!confirm("Are you sure you want to delete this card?")) {
       return;
     }
 
@@ -198,7 +198,7 @@ function DeckPageContent() {
 
     if (
       !confirm(
-        `Вы уверены, что хотите удалить колоду "${deck.name}"? Это действие нельзя отменить.`
+        `Are you sure you want to delete deck "${deck.name}"? This action cannot be undone.`
       )
     ) {
       return;
@@ -290,11 +290,11 @@ function DeckPageContent() {
     try {
       const date = new Date(dateString);
       if (isNaN(date.getTime())) {
-        return "Неизвестная дата";
+        return "Unknown date";
       }
-      return date.toLocaleDateString("ru-RU");
+      return date.toLocaleDateString("en-US");
     } catch {
-      return "Неизвестная дата";
+      return "Unknown date";
     }
   };
 
@@ -313,12 +313,12 @@ function DeckPageContent() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
           <h3 className="text-lg font-medium text-foreground mb-2">
-            {error || "Колода не найдена"}
+            {error || "Deck not found"}
           </h3>
           <Link href="/dashboard">
             <Button variant="outline">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Вернуться к панели
+              Back to Dashboard
             </Button>
           </Link>
         </div>
@@ -332,7 +332,7 @@ function DeckPageContent() {
         <Link href="/dashboard">
           <Button variant="ghost" className="mb-4">
             <ArrowLeft className="h-4 w-4 mr-2" />
-            Назад к панели
+            Back to Dashboard
           </Button>
         </Link>
       </div>
@@ -341,7 +341,7 @@ function DeckPageContent() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2 text-2xl">
             {deck.emoji && <span className="text-3xl">{deck.emoji}</span>}
-            {deck.name || "Без названия"}
+            {deck.name || "Untitled"}
           </CardTitle>
           {deck.description && (
             <CardDescription className="text-lg">
@@ -353,25 +353,24 @@ function DeckPageContent() {
           <div className="space-y-4">
             <div className="flex items-center justify-between p-4 bg-muted rounded-lg">
               <span className="text-lg font-medium">
-                {deck.cardCount || 0} карточек
+                {deck.cardCount || 0} cards
               </span>
               <span className="text-sm text-muted-foreground">
-                Создано: {formatDate(deck.createdAt)}
+                Created: {formatDate(deck.createdAt)}
               </span>
             </div>
 
-            {/* Прогресс изучения */}
+            {/* Study progress */}
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium">Прогресс изучения</span>
+                <span className="text-sm font-medium">Study progress</span>
                 <span className="text-lg font-bold text-primary">
                   {deck.progress.percentage}%
                 </span>
               </div>
               <Progress value={deck.progress.percentage} className="h-3" />
               <div className="text-sm text-muted-foreground text-center">
-                {deck.progress.studied} из {deck.progress.total} карточек
-                изучено
+                {deck.progress.studied} of {deck.progress.total} cards studied
               </div>
             </div>
 
@@ -379,7 +378,7 @@ function DeckPageContent() {
               <Button asChild size="lg" className="flex-1">
                 <Link href={`/decks/${deck.id}/study`}>
                   <Play className="h-5 w-5 mr-2" />
-                  Изучать
+                  Study
                 </Link>
               </Button>
               <div className="flex gap-2 flex-1">
@@ -389,7 +388,7 @@ function DeckPageContent() {
                   trigger={
                     <Button size="lg" variant="outline" className="flex-1">
                       <Plus className="h-5 w-5 mr-2" />
-                      Редактировать
+                      Edit
                     </Button>
                   }
                 />
@@ -407,7 +406,7 @@ function DeckPageContent() {
         </CardContent>
       </Card>
 
-      {/* Список всех карточек */}
+      {/* List of all cards */}
       <div className="max-w-4xl mx-auto">
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-xl font-semibold text-foreground">Cards</h2>
@@ -497,12 +496,12 @@ function DeckPageContent() {
               {isGridView ? (
                 <>
                   <List className="h-4 w-4" />
-                  Список
+                  List
                 </>
               ) : (
                 <>
                   <Grid3X3 className="h-4 w-4" />
-                  Сетка
+                  Grid
                 </>
               )}
             </Button>

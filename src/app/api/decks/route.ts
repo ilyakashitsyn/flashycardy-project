@@ -12,7 +12,7 @@ export async function GET() {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    // Получаем колоды только для текущего пользователя
+    // Get decks only for current user
     const userDecks = await db
       .select({
         id: decksTable.id,
@@ -25,7 +25,7 @@ export async function GET() {
       .from(decksTable)
       .where(eq(decksTable.userId, userId));
 
-    // Получаем количество карточек и прогресс для каждой колоды
+    // Get card count and progress for each deck
     const decksWithProgress = await Promise.all(
       userDecks.map(async (deck) => {
         const cardCountResult = await db
@@ -35,7 +35,7 @@ export async function GET() {
 
         const totalCards = cardCountResult[0]?.count || 0;
 
-        // Получаем количество изученных карточек
+        // Get count of studied cards
         let studiedCards = 0;
         if (totalCards > 0) {
           const studiedResult = await db
@@ -92,7 +92,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Name is required" }, { status: 400 });
     }
 
-    // Проверяем лимит колод для бесплатных пользователей
+    // Check deck limit for free users
     const hasUnlimitedDecks = has({ feature: "unlimited_decks" });
     const hasDeckLimit = has({ feature: "3_deck_limit" });
 

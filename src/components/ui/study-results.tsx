@@ -22,19 +22,21 @@ export function StudyResults({
   total,
   onStudyAgain,
   onBackToDeck,
-  className
+  className,
 }: StudyResultsProps) {
   const accuracy = total > 0 ? Math.round((correct / total) * 100) : 0;
 
   return (
-    <Card className={cn(
-      "max-w-2xl mx-auto bg-card/95 backdrop-blur-sm border-border/50",
-      "shadow-2xl",
-      className
-    )}>
+    <Card
+      className={cn(
+        "max-w-2xl mx-auto bg-card/95 backdrop-blur-sm border-border/50",
+        "shadow-2xl",
+        className
+      )}
+    >
       <CardContent className="p-8 md:p-12">
         <div className="text-center space-y-8">
-          {/* Заголовок */}
+          {/* Header */}
           <div className="space-y-2">
             <h1 className="text-3xl md:text-4xl font-bold text-foreground">
               Study Session Completed!
@@ -44,9 +46,9 @@ export function StudyResults({
             </p>
           </div>
 
-          {/* Статистика */}
+          {/* Statistics */}
           <div className="grid grid-cols-3 gap-6 py-8">
-            {/* Правильные ответы */}
+            {/* Correct answers */}
             <div className="text-center space-y-2">
               <div className="text-4xl md:text-5xl font-bold text-green-500">
                 {correct}
@@ -56,7 +58,7 @@ export function StudyResults({
               </div>
             </div>
 
-            {/* Неправильные ответы */}
+            {/* Incorrect answers */}
             <div className="text-center space-y-2">
               <div className="text-4xl md:text-5xl font-bold text-red-500">
                 {incorrect}
@@ -66,7 +68,7 @@ export function StudyResults({
               </div>
             </div>
 
-            {/* Точность */}
+            {/* Accuracy */}
             <div className="text-center space-y-2">
               <div className="text-4xl md:text-5xl font-bold text-foreground">
                 {accuracy}%
@@ -77,7 +79,7 @@ export function StudyResults({
             </div>
           </div>
 
-          {/* Кнопки действий */}
+          {/* Action buttons */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 pt-6">
             <Button
               onClick={onStudyAgain}
@@ -88,7 +90,7 @@ export function StudyResults({
               <RefreshCw className="h-5 w-5 mr-3" />
               Study Again
             </Button>
-            
+
             <Button
               onClick={onBackToDeck}
               size="lg"

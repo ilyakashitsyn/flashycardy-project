@@ -15,12 +15,12 @@ export default function EditPage() {
       <div className="container mx-auto px-4 py-8">
         <div className="text-center py-12">
           <h3 className="text-lg font-medium text-foreground mb-2">
-            Неверный ID колоды
+            Invalid deck ID
           </h3>
           <Link href="/dashboard">
             <Button variant="outline">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Вернуться к панели
+              Back to Dashboard
             </Button>
           </Link>
         </div>
@@ -35,15 +35,15 @@ export default function EditPage() {
           <Link href={`/decks/${deckId}`}>
             <Button variant="ghost" className="mb-4">
               <ArrowLeft className="h-4 w-4 mr-2" />
-              Назад к колоде
+              Back to Deck
             </Button>
           </Link>
         </div>
 
         <div className="text-center py-12">
-          <h1 className="text-3xl font-bold mb-4">Редактирование колоды</h1>
+          <h1 className="text-3xl font-bold mb-4">Deck Editing</h1>
           <p className="text-muted-foreground">
-            Функция редактирования карточек будет добавлена позже
+            Card editing functionality will be added later
           </p>
         </div>
       </div>
