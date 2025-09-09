@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// Интерфейс наследует все свойства HTMLInputElement
+// Interface inherits all HTMLInputElement properties
 export interface InputProps
   extends React.InputHTMLAttributes<HTMLInputElement> {}
 

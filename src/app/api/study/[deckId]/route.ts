@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
-import { 
-  decksTable, 
-  cardsTable, 
-  cardProgressTable, 
-  studySessionsTable 
+import {
+  decksTable,
+  cardsTable,
+  cardProgressTable,
+  studySessionsTable,
 } from "@/db/schema";
 import { eq, and } from "drizzle-orm";
 
-// Начать сессию изучения
+// Start study session
 export async function POST(
   request: NextRequest,
   { params }: { params: Promise<{ deckId: string }> }
@@ -26,7 +26,7 @@ export async function POST(
       return NextResponse.json({ error: "Invalid deck ID" }, { status: 400 });
     }
 
-    // Проверяем, что колода принадлежит пользователю
+    // Check that deck belongs to user
     const deck = await db
       .select()
       .from(decksTable)
@@ -37,7 +37,7 @@ export async function POST(
       return NextResponse.json({ error: "Deck not found" }, { status: 404 });
     }
 
-    // Получаем все карточки колоды
+    // Get all deck cards
     const cards = await db
       .select()
       .from(cardsTable)
@@ -114,7 +114,7 @@ export async function PUT(
     // Обновляем прогресс для каждой карточки
     for (const result of results) {
       const { cardId, isCorrect } = result;
-      
+
       // Проверяем существующий прогресс
       const existingProgress = await db
         .select()
@@ -144,15 +144,13 @@ export async function PUT(
           );
       } else {
         // Создаем новый прогресс
-        await db
-          .insert(cardProgressTable)
-          .values({
-            userId,
-            cardId,
-            isKnown: isCorrect,
-            lastReviewed: new Date(),
-            reviewCount: 1,
-          });
+        await db.insert(cardProgressTable).values({
+          userId,
+          cardId,
+          isKnown: isCorrect,
+          lastReviewed: new Date(),
+          reviewCount: 1,
+        });
       }
     }
 

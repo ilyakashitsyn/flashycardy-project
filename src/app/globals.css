@@ -590,6 +590,13 @@ body[data-clerk-theme="dark"]
   background-color: transparent !important;
 }
 
+/* Стили для секций главной страницы */
+@layer utilities {
+  .bg-custom-orange {
+    background-color: #ffe8db;
+  }
+}
+
 /* Стили для Clerk модальных окон */
 @layer components {
   /* Модальные окна Clerk */

@@ -75,12 +75,12 @@ export function DashboardClient({
     <div className="container mx-auto px-4 py-8">
       <div className="flex items-center justify-between mb-8">
         <div>
-          <h1 className="text-3xl font-bold text-foreground">Мои колоды</h1>
+          <h1 className="text-3xl font-bold text-foreground">My Decks</h1>
           <p className="text-muted-foreground mt-2">
-            Управляйте своими колодами карточек
+            Manage your flashcard decks
             {hasDeckLimit && !hasUnlimitedDecks && (
               <span className="block text-sm">
-                {decks.length}/3 колод в бесплатном плане
+                {decks.length}/3 decks in free plan
               </span>
             )}
           </p>
@@ -103,16 +103,16 @@ export function DashboardClient({
           <div className="flex items-center justify-between">
             <div>
               <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-2">
-                Достигнут лимит колод
+                Deck limit reached
               </h3>
               <p className="text-blue-700 dark:text-blue-300">
-                В бесплатном плане доступно только 3 колоды. Обновитесь до Pro
-                для неограниченного количества.
+                Only 3 decks available in the free plan. Upgrade to Pro for
+                unlimited decks.
               </p>
             </div>
             <Link href="/pricing">
               <Button className="bg-blue-600 hover:bg-blue-700">
-                Обновить план
+                Upgrade Plan
               </Button>
             </Link>
           </div>
@@ -125,10 +125,10 @@ export function DashboardClient({
             <div className="text-4xl">📚</div>
           </div>
           <h3 className="text-lg font-medium text-foreground mb-2">
-            У вас пока нет колод
+            You don't have any decks yet
           </h3>
           <p className="text-muted-foreground mb-4">
-            Создайте свою первую колоду карточек для изучения
+            Create your first flashcard deck to start learning
           </p>
           <div className="flex items-center justify-center gap-3">
             {hasProPlan && (

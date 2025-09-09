@@ -1,7 +1,7 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 
-// Интерфейс наследует все свойства HTMLTextAreaElement
+// Interface inherits all HTMLTextAreaElement properties
 export interface TextareaProps
   extends React.TextareaHTMLAttributes<HTMLTextAreaElement> {}
 

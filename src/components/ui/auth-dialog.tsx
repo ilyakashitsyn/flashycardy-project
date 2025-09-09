@@ -25,7 +25,7 @@ export function AuthDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogTitle className="sr-only">
-          {mode === "signin" ? "Вход в систему" : "Регистрация"}
+          {mode === "signin" ? "Sign In" : "Sign Up"}
         </DialogTitle>
 
         <div className="flex gap-2 mb-4 justify-center">
@@ -37,7 +37,7 @@ export function AuthDialog({
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            Войти
+            Sign In
           </button>
           <button
             onClick={() => handleModeChange("signup")}
@@ -47,7 +47,7 @@ export function AuthDialog({
                 : "bg-muted text-muted-foreground hover:bg-muted/80"
             }`}
           >
-            Регистрация
+            Sign Up
           </button>
         </div>
 

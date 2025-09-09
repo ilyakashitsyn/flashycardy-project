@@ -86,15 +86,13 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
         setIsOpen(false);
       } else if (response.status === 403) {
         const errorData = await response.json();
-        setError(
-          errorData.error || "Достигнут лимит колод для бесплатного плана"
-        );
+        setError(errorData.error || "Deck limit reached for free plan");
       } else {
-        setError("Ошибка при создании колоды");
+        setError("Error creating deck");
       }
     } catch (error) {
       console.error("Error creating deck:", error);
-      setError("Ошибка при создании колоды");
+      setError("Error creating deck");
     } finally {
       setCreating(false);
     }
@@ -114,7 +112,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
     return (
       <Button onClick={() => setIsOpen(true)}>
         <Plus className="h-4 w-4 mr-2" />
-        Создать колоду
+        Create Deck
       </Button>
     );
   }
@@ -123,7 +121,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
       <div className="bg-background border border-border rounded-lg p-6 w-full max-w-md mx-4">
         <div className="flex items-center justify-between mb-4">
-          <h2 className="text-lg font-semibold">Создать новую колоду</h2>
+          <h2 className="text-lg font-semibold">Create New Deck</h2>
           <button
             onClick={handleClose}
             className="text-muted-foreground hover:text-foreground"
@@ -135,7 +133,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
 
         <form onSubmit={handleSubmit} className="space-y-4">
           <div>
-            <Label htmlFor="emoji">Иконка</Label>
+            <Label htmlFor="emoji">Icon</Label>
             <div className="grid grid-cols-8 gap-2 p-2 border rounded-md">
               {emojiOptions.map((emojiOption) => (
                 <button
@@ -156,24 +154,24 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
           </div>
 
           <div>
-            <Label htmlFor="name">Название</Label>
+            <Label htmlFor="name">Name</Label>
             <Input
               id="name"
               value={name}
               onChange={(e) => setName(e.target.value)}
-              placeholder="Введите название колоды"
+              placeholder="Enter deck name"
               required
               disabled={creating}
             />
           </div>
 
           <div>
-            <Label htmlFor="description">Описание (необязательно)</Label>
+            <Label htmlFor="description">Description (optional)</Label>
             <Textarea
               id="description"
               value={description}
               onChange={(e) => setDescription(e.target.value)}
-              placeholder="Введите описание колоды"
+              placeholder="Enter deck description"
               rows={3}
               disabled={creating}
             />
@@ -192,7 +190,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               onClick={handleClose}
               disabled={creating}
             >
-              Отмена
+              Cancel
             </Button>
             <Button type="submit" disabled={creating || !name.trim()}>
               {creating ? (
@@ -200,7 +198,7 @@ export function CreateDeckDialog({ onDeckCreated }: CreateDeckDialogProps) {
               ) : (
                 <Plus className="h-4 w-4 mr-2" />
               )}
-              Создать
+              Create
             </Button>
           </div>
         </form>

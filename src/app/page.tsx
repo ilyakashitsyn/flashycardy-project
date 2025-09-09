@@ -16,19 +16,19 @@ export default function Home() {
     }
   }, [isLoaded, isSignedIn, router]);
 
-  // Показываем загрузку пока проверяем аутентификацию
+  // Show loading while checking authentication
   if (!isLoaded) {
     return (
       <div className="min-h-screen bg-background flex items-center justify-center">
         <div className="text-center">
           <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary mx-auto mb-4"></div>
-          <p className="text-muted-foreground">Загрузка...</p>
+          <p className="text-muted-foreground">Loading...</p>
         </div>
       </div>
     );
   }
 
-  // Если пользователь залогинен, не показываем содержимое (будет редирект)
+  // If user is signed in, don't show content (will redirect)
   if (isSignedIn) {
     return null;
   }
@@ -37,7 +37,7 @@ export default function Home() {
     <div className="min-h-screen bg-background">
       {/* Hero Section */}
       <section className="relative overflow-hidden bg-gradient-to-br from-background via-background to-muted/20">
-        {/* Анимированный SVG фон */}
+        {/* Animated SVG background */}
         <div className="animated-bg">
           <svg preserveAspectRatio="xMidYMid slice" viewBox="10 10 80 80">
             <path
@@ -63,7 +63,7 @@ export default function Home() {
           <div className="text-center max-w-4xl mx-auto">
             <div className="inline-flex items-center px-4 py-2 rounded-full bg-primary/10 text-primary text-sm font-medium mb-8 animate-fade-in">
               <i className="fas fa-sparkles mr-2"></i>
-              Новый способ изучения
+              New way to learn
             </div>
 
             <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in-up">
@@ -71,38 +71,38 @@ export default function Home() {
             </h1>
 
             <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200">
-              Ваша персональная платформа для карточек
+              Your personal flashcard platform
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center animate-fade-in-up animation-delay-400">
               <SignUpButton mode="modal">
                 <button className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  Начать бесплатно
+                  Start Free
                 </button>
               </SignUpButton>
               <SignInButton mode="modal">
                 <button className="w-full sm:w-auto px-8 py-4 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-all duration-300 font-semibold text-lg border border-border hover:border-primary/50">
-                  Войти
+                  Sign In
                 </button>
               </SignInButton>
             </div>
 
             <p className="text-sm text-muted-foreground mt-6 animate-fade-in animation-delay-600">
-              Без кредитной карты • Начните прямо сейчас
+              No credit card required • Start right now
             </p>
           </div>
         </div>
       </section>
 
       {/* Features Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 bg-custom-orange">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Почему выбирают FlashyCardy?
+              Why choose FlashyCardy?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Современные инструменты для эффективного изучения
+              Modern tools for effective learning
             </p>
           </div>
 
@@ -112,11 +112,11 @@ export default function Home() {
                 <i className="fas fa-brain text-2xl text-primary"></i>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                ИИ Генерация
+                AI Generation
               </h3>
               <p className="text-muted-foreground">
-                Создавайте карточки с помощью искусственного интеллекта для
-                быстрого изучения
+                Create flashcards using artificial intelligence for fast
+                learning
               </p>
             </div>
 
@@ -125,10 +125,10 @@ export default function Home() {
                 <i className="fas fa-chart-line text-2xl text-primary"></i>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                Аналитика
+                Analytics
               </h3>
               <p className="text-muted-foreground">
-                Отслеживайте прогресс и оптимизируйте процесс изучения
+                Track progress and optimize your learning process
               </p>
             </div>
 
@@ -137,10 +137,10 @@ export default function Home() {
                 <i className="fas fa-mobile-alt text-2xl text-primary"></i>
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                Мобильность
+                Mobility
               </h3>
               <p className="text-muted-foreground">
-                Изучайте в любом месте и в любое время на всех устройствах
+                Study anywhere and anytime on all devices
               </p>
             </div>
           </div>
@@ -152,10 +152,10 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Как это работает?
+              How does it work?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Простой процесс в три шага
+              Simple process in three steps
             </p>
           </div>
 
@@ -165,10 +165,10 @@ export default function Home() {
                 1
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                Создайте колоду
+                Create a deck
               </h3>
               <p className="text-muted-foreground">
-                Создайте новую колоду карточек или используйте ИИ для генерации
+                Create a new flashcard deck or use AI for generation
               </p>
             </div>
 
@@ -177,10 +177,10 @@ export default function Home() {
                 2
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                Добавьте карточки
+                Add cards
               </h3>
               <p className="text-muted-foreground">
-                Добавьте вопросы и ответы или позвольте ИИ создать их за вас
+                Add questions and answers or let AI create them for you
               </p>
             </div>
 
@@ -189,10 +189,10 @@ export default function Home() {
                 3
               </div>
               <h3 className="text-xl font-semibold text-foreground mb-3">
-                Изучайте
+                Study
               </h3>
               <p className="text-muted-foreground">
-                Начните изучение с умной системой повторений
+                Start studying with smart spaced repetition
               </p>
             </div>
           </div>
@@ -200,40 +200,38 @@ export default function Home() {
       </section>
 
       {/* Pricing Preview Section */}
-      <section className="py-20 bg-muted/30">
+      <section className="py-20 bg-custom-orange">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
-              Выберите свой план
+              Choose your plan
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-              Начните бесплатно или получите больше возможностей
+              Start free or get more features
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 gap-8 max-w-4xl mx-auto">
             <div className="p-8 rounded-xl bg-background border border-border">
-              <h3 className="text-2xl font-bold text-foreground mb-2">
-                Бесплатно
-              </h3>
-              <p className="text-3xl font-bold text-primary mb-4">0₽</p>
+              <h3 className="text-2xl font-bold text-foreground mb-2">Free</h3>
+              <p className="text-3xl font-bold text-primary mb-4">$0</p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  До 3 колод карточек
+                  Up to 3 flashcard decks
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  Базовые функции изучения
+                  Basic study features
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  Мобильное приложение
+                  Mobile app
                 </li>
               </ul>
               <SignUpButton mode="modal">
                 <button className="w-full px-6 py-3 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors font-semibold">
-                  Начать бесплатно
+                  Start Free
                 </button>
               </SignUpButton>
             </div>
@@ -241,34 +239,34 @@ export default function Home() {
             <div className="p-8 rounded-xl bg-background border-2 border-primary relative">
               <div className="absolute -top-3 left-1/2 transform -translate-x-1/2">
                 <span className="bg-primary text-primary-foreground px-4 py-1 rounded-full text-sm font-medium">
-                  Популярный
+                  Popular
                 </span>
               </div>
               <h3 className="text-2xl font-bold text-foreground mb-2">Pro</h3>
               <p className="text-3xl font-bold text-primary mb-4">
-                990₽<span className="text-lg text-muted-foreground">/мес</span>
+                $9.99<span className="text-lg text-muted-foreground">/mo</span>
               </p>
               <ul className="space-y-3 mb-8">
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  Неограниченные колоды
+                  Unlimited decks
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  ИИ генерация карточек
+                  AI flashcard generation
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  Расширенная аналитика
+                  Advanced analytics
                 </li>
                 <li className="flex items-center text-muted-foreground">
                   <i className="fas fa-check text-primary mr-3"></i>
-                  Приоритетная поддержка
+                  Priority support
                 </li>
               </ul>
               <Link href="/pricing">
                 <button className="w-full px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-colors font-semibold">
-                  Узнать больше
+                  Learn More
                 </button>
               </Link>
             </div>
@@ -281,21 +279,21 @@ export default function Home() {
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
-              Готовы начать изучение?
+              Ready to start learning?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
-              Присоединяйтесь к тысячам пользователей, которые уже улучшают свои
-              знания с FlashyCardy
+              Join thousands of users who are already improving their knowledge
+              with FlashyCardy
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <SignUpButton mode="modal">
                 <button className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
-                  Создать аккаунт
+                  Create Account
                 </button>
               </SignUpButton>
               <Link href="/pricing">
                 <button className="w-full sm:w-auto px-8 py-4 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-all duration-300 font-semibold text-lg border border-border hover:border-primary/50">
-                  Посмотреть цены
+                  View Pricing
                 </button>
               </Link>
             </div>
