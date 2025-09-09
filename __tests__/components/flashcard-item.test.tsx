@@ -2,7 +2,6 @@ import { describe, it, expect, jest } from "@jest/globals";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import "@/types/jest.d";
 import { FlashcardItem } from "@/components/ui/flashcard-item";
 
 // Mock Lucide React icons
@@ -20,7 +19,7 @@ describe("FlashcardItem", () => {
     back: "Test Back",
     progress: {
       isKnown: false,
-      lastReviewed: "2024-01-01T00:00:00Z",
+      lastReviewed: "2023-12-31T00:00:00Z",
       reviewCount: 5,
     },
   };
@@ -56,8 +55,8 @@ describe("FlashcardItem", () => {
       />
     );
 
-    expect(screen.getByText("Просмотров: 5")).toBeInTheDocument();
-    expect(screen.getByText(/Последний раз:/)).toBeInTheDocument();
+    expect(screen.getByText("Views: 5")).toBeInTheDocument();
+    expect(screen.getByText(/Last reviewed:/)).toBeInTheDocument();
   });
 
   it("should not display progress section when progress is null", () => {
@@ -74,7 +73,7 @@ describe("FlashcardItem", () => {
       />
     );
 
-    expect(screen.queryByText(/Просмотров:/)).not.toBeInTheDocument();
+    expect(screen.queryByText(/Views:/)).not.toBeInTheDocument();
   });
 
   it("should enter edit mode when Edit button is clicked", async () => {
@@ -99,8 +98,8 @@ describe("FlashcardItem", () => {
     expect(backInput).toBeInTheDocument();
 
     // Should show save and cancel buttons
-    expect(screen.getByText("Сохранить")).toBeInTheDocument();
-    expect(screen.getByText("Отмена")).toBeInTheDocument();
+    expect(screen.getByText("Save")).toBeInTheDocument();
+    expect(screen.getByText("Cancel")).toBeInTheDocument();
   });
 
   it("should save changes when Save button is clicked", async () => {
@@ -129,7 +128,7 @@ describe("FlashcardItem", () => {
     await user.type(backInput, "Updated Back");
 
     // Save changes
-    const saveButton = screen.getByText("Сохранить");
+    const saveButton = screen.getByText("Save");
     await user.click(saveButton);
 
     expect(mockOnEdit).toHaveBeenCalledWith(1, "Updated Front", "Updated Back");
@@ -159,7 +158,7 @@ describe("FlashcardItem", () => {
     await user.type(frontInput, "Modified Front");
 
     // Cancel changes
-    const cancelButton = screen.getByText("Отмена");
+    const cancelButton = screen.getByText("Cancel");
     await user.click(cancelButton);
 
     expect(mockOnEdit).not.toHaveBeenCalled();

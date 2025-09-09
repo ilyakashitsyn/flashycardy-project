@@ -2,7 +2,6 @@ import { describe, it, expect } from "@jest/globals";
 import { render, screen, fireEvent } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
-import "@/types/jest.d";
 import { Button } from "@/components/ui/button";
 
 describe("Button Component", () => {
