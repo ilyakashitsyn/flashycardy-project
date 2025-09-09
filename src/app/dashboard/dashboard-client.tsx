@@ -125,7 +125,7 @@ export function DashboardClient({
             <div className="text-4xl">📚</div>
           </div>
           <h3 className="text-lg font-medium text-foreground mb-2">
-            You don't have any decks yet
+            You don&apos;t have any decks yet
           </h3>
           <p className="text-muted-foreground mb-4">
             Create your first flashcard deck to start learning

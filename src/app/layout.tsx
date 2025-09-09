@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Poppins } from "next/font/google";
+import { Poppins, Coming_Soon } from "next/font/google";
 import Link from "next/link";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
@@ -13,6 +13,12 @@ const poppins = Poppins({
   variable: "--font-poppins",
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
+});
+
+const comingSoon = Coming_Soon({
+  variable: "--font-coming-soon",
+  subsets: ["latin"],
+  weight: ["400"],
 });
 
 export const metadata: Metadata = {
@@ -38,7 +44,7 @@ export default function RootLayout({
         />
       </head>
       <body
-        className={`${poppins.variable} font-sans antialiased`}
+        className={`${poppins.variable} ${comingSoon.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         <ClerkProvider

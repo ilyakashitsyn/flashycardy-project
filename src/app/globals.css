@@ -595,6 +595,19 @@ body[data-clerk-theme="dark"]
   .bg-custom-orange {
     background-color: #ffe8db;
   }
+
+  /* Стили для заголовков с шрифтом Coming Soon */
+  .font-coming-soon {
+    font-family: "Coming Soon", cursive;
+  }
+
+  .heading-h1 {
+    font-family: "Coming Soon", cursive;
+  }
+
+  .heading-h2 {
+    font-family: "Coming Soon", cursive;
+  }
 }
 
 /* Стили для Clerk модальных окон */

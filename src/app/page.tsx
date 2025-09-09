@@ -66,7 +66,7 @@ export default function Home() {
               New way to learn
             </div>
 
-            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in-up">
+            <h1 className="text-5xl md:text-7xl font-bold text-foreground mb-6 animate-fade-in-up heading-h1">
               FlashyCardy
             </h1>
 
@@ -98,7 +98,7 @@ export default function Home() {
       <section className="py-20 bg-custom-orange">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               Why choose FlashyCardy?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -151,7 +151,7 @@ export default function Home() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               How does it work?
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -203,7 +203,7 @@ export default function Home() {
       <section className="py-20 bg-custom-orange">
         <div className="container mx-auto px-4">
           <div className="text-center mb-16">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               Choose your plan
             </h2>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
@@ -278,7 +278,7 @@ export default function Home() {
       <section className="py-20">
         <div className="container mx-auto px-4">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6">
+            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 heading-h2">
               Ready to start learning?
             </h2>
             <p className="text-lg text-muted-foreground mb-8">
