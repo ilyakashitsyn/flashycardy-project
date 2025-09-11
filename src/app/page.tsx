@@ -70,7 +70,7 @@ export default function Home() {
               FlashyCardy
             </h1>
 
-            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200">
+            <p className="text-xl md:text-2xl text-muted-foreground mb-12 max-w-2xl mx-auto leading-relaxed animate-fade-in-up animation-delay-200 subheading-coming-soon">
               Your personal flashcard platform
             </p>
 
@@ -101,7 +101,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               Why choose FlashyCardy?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto subheading-coming-soon">
               Modern tools for effective learning
             </p>
           </div>
@@ -154,7 +154,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               How does it work?
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto subheading-coming-soon">
               Simple process in three steps
             </p>
           </div>
@@ -206,7 +206,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4 heading-h2">
               Choose your plan
             </h2>
-            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto subheading-coming-soon">
               Start free or get more features
             </p>
           </div>
@@ -281,7 +281,7 @@ export default function Home() {
             <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 heading-h2">
               Ready to start learning?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8">
+            <p className="text-lg text-muted-foreground mb-8 subheading-coming-soon">
               Join thousands of users who are already improving their knowledge
               with FlashyCardy
             </p>
