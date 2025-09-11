@@ -608,6 +608,12 @@ body[data-clerk-theme="dark"]
   .heading-h2 {
     font-family: "Coming Soon", cursive;
   }
+
+  /* Стили для подзаголовков с шрифтом Coming Soon */
+  .subheading-coming-soon {
+    font-family: "Coming Soon", cursive;
+    font-weight: 600;
+  }
 }
 
 /* Стили для Clerk модальных окон */
