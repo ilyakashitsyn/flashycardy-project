@@ -6,6 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
+import { Footer } from "@/components/ui/footer";
 import Script from "next/script";
 import Head from "next/head";
 
@@ -65,8 +66,11 @@ export default function RootLayout({
             storageKey="flashycardy-theme"
             enableColorScheme
           >
-            <Header />
-            {children}
+            <div className="min-h-screen flex flex-col">
+              <Header />
+              <main className="flex-1">{children}</main>
+              <Footer />
+            </div>
           </ThemeProvider>
         </ClerkProvider>
         <Script
