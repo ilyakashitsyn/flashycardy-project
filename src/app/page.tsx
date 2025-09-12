@@ -275,24 +275,29 @@ export default function Home() {
       </section>
 
       {/* CTA Section */}
-      <section className="py-20">
-        <div className="container mx-auto px-4">
+      <section className="py-20 wave-background relative">
+        <div className="wave-container">
+          <div className="wave"></div>
+          <div className="wave"></div>
+          <div className="wave"></div>
+        </div>
+        <div className="container mx-auto px-4 relative z-10">
           <div className="text-center max-w-3xl mx-auto">
-            <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-6 heading-h2">
+            <h2 className="text-3xl md:text-4xl font-bold text-white mb-6 heading-h2 drop-shadow-lg">
               Ready to start learning?
             </h2>
-            <p className="text-lg text-muted-foreground mb-8 subheading-coming-soon">
+            <p className="text-lg text-white/90 mb-8 subheading-coming-soon drop-shadow-md">
               Join thousands of users who are already improving their knowledge
               with FlashyCardy
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <SignUpButton mode="modal">
-                <button className="w-full sm:w-auto px-8 py-4 bg-primary text-primary-foreground rounded-lg hover:bg-primary/90 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
+                <button className="w-full sm:w-auto px-8 py-4 bg-white text-gray-900 rounded-lg hover:bg-white/90 transition-all duration-300 font-semibold text-lg shadow-lg hover:shadow-xl transform hover:-translate-y-1">
                   Create Account
                 </button>
               </SignUpButton>
               <Link href="/pricing">
-                <button className="w-full sm:w-auto px-8 py-4 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-all duration-300 font-semibold text-lg border border-border hover:border-primary/50">
+                <button className="w-full sm:w-auto px-8 py-4 bg-white/20 text-white rounded-lg hover:bg-white/30 transition-all duration-300 font-semibold text-lg border border-white/30 hover:border-white/50 backdrop-blur-sm">
                   View Pricing
                 </button>
               </Link>
