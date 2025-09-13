@@ -224,10 +224,6 @@ export default function Home() {
                   <i className="fas fa-check text-primary mr-3"></i>
                   Basic study features
                 </li>
-                <li className="flex items-center text-muted-foreground">
-                  <i className="fas fa-check text-primary mr-3"></i>
-                  Mobile app
-                </li>
               </ul>
               <SignUpButton mode="modal">
                 <button className="w-full px-6 py-3 bg-muted text-muted-foreground rounded-lg hover:bg-muted/80 transition-colors font-semibold">
