@@ -54,6 +54,7 @@ export function AuthDialog({
         <div className="mt-4">
           {mode === "signin" ? (
             <SignIn
+              routing="hash"
               appearance={{
                 elements: {
                   formButtonPrimary: "bg-primary hover:bg-primary/90",
@@ -66,6 +67,7 @@ export function AuthDialog({
             />
           ) : (
             <SignUp
+              routing="hash"
               appearance={{
                 elements: {
                   formButtonPrimary: "bg-primary hover:bg-primary/90",
