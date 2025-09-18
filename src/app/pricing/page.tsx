@@ -1,6 +1,6 @@
 "use client";
 
-import { LazyPricingTable } from "@/components/lazy";
+import { LazyPricingTable } from "@/components/lazy/index";
 import styles from "./pricing.module.css";
 import { Suspense } from "react";
 

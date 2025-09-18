@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { ProtectedRoute } from "@/components/ui/protected-route";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { LazyStudyCard } from "@/components/lazy";
-import { LazyStudyResults } from "@/components/lazy";
+import { LazyStudyCard } from "@/components/lazy/index";
+import { LazyStudyResults } from "@/components/lazy/index";
 import {
   ArrowLeft,
   Shuffle,

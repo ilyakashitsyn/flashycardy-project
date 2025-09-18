@@ -1,5 +1,5 @@
 import { DeckCard } from "@/components/ui/deck-card";
-import { CreateDeckDialog } from "@/components/ui/create-deck-dialog";
+import { LazyCreateDeckDialog } from "@/components/lazy/index";
 import { auth } from "@clerk/nextjs/server";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";

@@ -19,8 +19,6 @@ const nextConfig: NextConfig = {
   },
   // Компрессия
   compress: true,
-  // Оптимизация сборки
-  swcMinify: true,
   // Оптимизация загрузки
   poweredByHeader: false,
   // Оптимизация статических ресурсов

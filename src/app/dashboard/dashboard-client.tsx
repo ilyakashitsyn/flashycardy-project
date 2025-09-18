@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { DeckCard } from "@/components/ui/deck-card";
-import { CreateDeckDialog } from "@/components/ui/create-deck-dialog";
+import { LazyCreateDeckDialog } from "@/components/lazy/index";
 import { Loader2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -93,7 +93,7 @@ export function DashboardClient({
             </div>
           )}
           {canCreateDeck && (
-            <CreateDeckDialog onDeckCreated={handleDeckCreated} />
+            <LazyCreateDeckDialog onDeckCreated={handleDeckCreated} />
           )}
         </div>
       </div>
@@ -138,7 +138,7 @@ export function DashboardClient({
               </div>
             )}
             {canCreateDeck && (
-              <CreateDeckDialog onDeckCreated={handleDeckCreated} />
+              <LazyCreateDeckDialog onDeckCreated={handleDeckCreated} />
             )}
           </div>
         </div>

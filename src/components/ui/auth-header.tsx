@@ -38,14 +38,14 @@ export function AuthHeader() {
   return (
     <div className="flex items-center gap-4">
       <SignInButton mode="modal">
-        <button className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors">
+        <span className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors cursor-pointer">
           Sign In
-        </button>
+        </span>
       </SignInButton>
       <SignUpButton mode="modal">
-        <button className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 transition-colors">
+        <span className="px-4 py-2 text-sm font-medium text-primary-foreground bg-primary rounded-md hover:bg-primary/90 transition-colors cursor-pointer">
           Sign Up
-        </button>
+        </span>
       </SignUpButton>
     </div>
   );

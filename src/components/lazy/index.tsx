@@ -1,4 +1,5 @@
 import dynamic from "next/dynamic";
+import React from "react";
 
 // Lazy load heavy components
 export const LazyPricingTable = dynamic(

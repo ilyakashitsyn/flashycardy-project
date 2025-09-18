@@ -7,6 +7,10 @@ import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
 import { Footer } from "@/components/ui/footer";
+import {
+  ResourcePreloader,
+  criticalResources,
+} from "@/components/ui/resource-preloader";
 import Script from "next/script";
 import Head from "next/head";
 
@@ -44,7 +48,6 @@ export default function RootLayout({
           rel="preload"
           href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"
           as="style"
-          onLoad="this.onload=null;this.rel='stylesheet'"
         />
         <noscript>
           <link
@@ -60,6 +63,7 @@ export default function RootLayout({
         className={`${poppins.variable} ${comingSoon.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
+        <ResourcePreloader resources={criticalResources} />
         <ClerkProvider
           appearance={{
             baseTheme: undefined,

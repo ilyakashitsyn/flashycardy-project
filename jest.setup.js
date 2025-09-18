@@ -1,5 +1,19 @@
 import "@testing-library/jest-dom";
 
+// Mock global Request for API tests
+global.Request = class Request {
+  constructor(url, options = {}) {
+    this.url = url;
+    this.method = options.method || "GET";
+    this.headers = new Map();
+    this.body = options.body;
+  }
+
+  async json() {
+    return JSON.parse(this.body || "{}");
+  }
+};
+
 // Mock Next.js router
 jest.mock("next/navigation", () => ({
   useRouter() {
@@ -38,6 +52,9 @@ jest.mock("@clerk/nextjs", () => ({
     userId: "test-user-id",
     isLoaded: true,
     isSignedIn: true,
+  })),
+  useClerk: jest.fn(() => ({
+    signOut: jest.fn(),
   })),
   SignIn: () => <div>Sign In Mock</div>,
   SignUp: () => <div>Sign Up Mock</div>,

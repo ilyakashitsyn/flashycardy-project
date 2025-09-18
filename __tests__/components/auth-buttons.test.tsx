@@ -15,7 +15,7 @@ jest.mock("next/link", () => {
 });
 
 describe("AuthButtons", () => {
-  const mockUseAuth = jest.fn();
+  const mockUseAuth = require("@clerk/nextjs").useAuth;
 
   beforeEach(() => {
     jest.clearAllMocks();
@@ -66,9 +66,7 @@ describe("AuthButtons", () => {
 
     const signUpButton = screen.getByText("Sign Up");
     expect(signUpButton).toHaveClass(
-      "bg-primary",
-      "text-primary-foreground",
-      "rounded-md"
+      "bg-primary text-primary-foreground rounded-md"
     );
   });
 
