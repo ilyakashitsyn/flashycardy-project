@@ -41,8 +41,15 @@ jest.mock("@clerk/nextjs", () => ({
   })),
   SignIn: () => <div>Sign In Mock</div>,
   SignUp: () => <div>Sign Up Mock</div>,
-  UserButton: () => <div>User Button Mock</div>,
+  UserButton: () => <div data-testid="user-button">User Button Mock</div>,
+  SignInButton: ({ children, ...props }) => (
+    <button {...props}>{children}</button>
+  ),
+  SignUpButton: ({ children, ...props }) => (
+    <button {...props}>{children}</button>
+  ),
   Protect: ({ children, fallback }) => children || fallback,
+  PricingTable: () => <div data-testid="pricing-table">Pricing Table Mock</div>,
 }));
 
 // Mock environment variables

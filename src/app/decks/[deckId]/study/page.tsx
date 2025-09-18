@@ -5,8 +5,8 @@ import { useParams, useRouter } from "next/navigation";
 import { ProtectedRoute } from "@/components/ui/protected-route";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
-import { StudyCard } from "@/components/ui/study-card";
-import { StudyResults } from "@/components/ui/study-results";
+import { LazyStudyCard } from "@/components/lazy";
+import { LazyStudyResults } from "@/components/lazy";
 import {
   ArrowLeft,
   Shuffle,
@@ -217,7 +217,7 @@ export default function StudyPage() {
     return (
       <ProtectedRoute>
         <div className="min-h-screen bg-background flex items-center justify-center p-4">
-          <StudyResults
+          <LazyStudyResults
             deckName={session.deckName}
             correct={correct}
             incorrect={incorrect}
@@ -280,7 +280,7 @@ export default function StudyPage() {
 
             {/* Card */}
             <div className="mb-8">
-              <StudyCard
+              <LazyStudyCard
                 front={currentCard.front}
                 back={currentCard.back}
                 onFlip={handleFlipCard}
