@@ -11,3 +11,13 @@ declare global {
     }
   }
 }
+
+declare module "@jest/expect" {
+  interface Matchers<R> {
+    toBeInTheDocument(): R;
+    toHaveFocus(): R;
+    toHaveClass(className: string): R;
+    toHaveAttribute(attr: string, value?: string): R;
+    toBeDisabled(): R;
+  }
+}

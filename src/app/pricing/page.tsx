@@ -1,7 +1,8 @@
 "use client";
 
-import { PricingTableWrapper } from "@/components/ui/pricing-table-wrapper";
+import { LazyPricingTable } from "@/components/lazy/index";
 import styles from "./pricing.module.css";
+import { Suspense } from "react";
 
 export default function PricingPage() {
   return (
@@ -20,7 +21,15 @@ export default function PricingPage() {
 
         {/* Pricing Table */}
         <div className={styles.pricingContainer}>
-          <PricingTableWrapper />
+          <Suspense
+            fallback={
+              <div className="flex items-center justify-center p-8">
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-primary"></div>
+              </div>
+            }
+          >
+            <LazyPricingTable />
+          </Suspense>
         </div>
 
         {/* Footer Text */}

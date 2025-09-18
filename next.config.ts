@@ -9,6 +9,20 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  // Оптимизация производительности
+  experimental: {
+    optimizePackageImports: [
+      "lucide-react",
+      "@radix-ui/react-dialog",
+      "@radix-ui/react-tooltip",
+    ],
+  },
+  // Компрессия
+  compress: true,
+  // Оптимизация загрузки
+  poweredByHeader: false,
+  // Оптимизация статических ресурсов
+  assetPrefix: process.env.NODE_ENV === "production" ? "" : "",
 };
 
 export default nextConfig;

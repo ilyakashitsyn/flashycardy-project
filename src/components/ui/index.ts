@@ -37,3 +37,11 @@ export { ThemeProvider } from "./theme-provider";
 export { Switch } from "./switch";
 export { BillingSwitch } from "./billing-switch";
 export { Footer } from "./footer";
+export { OptimizedImage } from "./optimized-image";
+export {
+  ResourcePreloader,
+  criticalResources,
+  authResources,
+  uiResources,
+} from "./resource-preloader";
+export { PageLoader, ImageLoader } from "./page-loader";
