@@ -25,8 +25,8 @@ import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { Progress } from "@/components/ui/progress";
 import { FlashcardItem } from "@/components/ui/flashcard-item";
-import { AddCardDialog } from "@/components/ui/add-card-dialog";
-import { EditDeckDialog } from "@/components/ui/edit-deck-dialog";
+import { LazyAddCardDialog } from "@/components/lazy";
+import { LazyEditDeckDialog } from "@/components/lazy";
 import { useAuth } from "@clerk/nextjs";
 import {
   Tooltip,
