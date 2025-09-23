@@ -6,7 +6,7 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
-import { Footer } from "@/components/ui/footer";
+import Footer from "@/mainpage/components/Footer";
 import {
   ResourcePreloader,
   criticalResources,
