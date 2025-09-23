@@ -1,9 +1,7 @@
 import type { Metadata } from "next";
-import { Poppins, Coming_Soon } from "next/font/google";
-import Link from "next/link";
+import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/ui/theme-provider";
-import { ThemeToggle } from "@/components/ui/theme-toggle";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
 import Footer from "@/mainpage/components/Footer";
@@ -11,8 +9,6 @@ import {
   ResourcePreloader,
   criticalResources,
 } from "@/components/ui/resource-preloader";
-import Script from "next/script";
-import Head from "next/head";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -20,14 +16,6 @@ const poppins = Poppins({
   weight: ["300", "400", "500", "600", "700"],
   display: "swap",
   preload: true,
-});
-
-const comingSoon = Coming_Soon({
-  variable: "--font-coming-soon",
-  subsets: ["latin"],
-  weight: ["400"],
-  display: "swap",
-  preload: false,
 });
 
 export const metadata: Metadata = {
@@ -60,7 +48,7 @@ export default function RootLayout({
         </noscript>
       </head>
       <body
-        className={`${poppins.variable} ${comingSoon.variable} font-sans antialiased`}
+        className={`${poppins.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
         <ResourcePreloader resources={criticalResources} />
@@ -89,11 +77,6 @@ export default function RootLayout({
             </div>
           </ThemeProvider>
         </ClerkProvider>
-        <Script
-          src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/js/all.min.js"
-          crossOrigin="anonymous"
-          strategy="lazyOnload"
-        />
       </body>
     </html>
   );

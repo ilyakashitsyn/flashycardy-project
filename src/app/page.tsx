@@ -1,21 +1,21 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, Suspense, lazy } from "react";
 import { useRouter } from "next/navigation";
-import { SignInButton, SignUpButton, useAuth } from "@clerk/nextjs";
-import Link from "next/link";
+import { useAuth } from "@clerk/nextjs";
 
-// Подключаем дизайн-токены и утилиты из @mainpage
-import "@/mainpage/index.css";
-
-// Импорт секций лендинга из @mainpage
-import Header from "@/mainpage/components/Header";
-import HeroSection from "@/mainpage/components/HeroSection";
-import FeaturesSection from "@/mainpage/components/FeaturesSection";
-import HowItWorksSection from "@/mainpage/components/HowItWorksSection";
-import PricingSection from "@/mainpage/components/PricingSection";
-import CtaSection from "@/mainpage/components/CtaSection";
-// import Footer from "@/mainpage/components/Footer";
+// Ленивая загрузка секций лендинга
+const HeroSection = lazy(() => import("@/mainpage/components/HeroSection"));
+const FeaturesSection = lazy(
+  () => import("@/mainpage/components/FeaturesSection")
+);
+const HowItWorksSection = lazy(
+  () => import("@/mainpage/components/HowItWorksSection")
+);
+const PricingSection = lazy(
+  () => import("@/mainpage/components/PricingSection")
+);
+const CtaSection = lazy(() => import("@/mainpage/components/CtaSection"));
 
 export default function Home() {
   const { isSignedIn, isLoaded } = useAuth();
@@ -51,19 +51,47 @@ export default function Home() {
 
   return (
     <div className="min-h-screen">
-      <Header />
       <div className="relative z-10">
-        {/* Переиспользуем готовые секции из @mainpage */}
-        {/* Оборачиваем CTA-кнопки в Clerk для функциональности */}
-        <HeroSection />
+        <Suspense
+          fallback={
+            <div className="h-96 bg-gradient-to-r from-primary/10 to-secondary/10 animate-pulse rounded-lg" />
+          }
+        >
+          <HeroSection />
+        </Suspense>
 
-        <FeaturesSection />
-        <HowItWorksSection />
-        <PricingSection />
+        <Suspense
+          fallback={
+            <div className="h-96 bg-gradient-to-r from-accent/10 to-primary/10 animate-pulse rounded-lg" />
+          }
+        >
+          <FeaturesSection />
+        </Suspense>
 
-        <CtaSection />
+        <Suspense
+          fallback={
+            <div className="h-96 bg-gradient-to-r from-secondary/10 to-accent/10 animate-pulse rounded-lg" />
+          }
+        >
+          <HowItWorksSection />
+        </Suspense>
+
+        <Suspense
+          fallback={
+            <div className="h-96 bg-gradient-to-r from-primary/10 to-accent/10 animate-pulse rounded-lg" />
+          }
+        >
+          <PricingSection />
+        </Suspense>
+
+        <Suspense
+          fallback={
+            <div className="h-32 bg-gradient-to-r from-accent/10 to-secondary/10 animate-pulse rounded-lg" />
+          }
+        >
+          <CtaSection />
+        </Suspense>
       </div>
-      {/* <Footer /> */}
     </div>
   );
 }

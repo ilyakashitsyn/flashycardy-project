@@ -54,19 +54,3 @@ export const criticalResources = [
     crossOrigin: "anonymous" as const,
   },
 ];
-
-// Ресурсы для компонентов аутентификации
-export const authResources = [
-  {
-    href: "https://images.clerk.dev/static/favicon.ico",
-    as: "image" as const,
-  },
-];
-
-// Ресурсы для компонентов UI
-export const uiResources = [
-  {
-    href: "https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap",
-    as: "style" as const,
-  },
-];
