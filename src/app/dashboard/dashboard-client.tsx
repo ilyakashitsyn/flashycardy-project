@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo, useCallback } from "react";
 import { DeckCard } from "@/components/ui/deck-card";
 import { LazyCreateDeckDialog } from "@/components/lazy/index";
 import { Loader2 } from "lucide-react";
@@ -36,11 +36,7 @@ export function DashboardClient({
   const [decks, setDecks] = useState<Deck[]>([]);
   const [loading, setLoading] = useState(true);
 
-  useEffect(() => {
-    fetchDecks();
-  }, []);
-
-  const fetchDecks = async () => {
+  const fetchDecks = useCallback(async () => {
     try {
       const response = await fetch("/api/decks");
       if (response.ok) {
@@ -52,14 +48,25 @@ export function DashboardClient({
     } finally {
       setLoading(false);
     }
-  };
+  }, []);
 
-  const handleDeckCreated = (deck: Deck) => {
-    setDecks([...decks, deck]);
-  };
+  useEffect(() => {
+    fetchDecks();
+  }, [fetchDecks]);
 
-  const canCreateDeck = hasUnlimitedDecks || (hasDeckLimit && decks.length < 3);
-  const showUpgradePrompt = !hasUnlimitedDecks && decks.length >= 3;
+  const handleDeckCreated = useCallback((deck: Deck) => {
+    setDecks((prevDecks) => [...prevDecks, deck]);
+  }, []);
+
+  const canCreateDeck = useMemo(
+    () => hasUnlimitedDecks || (hasDeckLimit && decks.length < 3),
+    [hasUnlimitedDecks, hasDeckLimit, decks.length]
+  );
+
+  const showUpgradePrompt = useMemo(
+    () => !hasUnlimitedDecks && decks.length >= 3,
+    [hasUnlimitedDecks, decks.length]
+  );
 
   if (loading) {
     return (
