@@ -1,4 +1,6 @@
 import { Button } from "./ui/button";
+import { SignUpButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 const CtaSection = () => {
   return (
@@ -20,16 +22,20 @@ const CtaSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center">
-          <Button variant="secondary" size="lg" className="text-lg px-8 py-6">
-            Create Account
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="text-lg px-8 py-6 bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20"
-          >
-            View Pricing
-          </Button>
+          <SignUpButton mode="modal">
+            <Button variant="secondary" size="lg" className="text-lg px-8 py-6">
+              Create Account
+            </Button>
+          </SignUpButton>
+          <Link href="/pricing">
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-lg px-8 py-6 bg-primary-foreground/10 border-primary-foreground/30 text-primary-foreground hover:bg-primary-foreground/20"
+            >
+              View Pricing
+            </Button>
+          </Link>
         </div>
       </div>
     </section>
