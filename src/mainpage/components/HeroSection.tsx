@@ -1,4 +1,5 @@
 import { Button } from "./ui/button";
+import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const HeroSection = () => {
   return (
@@ -32,16 +33,20 @@ const HeroSection = () => {
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
-          <Button variant="hero" size="lg" className="text-lg px-8 py-6">
-            Start Free
-          </Button>
-          <Button
-            variant="outline"
-            size="lg"
-            className="text-lg px-8 py-6 bg-background/20 backdrop-blur-sm border-background/40 hover:bg-background/30"
-          >
-            Sign In
-          </Button>
+          <SignUpButton mode="modal">
+            <Button variant="hero" size="lg" className="text-lg px-8 py-6">
+              Start Free
+            </Button>
+          </SignUpButton>
+          <SignInButton mode="modal">
+            <Button
+              variant="outline"
+              size="lg"
+              className="text-lg px-8 py-6 bg-background/20 backdrop-blur-sm border-background/40 hover:bg-background/30"
+            >
+              Sign In
+            </Button>
+          </SignInButton>
         </div>
 
         <p className="text-sm text-muted-foreground">
