@@ -7,6 +7,8 @@ import {
   CardTitle,
 } from "./ui/card";
 import { Check } from "lucide-react";
+import { SignUpButton } from "@clerk/nextjs";
+import Link from "next/link";
 
 const PricingSection = () => {
   const plans = [
@@ -21,7 +23,7 @@ const PricingSection = () => {
     },
     {
       name: "Pro",
-      price: "$9.99",
+      price: "$10",
       period: "/mo",
       popular: true,
       features: [
@@ -89,13 +91,27 @@ const PricingSection = () => {
                   ))}
                 </div>
 
-                <Button
-                  variant={plan.buttonVariant}
-                  className="w-full"
-                  size="lg"
-                >
-                  {plan.buttonText}
-                </Button>
+                {plan.buttonText === "Start Free" ? (
+                  <SignUpButton mode="modal">
+                    <Button
+                      variant={plan.buttonVariant}
+                      className="w-full"
+                      size="lg"
+                    >
+                      {plan.buttonText}
+                    </Button>
+                  </SignUpButton>
+                ) : (
+                  <Link href="/pricing">
+                    <Button
+                      variant={plan.buttonVariant}
+                      className="w-full"
+                      size="lg"
+                    >
+                      {plan.buttonText}
+                    </Button>
+                  </Link>
+                )}
               </CardContent>
             </Card>
           ))}
