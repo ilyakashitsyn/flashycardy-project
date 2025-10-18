@@ -83,22 +83,30 @@
   background: var(--pricing-active-bg) !important;
 }
 
-/* Все кнопки в контейнере */
+/* Все кнопки в контейнере - стили как у приложения */
 .pricingContainer :global(button) {
   background: var(--pricing-primary) !important;
   color: var(--pricing-primary-foreground) !important;
   border: none !important;
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-  padding: 12px 24px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
   transition: all 0.2s ease !important;
   width: 100% !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
 }
 
 .pricingContainer :global(button:hover) {
   background: color-mix(in srgb, var(--pricing-primary) 90%, black) !important;
-  transform: translateY(-1px) !important;
+  transform: none !important;
 }
 
 /* Все заголовки */
@@ -395,18 +403,26 @@
   transform: none !important;
 }
 
-/* Возвращаем стили для кнопки Subscribe внутри footer */
+/* Стили для кнопки Subscribe внутри footer - соответствуют стилям приложения */
 .pricingContainer :global(.cl-pricingTableCardFooter) :global(button),
 .pricingContainer :global([class*="pricingTableCardFooter"]) :global(button) {
   background: var(--pricing-primary) !important;
   color: var(--pricing-primary-foreground) !important;
   border: none !important;
-  border-radius: 8px !important;
-  font-weight: 600 !important;
-  padding: 12px 24px !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
   transition: all 0.2s ease !important;
   width: 100% !important;
-  font-size: 16px !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
 }
 
 .pricingContainer :global(.cl-pricingTableCardFooter) :global(button:hover),
@@ -414,8 +430,39 @@
   :global([class*="pricingTableCardFooter"])
   :global(button:hover) {
   background: color-mix(in srgb, var(--pricing-primary) 90%, black) !important;
-  transform: translateY(-1px) !important;
-  border-radius: 8px !important;
+  transform: none !important;
+  border-radius: 6px !important;
+}
+
+/* Дополнительные стили для всех кнопок Subscribe в PricingTable */
+.pricingContainer :global([data-testid*="subscribe"]) :global(button),
+.pricingContainer :global([class*="subscribe"]) :global(button),
+.pricingContainer :global([class*="Subscribe"]) :global(button) {
+  background: var(--pricing-primary) !important;
+  color: var(--pricing-primary-foreground) !important;
+  border: none !important;
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  padding: 8px 16px !important;
+  transition: all 0.2s ease !important;
+  width: 100% !important;
+  font-size: 14px !important;
+  height: 40px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 8px !important;
+  white-space: nowrap !important;
+  text-decoration: none !important;
+  cursor: pointer !important;
+}
+
+.pricingContainer :global([data-testid*="subscribe"]) :global(button:hover),
+.pricingContainer :global([class*="subscribe"]) :global(button:hover),
+.pricingContainer :global([class*="Subscribe"]) :global(button:hover) {
+  background: color-mix(in srgb, var(--pricing-primary) 90%, black) !important;
+  transform: none !important;
+  border-radius: 6px !important;
 }
 
 /* Адаптивность */

@@ -3,6 +3,7 @@
 import { SignIn, SignUp } from "@clerk/nextjs";
 import { useState } from "react";
 import { Dialog, DialogContent, DialogTitle } from "./dialog";
+import { Button } from "./button";
 
 interface AuthDialogProps {
   open: boolean;
@@ -29,26 +30,20 @@ export function AuthDialog({
         </DialogTitle>
 
         <div className="flex gap-2 mb-4 justify-center">
-          <button
+          <Button
             onClick={() => handleModeChange("signin")}
-            className={`px-4 py-2 rounded-md transition-colors text-sm ${
-              mode === "signin"
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+            variant={mode === "signin" ? "default" : "outline"}
+            size="sm"
           >
             Sign In
-          </button>
-          <button
+          </Button>
+          <Button
             onClick={() => handleModeChange("signup")}
-            className={`px-4 py-2 rounded-md transition-colors text-sm ${
-              mode === "signup"
-                ? "bg-primary text-primary-foreground"
-                : "bg-muted text-muted-foreground hover:bg-muted/80"
-            }`}
+            variant={mode === "signup" ? "default" : "outline"}
+            size="sm"
           >
             Sign Up
-          </button>
+          </Button>
         </div>
 
         <div className="mt-4">
@@ -57,11 +52,18 @@ export function AuthDialog({
               routing="hash"
               appearance={{
                 elements: {
-                  formButtonPrimary: "bg-primary hover:bg-primary/90",
-                  card: "shadow-none border-0",
+                  formButtonPrimary:
+                    "bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-10 px-4 py-2 rounded-md transition-colors",
+                  card: "shadow-none border-0 bg-background",
                   rootBox: "w-full",
                   headerTitle: "hidden",
                   headerSubtitle: "hidden",
+                  formFieldInput: "bg-background border-input text-foreground",
+                  formFieldLabel: "text-foreground",
+                  footerActionLink: "text-primary hover:text-primary/80",
+                  identityPreviewText: "text-foreground",
+                  formFieldSuccessText: "text-green-600",
+                  formFieldErrorText: "text-destructive",
                 },
               }}
             />
@@ -70,11 +72,18 @@ export function AuthDialog({
               routing="hash"
               appearance={{
                 elements: {
-                  formButtonPrimary: "bg-primary hover:bg-primary/90",
-                  card: "shadow-none border-0",
+                  formButtonPrimary:
+                    "bg-primary hover:bg-primary/90 text-primary-foreground font-medium h-10 px-4 py-2 rounded-md transition-colors",
+                  card: "shadow-none border-0 bg-background",
                   rootBox: "w-full",
                   headerTitle: "hidden",
                   headerSubtitle: "hidden",
+                  formFieldInput: "bg-background border-input text-foreground",
+                  formFieldLabel: "text-foreground",
+                  footerActionLink: "text-primary hover:text-primary/80",
+                  identityPreviewText: "text-foreground",
+                  formFieldSuccessText: "text-green-600",
+                  formFieldErrorText: "text-destructive",
                 },
               }}
             />
