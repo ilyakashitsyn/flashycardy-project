@@ -24,7 +24,7 @@ export function AuthDialog({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-[25.1rem] !pl-0 !pr-0 !pb-0">
         <DialogTitle className="sr-only">
           {mode === "signin" ? "Sign In" : "Sign Up"}
         </DialogTitle>
