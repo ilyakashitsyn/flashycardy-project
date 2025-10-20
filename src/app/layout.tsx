@@ -5,10 +5,6 @@ import { ThemeProvider } from "@/components/ui/theme-provider";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Header } from "@/components/ui/header";
 import Footer from "@/mainpage/components/Footer";
-import {
-  ResourcePreloader,
-  criticalResources,
-} from "@/components/ui/resource-preloader";
 
 const poppins = Poppins({
   variable: "--font-poppins",
@@ -51,7 +47,6 @@ export default function RootLayout({
         className={`${poppins.variable} font-sans antialiased`}
         suppressHydrationWarning
       >
-        <ResourcePreloader resources={criticalResources} />
         <ClerkProvider
           appearance={{
             baseTheme: undefined,

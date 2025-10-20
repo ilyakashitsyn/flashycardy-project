@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { SignUpButton } from "@clerk/nextjs";
 import Link from "next/link";
 
