@@ -4,7 +4,7 @@ import {
   CardDescription,
   CardHeader,
   CardTitle,
-} from "./ui/card";
+} from "@/components/ui/card";
 import { Zap, BarChart3, Smartphone } from "lucide-react";
 
 const FeaturesSection = () => {

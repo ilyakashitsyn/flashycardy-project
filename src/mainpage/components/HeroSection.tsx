@@ -1,4 +1,4 @@
-import { Button } from "./ui/button";
+import { Button } from "@/components/ui/button";
 import { SignInButton, SignUpButton } from "@clerk/nextjs";
 
 const HeroSection = () => {
@@ -34,7 +34,7 @@ const HeroSection = () => {
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-6">
           <SignUpButton mode="modal">
-            <Button variant="hero" size="lg" className="text-lg px-8 py-6">
+            <Button variant="default" size="lg" className="text-lg px-8 py-6">
               Start Free
             </Button>
           </SignUpButton>
