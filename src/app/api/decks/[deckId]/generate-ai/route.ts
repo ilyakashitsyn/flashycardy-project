@@ -77,75 +77,68 @@ async function generateAICardsWithHuggingFace(
   title: string,
   description: string
 ) {
-  if (!HUGGINGFACE_API_KEY) {
-    // Fallback to basic cards if Hugging Face API key is not configured
+  // Проверяем наличие и валидность API ключа
+  if (
+    !HUGGINGFACE_API_KEY ||
+    HUGGINGFACE_API_KEY === "your-api-key-here" ||
+    HUGGINGFACE_API_KEY.length < 10
+  ) {
+    console.log(
+      "Hugging Face API key не настроен или недействителен, используем fallback карточки"
+    );
     return generateBasicFallbackCards(title, description);
   }
 
-  const maxRetries = 2;
-  let lastError: Error | null = null;
+  // Используем только одну рабочую модель
+  const model = "katanemo/Arch-Router-1.5B";
 
-  for (let attempt = 0; attempt <= maxRetries; attempt++) {
-    try {
-      const prompt = createPromptForDeck(title, description);
+  try {
+    const prompt = createPromptForDeck(title, description);
 
-      // Initialize Hugging Face client
-      const client = new InferenceClient(HUGGINGFACE_API_KEY);
+    // Initialize Hugging Face client
+    const client = new InferenceClient(HUGGINGFACE_API_KEY);
 
-      // Use DeepSeek-R1 model for text generation
-      const response = await client.textGeneration({
-        model: "deepseek-ai/DeepSeek-R1",
-        inputs: prompt,
-        parameters: {
-          temperature: 0.7,
-          max_new_tokens: 2000,
-          return_full_text: false,
-        },
-      });
+    console.log(`Using model: ${model}`);
 
-      const content = response.generated_text;
+    // Use the model for text generation
+    const response = await client.textGeneration({
+      model: model,
+      inputs: prompt,
+      parameters: {
+        temperature: 0.7,
+        max_new_tokens: 1000,
+        return_full_text: false,
+        do_sample: true,
+      },
+    });
 
-      if (!content) {
-        throw new Error("No content received from Hugging Face");
-      }
+    const content = response.generated_text;
 
-      // Parse the JSON response
-      const parsedCards = JSON.parse(content);
-
-      // Validate and ensure we have exactly 20 cards
-      if (Array.isArray(parsedCards.cards) && parsedCards.cards.length === 20) {
-        return parsedCards.cards;
-      } else {
-        throw new Error("Invalid card format received from Hugging Face");
-      }
-    } catch (error) {
-      lastError = error as Error;
-      console.error(`Hugging Face API attempt ${attempt + 1} failed:`, error);
-
-      // If this is the last attempt or it's a non-retryable error, break
-      if (
-        attempt === maxRetries ||
-        (error instanceof Error && error.message.includes("rate limit"))
-      ) {
-        break;
-      }
-
-      // Wait before retrying (exponential backoff)
-      await new Promise((resolve) =>
-        setTimeout(resolve, Math.pow(2, attempt) * 1000)
-      );
+    if (!content) {
+      throw new Error("No content received from Hugging Face");
     }
+
+    // Parse the JSON response
+    const parsedCards = JSON.parse(content);
+
+    // Validate and ensure we have exactly 20 cards
+    if (Array.isArray(parsedCards.cards) && parsedCards.cards.length === 20) {
+      console.log(`Successfully generated cards using model: ${model}`);
+      return parsedCards.cards;
+    } else {
+      throw new Error("Invalid card format received from Hugging Face");
+    }
+  } catch (error) {
+    console.error(`Model ${model} failed:`, error);
+    console.log("Hugging Face model failed, using fallback cards");
   }
 
-  // If we get here, all attempts failed
-  console.error("All Hugging Face API attempts failed. Using fallback cards.");
-  console.error("Last error:", lastError);
-
+  // If we get here, the model failed
   const fallbackCards = generateBasicFallbackCards(title, description);
 
   // Add metadata about fallback usage
   (fallbackCards as any).__fallback = true;
-  (fallbackCards as any).__error = lastError?.message || "Unknown error";
+  (fallbackCards as any).__error = "Model failed";
 
   return fallbackCards;
 }
