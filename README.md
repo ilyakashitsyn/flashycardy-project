@@ -29,7 +29,7 @@
 
 ### 🤖 ИИ-генерация карточек
 
-- Автоматическая генерация карточек с помощью OpenAI API
+- Автоматическая генерация карточек с помощью Hugging Face API
 - Поддержка различных категорий (наука, языки, общие темы)
 - Генерация до 20 карточек за раз
 - Доступно только в Pro плане
@@ -184,8 +184,8 @@ __tests__/                       # Тесты
    # Database
    DATABASE_URL=your_neon_database_url
 
-   # OpenAI (для ИИ генерации)
-   OPENAI_API_KEY=your_openai_api_key
+   # Hugging Face (для ИИ генерации)
+   HUGGINGFACE_API_KEY=your_huggingface_api_key
    ```
 
 4. **Настройте базу данных**

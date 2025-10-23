@@ -2,10 +2,10 @@ import { NextRequest, NextResponse } from "next/server";
 import { auth } from "@clerk/nextjs/server";
 import { db } from "@/db";
 import { cardsTable } from "@/db/schema";
+import { InferenceClient } from "@huggingface/inference";
 
-// OpenAI API configuration
-const OPENAI_API_KEY = process.env.OPENAI_API_KEY;
-const OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
+// Hugging Face API configuration
+const HUGGINGFACE_API_KEY = process.env.HUGGINGFACE_API_KEY;
 
 export async function POST(
   request: NextRequest,
@@ -33,8 +33,11 @@ export async function POST(
       );
     }
 
-    // Генерируем 20 карточек с помощью OpenAI API
-    const generatedCards = await generateAICardsWithOpenAI(title, description);
+    // Генерируем 20 карточек с помощью Hugging Face API
+    const generatedCards = await generateAICardsWithHuggingFace(
+      title,
+      description
+    );
 
     // Сохраняем карточки в базу данных
     const savedCards = await Promise.all(
@@ -70,9 +73,12 @@ export async function POST(
   }
 }
 
-async function generateAICardsWithOpenAI(title: string, description: string) {
-  if (!OPENAI_API_KEY) {
-    // Fallback to basic cards if OpenAI API key is not configured
+async function generateAICardsWithHuggingFace(
+  title: string,
+  description: string
+) {
+  if (!HUGGINGFACE_API_KEY) {
+    // Fallback to basic cards if Hugging Face API key is not configured
     return generateBasicFallbackCards(title, description);
   }
 
@@ -83,61 +89,24 @@ async function generateAICardsWithOpenAI(title: string, description: string) {
     try {
       const prompt = createPromptForDeck(title, description);
 
-      const response = await fetch(OPENAI_API_URL, {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${OPENAI_API_KEY}`,
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          model: "gpt-3.5-turbo",
-          messages: [
-            {
-              role: "system",
-              content:
-                "You are a helpful assistant that creates educational flashcards. Always respond with valid JSON only.",
-            },
-            {
-              role: "user",
-              content: prompt,
-            },
-          ],
+      // Initialize Hugging Face client
+      const client = new InferenceClient(HUGGINGFACE_API_KEY);
+
+      // Use DeepSeek-R1 model for text generation
+      const response = await client.textGeneration({
+        model: "deepseek-ai/DeepSeek-R1",
+        inputs: prompt,
+        parameters: {
           temperature: 0.7,
-          max_tokens: 2000,
-        }),
+          max_new_tokens: 2000,
+          return_full_text: false,
+        },
       });
 
-      if (!response.ok) {
-        let errorMessage = `OpenAI API error: ${response.status}`;
-
-        // Handle specific error codes
-        switch (response.status) {
-          case 429:
-            errorMessage =
-              "OpenAI API rate limit exceeded. Please try again in a few minutes.";
-            break;
-          case 401:
-            errorMessage = "OpenAI API key is invalid or expired.";
-            break;
-          case 403:
-            errorMessage =
-              "OpenAI API access denied. Please check your API key permissions.";
-            break;
-          case 500:
-            errorMessage = "OpenAI API server error. Please try again later.";
-            break;
-          default:
-            errorMessage = `OpenAI API error (${response.status}). Please try again.`;
-        }
-
-        throw new Error(errorMessage);
-      }
-
-      const data = await response.json();
-      const content = data.choices[0]?.message?.content;
+      const content = response.generated_text;
 
       if (!content) {
-        throw new Error("No content received from OpenAI");
+        throw new Error("No content received from Hugging Face");
       }
 
       // Parse the JSON response
@@ -147,11 +116,11 @@ async function generateAICardsWithOpenAI(title: string, description: string) {
       if (Array.isArray(parsedCards.cards) && parsedCards.cards.length === 20) {
         return parsedCards.cards;
       } else {
-        throw new Error("Invalid card format received from OpenAI");
+        throw new Error("Invalid card format received from Hugging Face");
       }
     } catch (error) {
       lastError = error as Error;
-      console.error(`OpenAI API attempt ${attempt + 1} failed:`, error);
+      console.error(`Hugging Face API attempt ${attempt + 1} failed:`, error);
 
       // If this is the last attempt or it's a non-retryable error, break
       if (
@@ -169,7 +138,7 @@ async function generateAICardsWithOpenAI(title: string, description: string) {
   }
 
   // If we get here, all attempts failed
-  console.error("All OpenAI API attempts failed. Using fallback cards.");
+  console.error("All Hugging Face API attempts failed. Using fallback cards.");
   console.error("Last error:", lastError);
 
   const fallbackCards = generateBasicFallbackCards(title, description);
@@ -959,7 +928,7 @@ function generateGeneralCards(title: string, description: string) {
   return generalCards;
 }
 
-// Fallback function for when OpenAI is not available
+// Fallback function for when Hugging Face is not available
 function generateBasicFallbackCards(title: string, description: string) {
   const isLanguage =
     /language|portuguese|spanish|french|german|italian|english|vocabulary|grammar|verbs|nouns|pronunciation/i.test(
