@@ -89,48 +89,69 @@ async function generateAICardsWithHuggingFace(
     return generateBasicFallbackCards(title, description);
   }
 
-  // Используем только одну рабочую модель
-  const model = "katanemo/Arch-Router-1.5B";
+  // Список моделей для попытки (в порядке приоритета)
+  const models = [
+    "deepseek-ai/DeepSeek-R1",
+    "facebook/MobileLLM-Pro",
+    "gpt2",
+    "distilgpt2",
+  ];
 
-  try {
-    const prompt = createPromptForDeck(title, description);
+  for (const model of models) {
+    try {
+      const prompt = createPromptForDeck(title, description);
 
-    // Initialize Hugging Face client
-    const client = new InferenceClient(HUGGINGFACE_API_KEY);
+      // Initialize Hugging Face client with new Inference Providers approach
+      const client = new InferenceClient(HUGGINGFACE_API_KEY);
 
-    console.log(`Using model: ${model}`);
+      console.log(`Trying model: ${model}`);
 
-    // Use the model for text generation
-    const response = await client.textGeneration({
-      model: model,
-      inputs: prompt,
-      parameters: {
-        temperature: 0.7,
-        max_new_tokens: 1000,
-        return_full_text: false,
-        do_sample: true,
-      },
-    });
+      // Use the model for text generation with improved parameters
+      const response = await client.textGeneration({
+        model: model,
+        inputs: prompt,
+        parameters: {
+          temperature: 0.7,
+          max_new_tokens: 1500,
+          return_full_text: false,
+          do_sample: true,
+          top_p: 0.9,
+          repetition_penalty: 1.1,
+        },
+      });
 
-    const content = response.generated_text;
+      const content = response.generated_text;
 
-    if (!content) {
-      throw new Error("No content received from Hugging Face");
+      if (!content) {
+        throw new Error("No content received from Hugging Face");
+      }
+
+      // Parse the JSON response
+      const parsedCards = JSON.parse(content);
+
+      // Validate and ensure we have exactly 20 cards
+      if (Array.isArray(parsedCards.cards) && parsedCards.cards.length === 20) {
+        console.log(`Successfully generated cards using model: ${model}`);
+        return parsedCards.cards;
+      } else {
+        throw new Error("Invalid card format received from Hugging Face");
+      }
+    } catch (error) {
+      console.error(`Model ${model} failed:`, error);
+
+      // Логируем специфичные ошибки для новых моделей
+      if (model.includes("DeepSeek") || model.includes("MobileLLM")) {
+        console.log(
+          `Advanced model ${model} failed, trying fallback models...`
+        );
+      }
+
+      if (model === models[models.length - 1]) {
+        console.log("All Hugging Face models failed, using fallback cards");
+      } else {
+        console.log(`Trying next model...`);
+      }
     }
-
-    // Parse the JSON response
-    const parsedCards = JSON.parse(content);
-
-    // Validate and ensure we have exactly 20 cards
-    if (Array.isArray(parsedCards.cards) && parsedCards.cards.length === 20) {
-      console.log(`Successfully generated cards using model: ${model}`);
-      return parsedCards.cards;
-    } else {
-      throw new Error("Invalid card format received from Hugging Face");
-    }
-  } catch (error) {
-    console.error(`Model ${model} failed:`, error);
-    console.log("Hugging Face model failed, using fallback cards");
   }
 
   // If we get here, the model failed
@@ -150,41 +171,39 @@ function createPromptForDeck(title: string, description: string) {
     );
 
   if (isLanguage) {
-    return `Create exactly 20 unique flashcards for learning ${title}. Each card should have a different word or phrase in the target language on the front and its English translation on the back.
+    return `You are an expert language teacher. Create exactly 20 unique flashcards for learning ${title}. 
 
-Requirements:
-- Generate 20 DIFFERENT words/phrases (no duplicates)
-- Front: word/phrase in the target language
-- Back: English translation
-- Focus on basic, essential vocabulary for beginners
-- Include greetings, common phrases, numbers, colors, family members, basic verbs, etc.
-- Make sure each card is unique and useful for learning
+Instructions:
+- Each card should have a word or phrase in the target language on the front
+- English translation on the back
+- Focus on essential vocabulary for beginners
+- Include greetings, common phrases, numbers, colors, family members, basic verbs
+- Make each card unique and practical for learning
+- Use short, clear phrases rather than full sentences
 
-Respond with JSON only in this exact format:
+Generate exactly 20 cards in this JSON format:
 {
   "cards": [
     {"front": "word1", "back": "translation1"},
-    {"front": "word2", "back": "translation2"},
-    ...
+    {"front": "word2", "back": "translation2"}
   ]
 }`;
   } else {
-    return `Create exactly 20 unique flashcards for learning about ${title}. Each card should have a question on the front and a clear, concise answer on the back.
+    return `You are an expert educator. Create exactly 20 unique flashcards for learning about ${title}. 
 
-Requirements:
-- Generate 20 DIFFERENT questions (no duplicates)
-- Front: specific question about the topic
-- Back: clear, educational answer
-- Questions should cover different aspects of the subject
-- Answers should be informative but concise
-- Make sure each card is unique and valuable for learning
+Instructions:
+- Each card should have a specific question on the front
+- Clear, educational answer on the back
+- Cover different aspects of the subject
+- Make answers informative but concise
+- Focus on key concepts and practical knowledge
+- Use short, clear questions and answers
 
-Respond with JSON only in this exact format:
+Generate exactly 20 cards in this JSON format:
 {
   "cards": [
     {"front": "question1", "back": "answer1"},
-    {"front": "question2", "back": "answer2"},
-    ...
+    {"front": "question2", "back": "answer2"}
   ]
 }`;
   }
