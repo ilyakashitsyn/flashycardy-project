@@ -91,10 +91,9 @@ async function generateAICardsWithHuggingFace(
 
   // Список моделей для попытки (в порядке приоритета)
   const models = [
-    "deepseek-ai/DeepSeek-R1",
-    "facebook/MobileLLM-Pro",
-    "gpt2",
-    "distilgpt2",
+    "katanemo/Arch-Router-1.5B",
+    "openai/gpt-oss-20b",
+    "zai-org/GLM-4.6",
   ];
 
   for (const model of models) {
@@ -154,12 +153,12 @@ async function generateAICardsWithHuggingFace(
     }
   }
 
-  // If we get here, the model failed
+  // If we get here, all Hugging Face models failed
   const fallbackCards = generateBasicFallbackCards(title, description);
 
   // Add metadata about fallback usage
   (fallbackCards as any).__fallback = true;
-  (fallbackCards as any).__error = "Model failed";
+  (fallbackCards as any).__error = "All Hugging Face models failed";
 
   return fallbackCards;
 }
