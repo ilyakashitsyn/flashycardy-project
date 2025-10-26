@@ -105,6 +105,14 @@
 - **React Day Picker** - выбор дат
 - **React Resizable Panels** - изменяемые панели
 
+### Развертывание и инфраструктура
+
+- **Vercel** - платформа развертывания и хостинг
+- **Neon** - PostgreSQL база данных в облаке
+- **Clerk** - аутентификация и управление пользователями
+- **Hugging Face** - ИИ API для генерации карточек
+- **GitHub** - система контроля версий и CI/CD
+
 ## 📁 Структура проекта
 
 ```
@@ -153,6 +161,8 @@ __tests__/                       # Тесты
 - Node.js 18.18.0+ или 20.0.0+
 - PostgreSQL база данных (рекомендуется Neon)
 - Аккаунт Clerk для аутентификации
+- Аккаунт Vercel для развертывания (опционально)
+- Vercel CLI для локального развертывания (опционально)
 
 ### Установка
 
@@ -207,6 +217,37 @@ __tests__/                       # Тесты
    ```
 
 Приложение будет доступно по адресу `http://localhost:3000`
+
+### Развертывание на Vercel
+
+1. **Подключите репозиторий к Vercel**
+
+   - Войдите в [Vercel Dashboard](https://vercel.com/dashboard)
+   - Нажмите "New Project" и выберите ваш GitHub репозиторий
+
+2. **Настройте переменные окружения в Vercel**
+
+   - Перейдите в Settings → Environment Variables
+   - Добавьте все переменные из `.env.local`:
+     ```
+     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+     CLERK_SECRET_KEY
+     NEXT_PUBLIC_CLERK_SIGN_IN_URL
+     NEXT_PUBLIC_CLERK_SIGN_UP_URL
+     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL
+     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
+     DATABASE_URL
+     HUGGINGFACE_API_KEY
+     ```
+
+3. **Настройте базу данных**
+
+   - Создайте базу данных в [Neon Console](https://console.neon.tech)
+   - Скопируйте DATABASE_URL в переменные окружения Vercel
+
+4. **Развертывание**
+   - Vercel автоматически развернет приложение при push в main ветку
+   - Приложение будет доступно по URL вида `https://your-app.vercel.app`
 
 ## 📊 API Endpoints
 
@@ -277,6 +318,12 @@ npm run test:coverage
 
 - `npm run use-node20` - Переключение на Node.js 20
 
+### Развертывание
+
+- `vercel` - Развертывание на Vercel (требует Vercel CLI)
+- `vercel --prod` - Развертывание в продакшен
+- `vercel env pull` - Скачивание переменных окружения из Vercel
+
 ## 🗄️ Схема базы данных
 
 ### Таблицы
@@ -305,5 +352,5 @@ npm run test:coverage
 ---
 
 **Статус**: В разработке ✅  
-**Версия**: 0.1.0  
+**Версия**: 1.1.0  
 **Последнее обновление**: Октябрь 2025
