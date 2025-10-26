@@ -14,7 +14,8 @@ jobs:
       NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
       CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
       DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+      CLERK_USER_ID: ${{ secrets.CLERK_USER_ID }}
 
     steps:
       - name: Checkout code
@@ -49,6 +50,13 @@ jobs:
     needs: build-and-test
     runs-on: ubuntu-latest
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+
+    env:
+      NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+      CLERK_SECRET_KEY: ${{ secrets.CLERK_SECRET_KEY }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      HUGGINGFACE_API_KEY: ${{ secrets.HUGGINGFACE_API_KEY }}
+      CLERK_USER_ID: ${{ secrets.CLERK_USER_ID }}
 
     steps:
       - name: Download build artifacts
