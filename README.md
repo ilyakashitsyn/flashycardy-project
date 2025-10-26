@@ -1,6 +1,375 @@
-# FlashyCardy - Умные карточки для изучения
+# FlashyCardy - Smart Learning Cards
+
+<div align="center">
+  <h3>🌐 Language</h3>
+  <p>
+    <a href="#english">🇺🇸 english</a> | 
+    <a href="#russian">🇷🇺 russian</a>
+  </p>
+</div>
+
+---
+
+## 🇺🇸 English {#english}
+
+Modern web application for creating, managing and studying flashcards with AI generation support and progress tracking.
+
+You can check out the ready-made solution on [Vercel](https://flashycardy-project.vercel.app/)
+
+### ✨ Features
+
+#### 🔐 Authentication & Authorization
+
+- Sign in and registration through Clerk
+- Automatic redirect after login
+- Protected routes with middleware
+- User and profile management
+
+#### 📚 Deck Management
+
+- Create decks with name, description and emoji
+- View user's deck list
+- Display statistics (card count, progress)
+- Edit and delete decks
+- Subscription plan limitations
+
+#### 🎯 Learning System
+
+- Interactive card studying
+- Learning progress tracking
+- Study session system
+- Card statistics (known/unknown)
+- Random card order
+
+#### 🤖 AI Card Generation
+
+- Automatic card generation using Hugging Face API
+- Support for various categories (science, languages, general topics)
+- Generate up to 20 cards at once
+- Available only in Pro plan
+
+#### 💳 Subscription System
+
+- Free plan (3 decks)
+- Pro plan (unlimited decks + AI)
+- Clerk Billing integration
+- Feature protection by plans
+
+#### 🎨 UI/UX
+
+- Modern design with Tailwind CSS
+- Dark and light theme support
+- Responsive design for all devices
+- Lazy loading components
+- Animations and transitions
+
+#### 🧪 Testing
+
+- Full test coverage (Jest + Testing Library)
+- Component, API and database tests
+- Code coverage setup 70%
+- Automated testing
+
+### 🛠 Technologies
+
+#### Frontend
+
+- **Next.js 15** - React framework with App Router
+- **React 19** - UI library
+- **TypeScript** - typing
+- **Tailwind CSS** - styling
+- **next-themes** - theme management
+
+#### UI Components
+
+- **Radix UI** - accessible components (Dialog, Dropdown, Tooltip, etc.)
+- **Lucide React** - icons
+- **class-variance-authority** - style variants
+- **clsx** + **tailwind-merge** - CSS utilities
+
+#### Authentication & Billing
+
+- **Clerk** - authentication and user management
+- **Clerk Billing** - subscription system
+
+#### Database
+
+- **Neon** - PostgreSQL in the cloud
+- **Drizzle ORM** - typed ORM
+- **@neondatabase/serverless** - Neon driver
+
+#### Forms & Validation
+
+- **React Hook Form** - form management
+- **@hookform/resolvers** - validation resolvers
+- **Zod** - validation schema
+
+#### Testing
+
+- **Jest** - testing framework
+- **@testing-library/react** - React component testing
+- **@testing-library/jest-dom** - additional matchers
+- **@testing-library/user-event** - user action simulation
+
+#### Additional Libraries
+
+- **Sonner** - notifications
+- **Recharts** - charts and diagrams
+- **Embla Carousel** - carousels
+- **React Day Picker** - date picker
+- **React Resizable Panels** - resizable panels
+
+#### Deployment & Infrastructure
+
+- **Vercel** - deployment platform and hosting
+- **Neon** - PostgreSQL cloud database
+- **Clerk** - authentication and user management
+- **Hugging Face** - AI API for card generation
+- **GitHub** - version control and CI/CD
+
+### 📁 Project Structure
+
+```
+src/
+├── app/                          # Next.js App Router
+│   ├── api/                      # API endpoints
+│   │   ├── cards/[cardId]/       # Card management
+│   │   ├── decks/                # CRUD decks
+│   │   │   └── [deckId]/
+│   │   │       ├── cards/        # Deck cards
+│   │   │       └── generate-ai/  # AI generation
+│   │   └── study/[deckId]/       # Study sessions
+│   ├── dashboard/                # Control panel
+│   ├── decks/[deckId]/           # Deck pages
+│   │   ├── edit/                 # Editing
+│   │   └── study/                # Studying
+│   ├── pricing/                  # Pricing page
+│   └── card-demo/                # Card demo
+├── components/ui/                # UI components
+│   ├── auth-*.tsx               # Authentication
+│   ├── billing-*.tsx            # Billing
+│   ├── *-dialog.tsx             # Dialogs
+│   └── ...                      # Other components
+├── mainpage/                     # Landing page
+│   ├── components/               # Landing sections
+│   ├── hooks/                    # Custom hooks
+│   └── pages/                    # Landing pages
+├── db/                          # Database
+│   ├── schema.ts                # Drizzle schema
+│   └── index.ts                 # DB configuration
+├── lib/                         # Utilities
+└── types/                       # TypeScript types
+
+__tests__/                       # Tests
+├── api/                         # API tests
+├── components/                  # Component tests
+├── db/                          # DB tests
+├── middleware/                  # Middleware tests
+└── utils/                       # Utility tests
+```
+
+### 🚀 Installation & Setup
+
+#### Prerequisites
+
+- Node.js 18.18.0+ or 20.0.0+
+- PostgreSQL database (Neon recommended)
+- Clerk account for authentication
+- Vercel account for deployment (optional)
+- Vercel CLI for local deployment (optional)
+
+#### Installation
+
+1. **Clone the repository**
+
+   ```bash
+   git clone <repository-url>
+   cd flashycardy-project
+   ```
+
+2. **Install dependencies**
+
+   ```bash
+   npm install
+   ```
+
+3. **Set up environment variables**
+   Create `.env.local` file:
+
+   ```bash
+   # Clerk Authentication
+   NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=your_clerk_publishable_key
+   CLERK_SECRET_KEY=your_clerk_secret_key
+   NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
+   NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/dashboard
+   NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/dashboard
+
+   # Database
+   DATABASE_URL=your_neon_database_url
+
+   # Hugging Face (for AI generation)
+   HUGGINGFACE_API_KEY=your_huggingface_api_key
+   ```
+
+4. **Set up database**
+
+   ```bash
+   # Generate migrations
+   npm run db:generate
+
+   # Apply migrations
+   npm run db:migrate
+
+   # Fill with test data (optional)
+   npm run db:seed
+   ```
+
+5. **Run the application**
+   ```bash
+   npm run dev
+   ```
+
+The application will be available at `http://localhost:3000`
+
+### Deploy to Vercel
+
+1. **Connect repository to Vercel**
+
+   - Sign in to [Vercel Dashboard](https://vercel.com/dashboard)
+   - Click "New Project" and select your GitHub repository
+
+2. **Set up environment variables in Vercel**
+
+   - Go to Settings → Environment Variables
+   - Add all variables from `.env.local`:
+     ```
+     NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+     CLERK_SECRET_KEY
+     NEXT_PUBLIC_CLERK_SIGN_IN_URL
+     NEXT_PUBLIC_CLERK_SIGN_UP_URL
+     NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL
+     NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL
+     DATABASE_URL
+     HUGGINGFACE_API_KEY
+     ```
+
+3. **Set up database**
+
+   - Create database in [Neon Console](https://console.neon.tech)
+   - Copy DATABASE_URL to Vercel environment variables
+
+4. **Deployment**
+   - Vercel will automatically deploy the app when pushing to main branch
+   - The app will be available at URL like `https://your-app.vercel.app`
+
+### 📊 API Endpoints
+
+#### Decks
+
+- `GET /api/decks` - Get user's decks
+- `POST /api/decks` - Create new deck
+- `GET /api/decks/[deckId]` - Get specific deck
+- `PUT /api/decks/[deckId]` - Update deck
+- `DELETE /api/decks/[deckId]` - Delete deck
+
+#### Cards
+
+- `GET /api/cards/[cardId]` - Get card
+- `POST /api/decks/[deckId]/cards` - Create card in deck
+- `PUT /api/cards/[cardId]` - Update card
+- `DELETE /api/cards/[cardId]` - Delete card
+
+#### Study
+
+- `POST /api/study/[deckId]` - Start study session
+- `PUT /api/study/[deckId]` - Complete study session
+
+#### AI Generation
+
+- `POST /api/decks/[deckId]/generate-ai` - Generate cards with AI
+
+### 🧪 Testing
+
+#### Running Tests
+
+```bash
+# All tests
+npm test
+
+# Watch mode
+npm run test:watch
+
+# With code coverage
+npm run test:coverage
+```
+
+### 📋 Commands
+
+#### Development
+
+- `npm run dev` - Run in development mode
+- `npm run build` - Build for production
+- `npm run start` - Run production build
+- `npm run lint` - Run linter
+
+#### Database
+
+- `npm run db:generate` - Generate migrations
+- `npm run db:push` - Apply schema changes
+- `npm run db:migrate` - Apply migrations
+- `npm run db:studio` - Run Drizzle Studio
+- `npm run db:seed` - Fill DB with test data
+- `npm run db:clear` - Clear test data
+
+#### Testing
+
+- `npm test` - Run tests
+- `npm run test:watch` - Tests in watch mode
+- `npm run test:coverage` - Tests with coverage
+
+#### Utilities
+
+- `npm run use-node20` - Switch to Node.js 20
+
+#### Deployment
+
+- `vercel` - Deploy to Vercel (requires Vercel CLI)
+- `vercel --prod` - Deploy to production
+- `vercel env pull` - Pull environment variables from Vercel
+
+### 🗄️ Database Schema
+
+#### Tables
+
+- **decks** - Card decks
+- **cards** - Cards
+- **study_sessions** - Study sessions
+- **card_progress** - Card learning progress
+
+#### Relationships
+
+- Deck → Cards (1:many)
+- User → Decks (1:many)
+- Card → Progress (1:many)
+- Deck → Study sessions (1:many)
+
+### 🔒 Security
+
+- Authentication through Clerk
+- Protected API routes
+- Middleware for authorization check
+- Input validation with Zod
+- CORS settings
+- CSRF attack protection
+
+---
+
+## 🇷🇺 Русский {#russian}
 
 Современное веб-приложение для создания, управления и изучения флеш-карточек с поддержкой ИИ-генерации и системы прогресса.
+
+Вы можете посмотреть готовое решение на [Vercel](https://flashycardy-project.vercel.app/)
 
 ## ✨ Возможности
 
