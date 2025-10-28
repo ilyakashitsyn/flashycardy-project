@@ -1,16 +1,6 @@
 # FlashyCardy - Smart Learning Cards
 
-<div align="center">
-  <h3>🌐 Language</h3>
-  <p>
-    <a href="#english">🇺🇸 english</a> | 
-    <a href="#russian">🇷🇺 russian</a>
-  </p>
-</div>
-
----
-
-## 🇺🇸 English {#english}
+## 🇺🇸 English
 
 Modern web application for creating, managing and studying flashcards with AI generation support and progress tracking.
 
@@ -365,7 +355,7 @@ npm run test:coverage
 
 ---
 
-## 🇷🇺 Русский {#russian}
+## 🇷🇺 Russian
 
 Современное веб-приложение для создания, управления и изучения флеш-карточек с поддержкой ИИ-генерации и системы прогресса.
 

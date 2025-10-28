@@ -13,6 +13,8 @@ export const Header = memo(function Header() {
   const pathname = usePathname();
   const { isSignedIn } = useAuth();
   const isDashboard = pathname.startsWith("/dashboard");
+  const isDeckPage = pathname.startsWith("/decks/");
+  const showStats = isDashboard || isDeckPage;
   const isPricingPage = pathname === "/pricing";
 
   return (
@@ -24,7 +26,7 @@ export const Header = memo(function Header() {
           </Link>
         </div>
 
-        {!isDashboard ? (
+        {!showStats ? (
           // Скрываем навигационное меню для залогиненных пользователей на странице pricing
           !(isSignedIn && isPricingPage) && (
             <nav className="hidden md:flex items-center space-x-8">
