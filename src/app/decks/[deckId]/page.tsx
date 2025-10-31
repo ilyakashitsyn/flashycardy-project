@@ -19,6 +19,7 @@ import {
   List,
   Trash2,
   Sparkles,
+  SquarePen,
 } from "lucide-react";
 import Link from "next/link";
 import { Loader2 } from "lucide-react";
@@ -387,7 +388,7 @@ function DeckPageContent() {
                   onDeckUpdated={handleDeckUpdated}
                   trigger={
                     <Button size="lg" variant="outline" className="flex-1">
-                      <Plus className="h-5 w-5 mr-2" />
+                      <SquarePen className="h-5 w-5 mr-2" />
                       Edit
                     </Button>
                   }

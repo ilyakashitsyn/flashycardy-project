@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { EditDeckDialog } from "@/components/ui/edit-deck-dialog";
-import { ArrowLeft, Edit as EditIcon } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
+import { LuBanana } from "react-icons/lu";
 
 type Card = {
   id: number;
@@ -206,10 +207,11 @@ export default function EditDeckPage() {
                   : prev
               )
             }
+            onlyEmoji
             trigger={
               <Button variant="outline" size="sm" className="ml-1">
-                <EditIcon className="h-4 w-4 mr-1" />
-                Edit
+                <LuBanana className="h-4 w-4 mr-1" />
+                Change icon
               </Button>
             }
           />
