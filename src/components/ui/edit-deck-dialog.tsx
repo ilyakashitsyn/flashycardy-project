@@ -25,12 +25,18 @@ interface EditDeckDialogProps {
   };
   onDeckUpdated: (updatedDeck: any) => void;
   trigger?: React.ReactNode;
+  /**
+   * When true, the dialog will only display icon selection and save/cancel actions,
+   * hiding name and description fields. Useful for a dedicated "Change icon" flow.
+   */
+  onlyEmoji?: boolean;
 }
 
 export function EditDeckDialog({
   deck,
   onDeckUpdated,
   trigger,
+  onlyEmoji = false,
 }: EditDeckDialogProps) {
   const [open, setOpen] = useState(false);
   const [name, setName] = useState(deck.name);
@@ -113,10 +119,12 @@ export function EditDeckDialog({
       <DialogContent className="sm:max-w-[500px] bg-background border-border">
         <DialogHeader>
           <DialogTitle className="text-xl font-semibold text-foreground">
-            Edit Deck
+            {onlyEmoji ? "Change Icon" : "Edit Deck"}
           </DialogTitle>
           <DialogDescription className="text-muted-foreground">
-            Change the name and description of your deck.
+            {onlyEmoji
+              ? "Choose an icon for your deck."
+              : "Change the name and description of your deck."}
           </DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit} className="space-y-4">
@@ -140,36 +148,40 @@ export function EditDeckDialog({
               ))}
             </div>
           </div>
-          <div className="space-y-2">
-            <Label
-              htmlFor="deck-name"
-              className="text-sm font-medium text-foreground"
-            >
-              Deck Name
-            </Label>
-            <Input
-              id="deck-name"
-              placeholder="Enter deck name..."
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
-          </div>
-          <div className="space-y-2">
-            <Label
-              htmlFor="deck-description"
-              className="text-sm font-medium text-foreground"
-            >
-              Description (optional)
-            </Label>
-            <Textarea
-              id="deck-description"
-              placeholder="Enter deck description..."
-              value={description}
-              onChange={(e) => setDescription(e.target.value)}
-              className="min-h-[80px] resize-none"
-            />
-          </div>
+          {!onlyEmoji && (
+            <>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="deck-name"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Deck Name
+                </Label>
+                <Input
+                  id="deck-name"
+                  placeholder="Enter deck name..."
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="space-y-2">
+                <Label
+                  htmlFor="deck-description"
+                  className="text-sm font-medium text-foreground"
+                >
+                  Description (optional)
+                </Label>
+                <Textarea
+                  id="deck-description"
+                  placeholder="Enter deck description..."
+                  value={description}
+                  onChange={(e) => setDescription(e.target.value)}
+                  className="min-h-[80px] resize-none"
+                />
+              </div>
+            </>
+          )}
           <DialogFooter className="gap-2">
             <Button
               type="button"
@@ -179,7 +191,10 @@ export function EditDeckDialog({
             >
               Cancel
             </Button>
-            <Button type="submit" disabled={isSubmitting || !name.trim()}>
+            <Button
+              type="submit"
+              disabled={isSubmitting || (!onlyEmoji && !name.trim())}
+            >
               {isSubmitting ? "Saving..." : "Save"}
             </Button>
           </DialogFooter>
