@@ -75,6 +75,12 @@ export function DashboardStats({ className = "" }: DashboardStatsProps) {
 
       {/* Быстрые действия */}
       <div className="flex items-center space-x-2">
+        <Link
+          href="/dashboard/statistics"
+          className="px-4 py-2 text-sm font-medium text-muted-foreground hover:text-foreground transition-colors"
+        >
+          Statistics
+        </Link>
         {!hasProPlan && (
           <Button variant="outline" size="sm" asChild>
             <Link href="/pricing">
