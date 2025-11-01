@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { EditDeckDialog } from "@/components/ui/edit-deck-dialog";
-import { ArrowLeft } from "lucide-react";
+import { LazyAddCardDialog } from "@/components/lazy/index";
+import { ArrowLeft, Plus } from "lucide-react";
 import { LuBanana } from "react-icons/lu";
 
 type Card = {
@@ -140,6 +141,15 @@ export default function EditDeckPage() {
     }
   };
 
+  const handleCardAdded = (newCard: Card) => {
+    if (deck) {
+      setDeck({
+        ...deck,
+        cards: [...deck.cards, newCard],
+      });
+    }
+  };
+
   const handleDeleteDeck = async () => {
     if (!deck) return;
     if (!confirm("Delete the deck and all its cards?")) return;
@@ -247,6 +257,20 @@ export default function EditDeckPage() {
         <div className="flex items-center justify-between">
           <h2 className="text-lg font-medium">Cards</h2>
           <div className="flex items-center gap-3">
+            <LazyAddCardDialog
+              deckId={deck.id}
+              onCardAdded={handleCardAdded}
+              trigger={
+                <Button
+                  variant="outline"
+                  size="sm"
+                  className="flex items-center gap-2"
+                >
+                  <Plus className="h-4 w-4" />
+                  Add Card
+                </Button>
+              }
+            />
             <label className="flex items-center gap-2 cursor-pointer select-none">
               <input
                 type="checkbox"
